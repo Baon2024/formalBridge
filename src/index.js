@@ -5,14 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import store from './reduxStateComponents/store';
 import { render } from '@testing-library/react';
+import { Provider } from 'react-redux';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App 
-    /*state={store.getState()}
-    dispatch={store.dispatch}*/
-    />
+    <Provider store={store}>
+      <App 
+      />
+    </Provider>
   </React.StrictMode>
 );
 

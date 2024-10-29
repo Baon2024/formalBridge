@@ -4,6 +4,10 @@ import styles from './ticketCollectionPage.module.css';
 import TicketComponent from "../../ticketComponent/ticketComponent";
 import sampleData from "./sampleData";
 import SearchBar from "./searchTerm";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { selectTicketsInventory, selectIsLoading, selectRejected } from "../../reduxStateComponents/TicketInventorySlice/ticketInventorySlice";
+import loadTicketsForInventory from "../../reduxStateComponents/TicketInventorySlice/loadTicketsForInventory";
 
 
 function TicketCollectionPage({ticketsInventory, setTicketsInventory, cart}) {
@@ -11,15 +15,27 @@ function TicketCollectionPage({ticketsInventory, setTicketsInventory, cart}) {
   //const [ ticketsData, setTicketsData ] = useState([]);
   //const [ testData, setTestData ] = useState([]);
   const [ searchTerm, setSearchTerm ] = useState('');
+  const dispatch = useDispatch(); 
+  const reduxTickets = useSelector(selectTicketsInventory);
+  const isLoading = useSelector(selectIsLoading);
+  const rejected = useSelector(selectRejected);
 
 
-
-  useEffect(() => {
-    
+  useEffect(() => { 
 
     fetchTicketsData().then((tickets) => setTicketsInventory(tickets));
     //console.log("the ticketsData state is: ", ticketsData);
     console.log("ticketsInventory is: ", ticketsInventory)
+
+    const fetchTickets = async () => {
+      dispatch(loadTicketsForInventory()); // Dispatch the async thunk
+      console.log("Tickets loaded and stored in Redux: ", reduxTickets);
+    };
+
+    fetchTickets();
+
+
+
     //if its being fetched correctly, then need to switch sampleData for ticketsData
     //console.log("Your sampleData is: ", sampleData);
     /*sampleData.map((ticket) => {
@@ -38,6 +54,13 @@ function TicketCollectionPage({ticketsInventory, setTicketsInventory, cart}) {
     //the call is being made and logged - its just not accesisng the databse successfully
     //but it works for their example categories - so use that for now
     }, [])
+
+    useEffect(() => {
+      if ( reduxTickets.length > 0) {
+      console.log("these are the ticketsInventory from redux: ", reduxTickets);
+      }
+
+    }, [reduxTickets])
  
     //need to console.log the new data, to make sure its working before the UI code is implemented
     //and later dispalcement array will need to enable refreshing when a product is dleeted due to order.
@@ -52,7 +75,7 @@ function TicketCollectionPage({ticketsInventory, setTicketsInventory, cart}) {
     
     */
 
-    const filteredTickets = ticketsInventory.filter(ticket => !cart.some(cartItem => cartItem.id === ticket.id));
+    const filteredTickets = reduxTickets.filter(ticket => !cart.some(cartItem => cartItem.id === ticket.id));
     console.log("These are the tickets you've filtered: ", filteredTickets);
 
     //need function to filter filteredTickets by the searchTerm variable. something like 'if college name or formal name 
@@ -99,13 +122,23 @@ function TicketCollectionPage({ticketsInventory, setTicketsInventory, cart}) {
           setSearchTerm={setSearchTerm}
         />
       </div>
+      { isLoading ? (
+        <div className={styles.loadingSpinner}>
+           <div className={styles.spinnerCircle}></div>
+        </div>
+      ) : rejected ? (
+        <div className={styles.errorMessage}>Load failed, try again!</div>
+      ) : reduxTickets && reduxTickets.length > 0 ? (
       <div className={styles.containerBorder}>
         <TicketComponent
           /*filteredTickets={filteredTickets}*/
         /*filteredTicketsBySearchTerm={filteredTicketsBySearchTerm}*/
         ticketsInventory={ticketsInventory}
         />
-      </div>
+      </div> 
+      ) : (
+        <div className={styles.noTicketsMessage}>No tickets available.</div>
+      )}
     </div>
     )
 }

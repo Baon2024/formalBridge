@@ -7,9 +7,10 @@ import UploadTicket from './components/uploadTicketComponent/uploadTicket';
 import TicketCollectionPage from './components/ticketCollectionPage/ticketCollectionPage';
 import TicketPage from './components/ticketPageComponent/ticketPage';
 import { loadTicketsInventoryFromDatabase, addTicket, removeTicket } from './reduxStateComponents/TicketInventorySlice/ticketInventorySlice';
-import store from './reduxStateComponents/store';
 import { useState } from 'react';
 import CartFooter from './components/cartFooterComponent/cartFooterComponent';
+import store from './reduxStateComponents/store';
+import { Provider } from 'react-redux';
 
 //const state = store.getState();
 //const dispatch = store.dispatch;

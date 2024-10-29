@@ -1,6 +1,6 @@
 //need to create the slice here for ticket inventory
-
-
+import { createSlice } from "@reduxjs/toolkit";
+import loadTicketsForInventory from "./loadTicketsForInventory";
 
 //create ticketInventory slice - the state and the action creators
 
@@ -46,36 +46,36 @@ const ticketsInventorySlice = (state = initialState, action) => {
 - the redux-Toolkit with asyncThunk should be used for the ticketsInventory state - as am fetching intiially with API
 - i think, in my opinion, so that i can use isLoading and Failed states to show loading icon and alternatiev json
 
-//redu@toolkit asyncThunk ticketsInventory state slice
+*/
 const ticketsInventorySlice = createSlice({
   name: "ticketsInventory",
   initialState: {
-    ticketsInventory: {},
-    isLoading: fa;se,
+    ticketsInventory: [],
+    isLoading: false,
     rejected: false
   },
   reducers: {},
-  extraReducers: {
-    loadTicketsForInventory: (state, action) => {
-      [loadTicketsForInventory.pending]: (state) => {
-        state.isLoading = true;
+  extraReducers: (builder) => {
+    builder
+      .addCase(loadTicketsForInventory.pending, (state) => {
+        state.isLoading = true; // Set loading state if desired
         state.rejected = false;
-        }
-      [loadTicketsForInventory.rejected]: (state) => {
-        state.isLoading = false;
-        state.rejected = true;
-        }
-      [loadTicketsForInventory.fulfilled]: (state, action) => {
-        state.isLoading = false;
+      })
+      .addCase(loadTicketsForInventory.fulfilled, (state, action) => {
+        state.ticketsInventory = action.payload; // Update inventory with fetched tickets
+        state.isLoading = false; // Set loading state to succeeded
         state.rejected = false;
-        state.ticketsInventory = action.payload;
-        }
-      }
+      })
+      .addCase(loadTicketsForInventory.rejected, (state, action) => {
+        state.isLoading = false; // Set loading state to failed
+        state.rejected = true; // Optional: store error message
+      });
+  },
   }
-})
-check whether that's all correct against documentation and chatGPT?
+)
+//check whether that's all correct against documentation and chatGPT?
 
-
+/*
 //now create Cart Slice
 const cartSlice = (state = initialState, action) => {
   switch(action.type) {
@@ -103,5 +103,8 @@ const cartSlice = (state = initialState, action) => {
     }
   }
 }
-
-export default ticketsInventorySlice.reducer;*/
+*/
+export default ticketsInventorySlice.reducer;
+export const selectTicketsInventory = (state => state.tickets.ticketsInventory);
+export const selectIsLoading = (state => state.tickets.isLoading);
+export const selectRejected = (state => state.tickets.rejected);

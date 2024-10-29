@@ -33,6 +33,24 @@ function CartFooter({cart, setCart}) {
     console.log('Cart state now is: ', cart);
   }, [cart]); // Only runs when cart changes
 
+  function checkout() {
+    //this function is to allow user to buy a single or multiple tickets that are in their cart
+    //will need to map the id of every ticket item in the cart, in order to pass the params, so tickets (and their qr pngs
+    // can be retrieved from the 'success page' url params.
+
+    /* 
+    first, checkout should only active if user is logged in:
+    if (loggedIn) {
+
+      function to map every ticket and combine their Ids into a single variable - see chatgpt suggestion 
+
+
+      Navigate(/successPage/${totalTicketIDs})
+    }
+    
+    */
+  }
+
     return (
       <>
         <div className={styles.container}>

@@ -11,7 +11,7 @@ function TicketPage({ ticketsInventory, setTicketsInventory, cart, setCart }) {
 
     const [ ticketsData, setTicketsData] = useState([]);
     const [ isInCart, setIsInCart ] = useState(false);
-    Navigate = useNavigate();
+    //Navigate = useNavigate();
     //need to use useParams() or getParams.id to get dynamic item from URL
     const { id } = useParams()
     console.log("The id of the ticket you clicked on is: ", id);
