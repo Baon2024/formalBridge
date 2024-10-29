@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { selectTicketsInventory, selectIsLoading, selectRejected } from "../../reduxStateComponents/TicketInventorySlice/ticketInventorySlice";
 import loadTicketsForInventory from "../../reduxStateComponents/TicketInventorySlice/loadTicketsForInventory";
+import { selectCartInventory } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
 
 
 function TicketCollectionPage({ticketsInventory, setTicketsInventory, cart}) {
@@ -19,6 +20,7 @@ function TicketCollectionPage({ticketsInventory, setTicketsInventory, cart}) {
   const reduxTickets = useSelector(selectTicketsInventory);
   const isLoading = useSelector(selectIsLoading);
   const rejected = useSelector(selectRejected);
+  //const cart = useSelector(selectCartInventory);
 
 
   useEffect(() => { 

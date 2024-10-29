@@ -2,12 +2,17 @@
 import styles from './cartFooterComponent.module.css'
 import CartTicket from './cartTicket';
 import { useEffect } from 'react';
+import { selectCartInventory, addTicketToCart, removeTicketFromCart } from '../../reduxStateComponents/TicketInventorySlice/cartInventorySlice';
+import { useSelector, useDispatch } from 'react-redux';
 
 //will need to import the action creator for removeTicket to be used below
 
 
 
-function CartFooter({cart, setCart}) {
+function CartFooter({cart, removeTicketFromCart}) {
+
+    //const cart = useSelector(selectCartInventory);
+    const dispatch = useDispatch();
 
     //create function to calculate total ticket price
   function calculateTotalPrice(cart) {
@@ -23,7 +28,8 @@ function CartFooter({cart, setCart}) {
 
   function removeTicketFromCartHandler(ticket) {
 
-    setCart((prevCart) => prevCart.filter((item) => item.id !== ticket.id)); //correct?
+    /*setCart((prevCart) => prevCart.filter((item) => item.id !== ticket.id));*/ //correct?
+    dispatch(removeTicketFromCart({ id: ticket.id}));
     console.log("Cart state now is: ", cart);
   }
 

@@ -10,7 +10,9 @@ import { loadTicketsInventoryFromDatabase, addTicket, removeTicket } from './red
 import { useState } from 'react';
 import CartFooter from './components/cartFooterComponent/cartFooterComponent';
 import store from './reduxStateComponents/store';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
+import { addTicketToCart, removeTicketFromCart } from './reduxStateComponents/TicketInventorySlice/cartInventorySlice';
+import { selectCartInventory } from './reduxStateComponents/TicketInventorySlice/cartInventorySlice';
 
 //const state = store.getState();
 //const dispatch = store.dispatch;
@@ -21,11 +23,15 @@ import { Provider } from 'react-redux';
 function App() {
 
   const [ ticketsInventory, setTicketsInventory ] = useState([]);
-  const [ cart, setCart ] = useState([]);
+  //const [ cart, setCart ] = useState([]);
   const [ isLoggedIn, setIsLoggedIn ] = useState(false);
+  //const dispatch = store.getState;
+  const cart = useSelector(selectCartInventory);
+  //const tickets = state.tickets;
+
 
   const router = createBrowserRouter(createRoutesFromElements(
-  <Route path="/" element={ <Header cart={cart} setCart={setCart} />}
+  <Route path="/" element={ <Header cart={cart} /*setCart={setCart}*/ removeTicketFromCart={removeTicketFromCart} />}
     /*Cart={state.Cart}*/
     >
     <Route index element={ <Home />} />
@@ -37,7 +43,8 @@ function App() {
     <Route path="ticketPage/:id" element={ <TicketPage ticketsInventory={ticketsInventory}
       setTicketsInventory={setTicketsInventory}
       cart={cart}
-      setCart={setCart} />} />
+      addTicketToCart={addTicketToCart}
+      /*setCart={setCart}*/ />} />
   </Route>
   ))
 
@@ -46,7 +53,7 @@ function App() {
   return (
     <div className="App">
       <RouterProvider router={router} />
-      {cart.length > 0 && <CartFooter cart={cart} setCart={setCart} />}
+      {cart.length > 0 && <CartFooter cart={cart} removeTicketFromCart={removeTicketFromCart} /*setCart={setCart}*/ />}
     </div>
   );
 }

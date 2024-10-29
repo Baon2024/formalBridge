@@ -5,10 +5,15 @@ import { Navigate, useParams } from "react-router-dom";
 import { fetchTicketsData } from "../APIFunctions/APIFunctions";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCartInventory, addTicketToCart } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
 
 
-function TicketPage({ ticketsInventory, setTicketsInventory, cart, setCart }) {
+function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCart }) {
+    
 
+    //const cart = useSelector(selectCartInventory);
+    const dispatch = useDispatch();
     const [ ticketsData, setTicketsData] = useState([]);
     const [ isInCart, setIsInCart ] = useState(false);
     //Navigate = useNavigate();
@@ -45,11 +50,12 @@ function TicketPage({ ticketsInventory, setTicketsInventory, cart, setCart }) {
         console.log("isInCart is currently: ", isInCart);
     }, [cart])
 
-    function addTicketToCart(ticket) {
+    function addTicketToCartHandler(ticket) {
         //const ticket = e.target.value;
-        //const isInCart = cart.some(cartItem => cartItem.id === ticket.formalTicketID);
+        const isInCart = cart.some(cartItem => cartItem.id === ticket.id);
         if (!isInCart) {
-          setCart(prevCart => [...prevCart, ticket])
+          /*setCart(prevCart => [...prevCart, ticket])*/
+          dispatch(addTicketToCart(ticket));
           console.log("Now your cart is: ", cart);
         } else {
             console.log("This ticket is already in your cart: ", ticket)
@@ -77,7 +83,7 @@ function TicketPage({ ticketsInventory, setTicketsInventory, cart, setCart }) {
         <div>
           <TicketPageItem
            ticket={ticketToDisplay}
-           addTicketToCart={addTicketToCart}
+           addTicketToCart={addTicketToCartHandler}
            cart={cart}
            isInCart={isInCart}
           />

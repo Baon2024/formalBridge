@@ -3,8 +3,14 @@ import styles from './header.module.css';
 import React from "react";
 import NavigationBar from "./navigationBar/navigationBar";
 import CartFooter from "../cartFooterComponent/cartFooterComponent";
+import { selectCartInventory } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
+import { useSelector } from "react-redux";
 
-function Header({cart, setCart}) {
+function Header({cart, removeTicketFromCart}) {
+
+  //const cart = useSelector(selectCartInventory);
+
+  const cartLength = cart?.length || 0;
 
     return (
       <div className={styles.componentHeight}>
@@ -12,9 +18,9 @@ function Header({cart, setCart}) {
         <div className={styles.mainContent}>
             <Outlet />
         </div>
-        {cart.length > 0 && <CartFooter
+        {cartLength > 0 && <CartFooter
            cart={cart}
-           setCart={setCart}
+           removeTicketFromCart={removeTicketFromCart}
           />}
       </div>
     )

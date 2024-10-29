@@ -3,12 +3,14 @@
 //and create store from the slices
 import { configureStore } from "@reduxjs/toolkit";
 import ticketInventorySlice from "./TicketInventorySlice/ticketInventorySlice";
+import cartInventorySlice from "./TicketInventorySlice/cartInventorySlice";
 
 
 
 const store = configureStore({
     reducer: {
-      tickets: ticketInventorySlice
+      tickets: ticketInventorySlice,
+      cart: cartInventorySlice
     },
   });
 
