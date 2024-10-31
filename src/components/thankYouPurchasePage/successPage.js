@@ -8,19 +8,25 @@
 
 function ThankYouAfterPurchase() {
 
-    const {name} = useParams(); //or the get----byParams one.
-    const ticketToDownload = ticketsInventory[name] //need to pass the ticketsInventory state down
+    const { id } = useParams(); //or the get----byParams one.
+    const ticketToDownload = ticketsInventory[id] //need to pass the ticketsInventory state down
 
     //then for JSX
     //onClick={eventHandlerToDownload}
+
+    //for checkout of multiple tickets, need to map every ticket, in order to display each QR code
+    //http://localhost:1337/uploads/trinity_a89c430ef9.jpeg
     return (
         <>
         <div>
             <button>Download {ticketToDownload.name}</button>
         </div>
+        <div>
+            <img src={`localhost/1337/uploads/${ticketToDownload.formalTicketQR}`} /> 
+        </div>
         </>
     )
-}
+} //need to dynamically display the QR code on the page, is easiest option.
 
 
 

@@ -17,6 +17,7 @@ function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCa
     const [ ticketsData, setTicketsData] = useState([]);
     const [ isInCart, setIsInCart ] = useState(false);
     //Navigate = useNavigate();
+    const Navigate = useNavigate();
     //need to use useParams() or getParams.id to get dynamic item from URL
     const { id } = useParams()
     console.log("The id of the ticket you clicked on is: ", id);
@@ -75,6 +76,10 @@ function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCa
           //need to actually make the success page first
         
         }*/
+       //API fetch call to add ticket to user's tickets: using user.id and posting it to a property 'myTickets'
+       //API fetch call to add 'bought' property to ticket, so its not displayed in ticketsInventory anymore
+       //will need to play around and see whcih order works best, if any order causes bugs
+       Navigate(`/successPage/${ticket.id}`);
     }
     
 

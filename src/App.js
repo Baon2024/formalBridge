@@ -7,12 +7,13 @@ import UploadTicket from './components/uploadTicketComponent/uploadTicket';
 import TicketCollectionPage from './components/ticketCollectionPage/ticketCollectionPage';
 import TicketPage from './components/ticketPageComponent/ticketPage';
 import { loadTicketsInventoryFromDatabase, addTicket, removeTicket } from './reduxStateComponents/TicketInventorySlice/ticketInventorySlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CartFooter from './components/cartFooterComponent/cartFooterComponent';
 import store from './reduxStateComponents/store';
 import { Provider, useSelector } from 'react-redux';
 import { addTicketToCart, removeTicketFromCart } from './reduxStateComponents/TicketInventorySlice/cartInventorySlice';
 import { selectCartInventory } from './reduxStateComponents/TicketInventorySlice/cartInventorySlice';
+import SignUpLogIn from './components/userPage/login/signUpLogIn';
 
 //const state = store.getState();
 //const dispatch = store.dispatch;
@@ -28,7 +29,22 @@ function App() {
   //const dispatch = store.getState;
   const cart = useSelector(selectCartInventory);
   //const tickets = state.tickets;
+  const [ user, setUser ] = useState(null);
 
+  useEffect(() => {
+
+    const token = localStorage.getItem('jwt');
+    const userData = JSON.parse(localStorage.getItem('user'));
+    if (token && userData) {
+      const dataToSet = {token: token, user: userData};
+      setUser(dataToSet);
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log("the user is: ", user);
+  }, [user])
+  
 
   const router = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={ <Header cart={cart} /*setCart={setCart}*/ removeTicketFromCart={removeTicketFromCart} />}
@@ -36,6 +52,7 @@ function App() {
     >
     <Route index element={ <Home />} />
     <Route path="uploadTicket" element={ <UploadTicket />} />
+    <Route path="signUpLogIn" element={ <SignUpLogIn user={user} setUser={setUser} />} />
     <Route path="ticketCollectionPage" element={ <TicketCollectionPage ticketsInventory={ticketsInventory} setTicketsInventory={setTicketsInventory} cart={cart} />} 
       /*ticketsInventory={state.ticketsInventory}*/
       /*dispatch={dispatch}*/ //can't pass down react hooks in react router: also true of redux stuff???
