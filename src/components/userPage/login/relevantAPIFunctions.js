@@ -36,7 +36,7 @@ const signUpUser = async (email, password) => {
 //API fetch request to login user
 const loginUser = async (identifier, password) => {
     try {
-      const response = await fetch('http://localhost:1337/auth/local', {
+      const response = await fetch('http://localhost:1337/api/auth/local', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,11 +53,36 @@ const loginUser = async (identifier, password) => {
   
       const data = await response.json();
       localStorage.setItem('jwt', data.jwt); // Store JWT
-      return data.user;
+      return data;
     } catch (error) {
       console.error("Login Error:", error);
       return null;
     }
   };
 
-  export { signUpUser, loginUser};
+//api fetch function to retrieve user's info
+async function fetchUserDetails(token) {
+    //let token = localStorage.getItem('jwt');
+    try {
+      const response = await fetch(`http://localhost:1337/api/users/me?populate=*`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to fetch user details');
+      }
+  
+      const userDetails = await response.json();
+      return userDetails;
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      return null;
+    }
+  }
+
+
+export { signUpUser, loginUser, fetchUserDetails };

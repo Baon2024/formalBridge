@@ -1,0 +1,12 @@
+.ticketContainer {
+    width: 90%;
+    align-self: center;
+}
+.pageStyling {
+    display: flex;
+    flex-direction: column;
+}
+.ticketCard {
+    width: 35%;
+    height: 50%;
+}

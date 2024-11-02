@@ -14,6 +14,8 @@ import { Provider, useSelector } from 'react-redux';
 import { addTicketToCart, removeTicketFromCart } from './reduxStateComponents/TicketInventorySlice/cartInventorySlice';
 import { selectCartInventory } from './reduxStateComponents/TicketInventorySlice/cartInventorySlice';
 import SignUpLogIn from './components/userPage/login/signUpLogIn';
+import UserPage from './components/userPage/userPage';
+import SuccessPage from './components/thankYouPurchasePage/successPage';
 
 //const state = store.getState();
 //const dispatch = store.dispatch;
@@ -47,17 +49,19 @@ function App() {
   
 
   const router = createBrowserRouter(createRoutesFromElements(
-  <Route path="/" element={ <Header cart={cart} /*setCart={setCart}*/ removeTicketFromCart={removeTicketFromCart} />}
+  <Route path="/" element={ <Header cart={cart} user={user}/*setCart={setCart}*/ removeTicketFromCart={removeTicketFromCart} />}
     /*Cart={state.Cart}*/
     >
     <Route index element={ <Home />} />
     <Route path="uploadTicket" element={ <UploadTicket />} />
+    <Route path="successPage/:id" element={ <SuccessPage ticketsInventory={ticketsInventory} />} />
+    <Route path="userPage/:id" element={ <UserPage user={user} setUser={setUser} /> } />
     <Route path="signUpLogIn" element={ <SignUpLogIn user={user} setUser={setUser} />} />
     <Route path="ticketCollectionPage" element={ <TicketCollectionPage ticketsInventory={ticketsInventory} setTicketsInventory={setTicketsInventory} cart={cart} />} 
       /*ticketsInventory={state.ticketsInventory}*/
       /*dispatch={dispatch}*/ //can't pass down react hooks in react router: also true of redux stuff???
     />
-    <Route path="ticketPage/:id" element={ <TicketPage ticketsInventory={ticketsInventory}
+    <Route path="ticketPage/:id" element={ <TicketPage ticketsInventory={ticketsInventory} user={user}
       setTicketsInventory={setTicketsInventory}
       cart={cart}
       addTicketToCart={addTicketToCart}

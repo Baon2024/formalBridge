@@ -6,7 +6,7 @@ import CartFooter from "../cartFooterComponent/cartFooterComponent";
 import { selectCartInventory } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
 import { useSelector } from "react-redux";
 
-function Header({cart, removeTicketFromCart}) {
+function Header({cart, removeTicketFromCart, user}) {
 
   //const cart = useSelector(selectCartInventory);
 
@@ -14,7 +14,7 @@ function Header({cart, removeTicketFromCart}) {
 
     return (
       <div className={styles.componentHeight}>
-        <NavigationBar />
+        <NavigationBar user={user} />
         <div className={styles.mainContent}>
             <Outlet />
         </div>

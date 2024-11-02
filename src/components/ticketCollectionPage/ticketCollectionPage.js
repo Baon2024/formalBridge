@@ -76,8 +76,10 @@ function TicketCollectionPage({ticketsInventory, setTicketsInventory, cart}) {
   )}
     
     */
-
-    const filteredTickets = reduxTickets.filter(ticket => !cart.some(cartItem => cartItem.id === ticket.id));
+    
+    let filteredTickets = reduxTickets.filter(ticket => 
+      !ticket.bought && !cart.some(cartItem => cartItem.id === ticket.id)
+      );
     console.log("These are the tickets you've filtered: ", filteredTickets);
 
     //need function to filter filteredTickets by the searchTerm variable. something like 'if college name or formal name 

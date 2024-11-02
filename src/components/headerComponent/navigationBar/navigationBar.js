@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import styles from './navigationBar.module.css';
 import React from "react";
 import avatarImage from './generic-avatar.svg';
+import blankAvatarImage from './blank-avatar-image.svg';
 
 //need to nail the header styling - do the font size, color, font family
 //import the UI icon for user-stuff
@@ -11,7 +12,8 @@ import avatarImage from './generic-avatar.svg';
 
 //style the nav words - cursive for title, get materuial UI element for user
 
-function NavigationBar() {
+function NavigationBar({user}) {
+    console.log("user in navigation bar is: ", user);
 
     return (
         <div className={styles.HeaderStyling}>
@@ -28,11 +30,12 @@ function NavigationBar() {
                 >FormalBridge</NavLink>
                 <NavLink
                 id={styles.icon}
+                to={ user ? `/userPage/${user.id}` : `/signUpLogIn`}
                 className={ ({ isActive }) => isActive? `${styles.activeNavLink}` : `${styles.inactiveNavLink}`}
                 >
                   <div className={styles.trial}>
                     <img 
-                      src={avatarImage}
+                      src={ user ? avatarImage : blankAvatarImage}
                       alt="Generic Avatar"
                       className={styles.avatarImage}
                       />

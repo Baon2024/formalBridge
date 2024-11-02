@@ -2,14 +2,15 @@
 import TicketPageItem from "./ticketPageCentralComponent/ticketPageCentralComponent";
 //import { ticketsData } from "../ticketCollectionPage/ticketCollectionPage";
 import { Navigate, useParams } from "react-router-dom";
-import { fetchTicketsData } from "../APIFunctions/APIFunctions";
+import { fetchTicketsData, updateBuyerUser, updateUserTicketsBought } from "../APIFunctions/APIFunctions";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { setTicketBought, fetchTicketIdByFilter } from "../APIFunctions/APIFunctions";
 import { selectCartInventory, addTicketToCart } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
 
 
-function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCart }) {
+function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCart, user }) {
     
 
     //const cart = useSelector(selectCartInventory);
@@ -79,7 +80,23 @@ function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCa
        //API fetch call to add ticket to user's tickets: using user.id and posting it to a property 'myTickets'
        //API fetch call to add 'bought' property to ticket, so its not displayed in ticketsInventory anymore
        //will need to play around and see whcih order works best, if any order causes bugs
+       console.log("user currently is: ", user);
+       if (user) {
        Navigate(`/successPage/${ticket.id}`);
+       const jwtToken = user.token;
+       console.log("the jwtToken being inputted into function is: ", jwtToken);
+       console.log("the ticket.id you clicked on is: ", ticket.id);
+       console.log("the documentId for this ticket is: ", ticket.documentId);
+       setTicketBought(ticket, jwtToken)
+       //updateBuyerUser(ticket, user);
+       updateUserTicketsBought(user, ticket); //- need to fix this next
+       //updateBuyerUser()
+       //updateMyTicketsBought();
+       //then should have created the actual purchase workflow - ticket will be removed from display, and accessible to user
+       //will then need to do this for checkout method of purchasing
+       } else if (!user) {
+        //need to alert user that they aren't logged in - through pop-up box??
+       }
     }
     
 
@@ -90,6 +107,7 @@ function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCa
            ticket={ticketToDisplay}
            addTicketToCart={addTicketToCartHandler}
            cart={cart}
+           buyTicket={buyTicket}
            isInCart={isInCart}
           />
         </div>

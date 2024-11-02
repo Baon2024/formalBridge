@@ -4,6 +4,7 @@ import { isAction } from "redux";
 import styles from './signUpLogIn.module.css'
 import { useState, useEffect } from "react";
 import { signUpUser, loginUser } from "./relevantAPIFunctions";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 
@@ -24,6 +25,7 @@ const [ signUp, setSignUp ] = useState(false);
 const [ email, setEmail ] = useState('');
 const [ password, setPassword ] = useState('');
 const [ message, setMessage ] = useState('');
+const navigate = useNavigate();
 let token;
 
 useEffect(() => {
@@ -50,7 +52,9 @@ function handleToggleLogIn() {
 const handleLogIn = async () => {
     const user = await loginUser(email, password);
     if (user) {
-      setMessage(`Welcome back, ${user.username}!`);
+      setMessage(`Welcome back, ${user.user.username}!`);
+      setUser({ token: user.jwt, user: user.user });
+      navigate(`/userPage/${user.id}`);
     } else {
       setMessage('Login failed. Please check your credentials.');
     }
@@ -64,6 +68,7 @@ const handleLogIn = async () => {
       //console.log("token is: ", token);
       //setUser({ token: token, user: user});
       setUser({ token: user.jwt, user: user.user });
+      navigate(`/userPage/${user.id}`);
     } else {
       setMessage('Sign up failed. Please try again.');
     }
