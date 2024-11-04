@@ -90,6 +90,7 @@ function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCa
        setTicketBought(ticket, jwtToken)
        //updateBuyerUser(ticket, user);
        updateUserTicketsBought(user, ticket); //- need to fix this next
+       console.log("current user is: ", user);
        //updateBuyerUser()
        //updateMyTicketsBought();
        //then should have created the actual purchase workflow - ticket will be removed from display, and accessible to user

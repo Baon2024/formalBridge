@@ -11,11 +11,12 @@ import { useEffect, useState } from 'react';
 import CartFooter from './components/cartFooterComponent/cartFooterComponent';
 import store from './reduxStateComponents/store';
 import { Provider, useSelector } from 'react-redux';
-import { addTicketToCart, removeTicketFromCart } from './reduxStateComponents/TicketInventorySlice/cartInventorySlice';
+import { addTicketToCart, removeTicketFromCart, resetCart } from './reduxStateComponents/TicketInventorySlice/cartInventorySlice';
 import { selectCartInventory } from './reduxStateComponents/TicketInventorySlice/cartInventorySlice';
 import SignUpLogIn from './components/userPage/login/signUpLogIn';
 import UserPage from './components/userPage/userPage';
 import SuccessPage from './components/thankYouPurchasePage/successPage';
+import FAQPage from './components/faqPageFolder/faqPage';
 
 //const state = store.getState();
 //const dispatch = store.dispatch;
@@ -52,8 +53,9 @@ function App() {
   <Route path="/" element={ <Header cart={cart} user={user}/*setCart={setCart}*/ removeTicketFromCart={removeTicketFromCart} />}
     /*Cart={state.Cart}*/
     >
-    <Route index element={ <Home />} />
+    <Route index element={ <Home user={user} />} />
     <Route path="uploadTicket" element={ <UploadTicket />} />
+    <Route path="FAQPage" element={ <FAQPage /> } />
     <Route path="successPage/:id" element={ <SuccessPage ticketsInventory={ticketsInventory} />} />
     <Route path="userPage/:id" element={ <UserPage user={user} setUser={setUser} /> } />
     <Route path="signUpLogIn" element={ <SignUpLogIn user={user} setUser={setUser} />} />
@@ -74,7 +76,7 @@ function App() {
   return (
     <div className="App">
       <RouterProvider router={router} />
-      {cart.length > 0 && <CartFooter cart={cart} removeTicketFromCart={removeTicketFromCart} /*setCart={setCart}*/ />}
+      {cart.length > 0 && <CartFooter cart={cart} removeTicketFromCart={removeTicketFromCart} resetCart={resetCart} /*setCart={setCart}*/ />}
     </div>
   );
 }

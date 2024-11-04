@@ -18,7 +18,7 @@ function NavigationBar({user}) {
     return (
         <div className={styles.HeaderStyling}>
             <div className={styles.NavigationBarStyling}>
-                <NavLink>
+                <NavLink to="/FAQPage">
                     <button className={styles.customButton}>
                         FAQ
                     </button>

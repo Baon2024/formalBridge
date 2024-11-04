@@ -16,7 +16,7 @@ function UserPage({user, setUser}) {
   const [ userData, setUserData ] = useState(null);
   const navigate = useNavigate();
   
-  useEffect(() => {
+  /*useEffect(() => {
     const getUserData = async () => {
       let userDataToSet = await fetchUserDetails(token);
       console.log("userData currently is: ", userData);
@@ -25,7 +25,7 @@ function UserPage({user, setUser}) {
    
     getUserData();
 
-  }, [id])
+  }, [id])*/
 
     function handleLogOut() {
       localStorage.removeItem('jwt');
@@ -37,10 +37,10 @@ function UserPage({user, setUser}) {
     return (
       <>
       <p>This is the user's personal page</p>
-      { userData ? (
+      { /*userData*/ user ? (
         <>
           <p>data has been returned</p>
-          <p>{userData.email}</p>
+          <p>{/*userData.email*/ user.user.email}</p>
           <button onClick={handleLogOut}>Log Out</button>
         </>
       ) : (

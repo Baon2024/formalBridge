@@ -11,8 +11,8 @@ function SuccessPage({ticketsInventory}) {
 
     const { id } = useParams(); //or the get----byParams one.
     console.log("the id is: ", id, "and ticketsInventory is: ", ticketsInventory);
-    const numerId = Number(id);
-    const ticketToDownload = ticketsInventory.find(ticket => ticket.id === numerId);
+    const numberId = Number(id);
+    const ticketToDownload = ticketsInventory.find(ticket => ticket.id === numberId);
     console.log("This is the ticket you have bought: ", ticketToDownload);
 
     //in order to provide QR codes for multiple tickets, probably need to push each ticket
@@ -32,6 +32,9 @@ function SuccessPage({ticketsInventory}) {
                     src={`http://localhost:1337${ticketToDownload.formalTicketQRCode.url}`} 
                     alt="Ticket QR Code" 
                   />
+                  <a href={`http://localhost:1337${ticketToDownload.formalTicketQRCode.url}`} download={`${ticketToDownload.formalTicketQRCode.url}`} style={{ marginTop: '10px', display: 'inline-block' }}>
+                    Download QR Code
+                  </a>
                 </div>
               </div>
             ) : (

@@ -21,6 +21,7 @@ function Header({cart, removeTicketFromCart, user}) {
         {cartLength > 0 && <CartFooter
            cart={cart}
            removeTicketFromCart={removeTicketFromCart}
+           
           />}
       </div>
     )

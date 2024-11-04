@@ -36,7 +36,7 @@ const signUpUser = async (email, password) => {
 //API fetch request to login user
 const loginUser = async (identifier, password) => {
     try {
-      const response = await fetch('http://localhost:1337/api/auth/local', {
+      const response = await fetch('http://localhost:1337/api/auth/local?populate=*', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
