@@ -97,11 +97,12 @@ async function fetchTicketIdByFilter(ticketId, jwtToken) {
   async function updateBuyerUser(ticket, user) {
   
     const ticketDocumentId = ticket.documentId;
-    const userDocumentId = user.documentId;
+    const userDocumentId = user.user.documentId; //needs to be user.user.documentId
     const token = user.token;
+    //console.log("the userDocumentId is: ", userDocumentId);
 
     try {
-        const response = await fetch(`http://localhost:1337/api/formal-tickets/${ticketDocumentId}`, {
+        const response = await fetch(`http://localhost:1337/api/formal-tickets/${ticketDocumentId}?populate=buyerUser`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`, // Include JWT token for authentication
@@ -132,7 +133,7 @@ async function fetchTicketIdByFilter(ticketId, jwtToken) {
   async function updateUserTicketsBought(user, ticket) {
 
     const ticketDocumentId = ticket.documentId;
-    const userDocumentId = user.documentId;
+    const userDocumentId = user.user.documentId;
     const userId = user.user.id;
 
     try {

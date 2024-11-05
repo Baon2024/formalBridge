@@ -87,8 +87,8 @@ function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCa
        console.log("the jwtToken being inputted into function is: ", jwtToken);
        console.log("the ticket.id you clicked on is: ", ticket.id);
        console.log("the documentId for this ticket is: ", ticket.documentId);
-       setTicketBought(ticket, jwtToken)
-       //updateBuyerUser(ticket, user);
+       setTicketBought(ticket, jwtToken) // - works
+       updateBuyerUser(ticket, user); // works
        updateUserTicketsBought(user, ticket); //- need to fix this next
        console.log("current user is: ", user);
        //updateBuyerUser()

@@ -3,13 +3,13 @@ import styles from './cartFooterComponent.module.css'
 import CartTicket from './cartTicket';
 import { useEffect } from 'react';
 import { selectCartInventory, addTicketToCart, removeTicketFromCart } from '../../reduxStateComponents/TicketInventorySlice/cartInventorySlice';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, Navigate } from 'react-redux';
 
 //will need to import the action creator for removeTicket to be used below
 
 
 
-function CartFooter({cart, removeTicketFromCart, resetCart}) {
+function CartFooter({cart, removeTicketFromCart, resetCart, user}) {
 
     //const cart = useSelector(selectCartInventory);
     const dispatch = useDispatch();
@@ -75,14 +75,14 @@ function CartFooter({cart, removeTicketFromCart, resetCart}) {
 
        const urlEndpoint = totalCartIds;
 
-       Navigate(`/successPage/${urlEndpoint}`);
+       //Navigate(`/successPage/${urlEndpoint}`);
        const jwtToken = user.token;
        console.log("the jwtToken being inputted into function is: ", jwtToken);
-       console.log("the ticket.id you clicked on is: ", ticket.id);
-       console.log("the documentId for this ticket is: ", ticket.documentId);
-       setCheckoutTicketBought(ticket, jwtToken) // - this needs to be change to pass down cart to the functiom
+       //console.log("the ticket.id you clicked on is: ", ticket.id);
+       //console.log("the documentId for this ticket is: ", ticket.documentId);
+       //setCheckoutTicketBought(ticket, jwtToken) // - this needs to be change to pass down cart to the functiom
        //updateBuyerUser(ticket, user);
-       updateUserTicketsBought(user, ticket); //- need to fix this next
+       //updateUserTicketsBought(user, ticket); //- need to fix this next
        console.log("current user is: ", user);
        //updateBuyerUser()
        //updateMyTicketsBought();

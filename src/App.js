@@ -76,7 +76,7 @@ function App() {
   return (
     <div className="App">
       <RouterProvider router={router} />
-      {cart.length > 0 && <CartFooter cart={cart} removeTicketFromCart={removeTicketFromCart} resetCart={resetCart} /*setCart={setCart}*/ />}
+      {cart.length > 0 && <CartFooter cart={cart} removeTicketFromCart={removeTicketFromCart} resetCart={resetCart} user={user} /*setCart={setCart}*/ />}
     </div>
   );
 }
