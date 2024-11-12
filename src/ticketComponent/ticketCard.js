@@ -10,9 +10,10 @@ function TicketCard({ticket}) {
     
     //console.log("data from ticketCard", formalTicketCollege, formalTicketCollegeBackgroundImage, formalTicketDietary, formalTicketDate, formalTicketTime, formalEventName, formalTicketPrice, formalTicketID);
     console.log("the formalTicketCollegeBackgroundImage currently is: ", formalTicketCollegeBackgroundImage);
-    const formalTicketCollegeBackgroundImageURL = formalTicketCollegeBackgroundImage.url;
-    console.log(formalTicketCollegeBackgroundImageURL);
     
+    const formalTicketCollegeBackgroundImageURL = formalTicketCollegeBackgroundImage?.url;
+    console.log(formalTicketCollegeBackgroundImageURL);
+
     console.log("This is your formalTicketID to be used for navigation: ", formalTicketID);
     const navigate = useNavigate();
     function handleClick() {
@@ -28,7 +29,7 @@ function TicketCard({ticket}) {
 
     return (
       <div className={styles.cardContainer} onClick={handleClick} key={formalTicketID}>
-        <img src={`http://localhost:1337/${formalTicketCollegeBackgroundImageURL}` || 'public/queens.jpeg' } alt="Background" className={styles.cardImage} />
+        <img src={formalTicketCollegeBackgroundImageURL ? `http://localhost:1337/${formalTicketCollegeBackgroundImageURL}` : 'public/queens.jpeg'} alt="Background" className={styles.cardImage} />
         <div className={styles.tagsContainer}>
           <div className={styles.tagPrice}>{`£${formalTicketPrice}`}</div>
           <div className={styles.tagDietary}>{formalTicketDietary}</div>

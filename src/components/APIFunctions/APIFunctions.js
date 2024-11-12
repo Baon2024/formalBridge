@@ -179,6 +179,30 @@ async function fetchTicketIdByFilter(ticketId, jwtToken) {
     }
 };
 
+async function createNewTicket(newTicket, user) {
+    const url = 'http://localhost:1337/api/formal-tickets';
+    const token = user.token; //- check this is the correct path?
+    console.log("the token you are using is: ", token);
+    console.log("the ticket you are trying to add is: ", newTicket);
+
+    const ticketData = { data: newTicket };
+
+    try {
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(ticketData),
+    })
+        const data = response.json();
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 
-export { fetchTicketsData, setTicketBought, fetchTicketIdByFilter, updateBuyerUser, updateUserTicketsBought };
+
+export { fetchTicketsData, setTicketBought, fetchTicketIdByFilter, updateBuyerUser, updateUserTicketsBought, createNewTicket };

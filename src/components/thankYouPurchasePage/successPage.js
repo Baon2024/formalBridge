@@ -12,8 +12,21 @@ function SuccessPage({ticketsInventory}) {
     const { id } = useParams(); //or the get----byParams one.
     console.log("the id is: ", id, "and ticketsInventory is: ", ticketsInventory);
     const numberId = Number(id);
+
+    //need to make sure that multiple tickets from checkout can be retrived form id params.
+
+    /*
+    ticketsDownloadNew = idCollection.filter(ticketId => ticketsInventory.find(ticket => ticket.id === ticketId));
+    console.log("These are the tickets to display: ", ticketsDownloadNew);
+    */ // - will that work??
+    //and would need to change returned jsx below, to map every ticket in collection
+
+
+
     const ticketToDownload = ticketsInventory.find(ticket => ticket.id === numberId);
     console.log("This is the ticket you have bought: ", ticketToDownload);
+
+    //change this to retrieve tickets by their documentID?? strapi 5, and less possible confusion?
 
     //in order to provide QR codes for multiple tickets, probably need to push each ticket
     //retriveed using id fromt ticketsInventory to an array, and then map that array with ticketCard for each ticket to display

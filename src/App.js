@@ -17,6 +17,10 @@ import SignUpLogIn from './components/userPage/login/signUpLogIn';
 import UserPage from './components/userPage/userPage';
 import SuccessPage from './components/thankYouPurchasePage/successPage';
 import FAQPage from './components/faqPageFolder/faqPage';
+//import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+//import { LocalizationProvider } from '@mui/x-date-pickers';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 //const state = store.getState();
 //const dispatch = store.dispatch;
@@ -54,7 +58,7 @@ function App() {
     /*Cart={state.Cart}*/
     >
     <Route index element={ <Home user={user} />} />
-    <Route path="uploadTicket" element={ <UploadTicket />} />
+    <Route path="uploadTicket" element={ <UploadTicket user={user} />} />
     <Route path="FAQPage" element={ <FAQPage /> } />
     <Route path="successPage/:id" element={ <SuccessPage ticketsInventory={ticketsInventory} />} />
     <Route path="userPage/:id" element={ <UserPage user={user} setUser={setUser} /> } />
@@ -75,10 +79,14 @@ function App() {
 
   return (
     <div className="App">
+     <LocalizationProvider dateAdapter={AdapterDayjs}> 
       <RouterProvider router={router} />
+     </LocalizationProvider>
       {cart.length > 0 && <CartFooter cart={cart} removeTicketFromCart={removeTicketFromCart} resetCart={resetCart} user={user} /*setCart={setCart}*/ />}
     </div>
   );
 }
 
 export default App;
+
+// <LocalizationProvider dateAdapter={AdapterDayjs}> -  </LocalizationProvider>

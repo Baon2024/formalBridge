@@ -37,7 +37,9 @@ function TicketPageItem({ticket, addTicketToCart, cart, isInCart, buyTicket}) {
       {ticket ? ( // Use a conditional (ternary) operator for clearer renderin
       <>
       <div className={styles.container}>
-        <img src={`http://localhost:1337/${ticket.formalTicketCollegeBackgroundImage.url}`} id={styles.backgroundImage} />
+        <img  src={ticket.formalTicketCollegeBackgroundImage?.url 
+        ? `http://localhost:1337/${ticket.formalTicketCollegeBackgroundImage.url}` 
+        : 'public/queens.jpeg'}  id={styles.backgroundImage} />
         <div className={styles.ticketPageItem} value={ticket}>
           <div className={styles.content}>
             <div className={styles.header}>
