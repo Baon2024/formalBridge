@@ -8,9 +8,14 @@ import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 import { createNewTicket } from "../APIFunctions/APIFunctions";
 import { useSelector } from "react-redux";
 import { selectTicketsInventory } from "../../reduxStateComponents/TicketInventorySlice/ticketInventorySlice";
+import getCollegeBackgroundImage from "./getCollegeBackgroundImage";
 
 
 export default function UploadTicket({user}) {
+
+    const colleges = ["King's", "Queen's", "Corpus Christi", "Madgalene", "Peterhouse", "Murray Edwards", "Selwyn", ""]; // Add more as needed
+    const dietaryOptions = ["Vegan", "Vegetarian", "Gluten-Free", "None"]; // Add more as needed
+
 
     function generateRandomId() {
         return Math.floor(10000000 + Math.random() * 90000000).toString();
@@ -26,13 +31,16 @@ export default function UploadTicket({user}) {
     const [ selectDietary, setSelectDiet ] = useState('');
 
     
-    function createTicketHandler(e) {
+    async function createTicketHandler(e) {
 
         e.preventDefault();
 
         const dateTime = new Date(selectedTime);
         const formattedTime = dateTime.toTimeString().slice(0, 8);
-        
+
+        const collegeBackgroundImage = await getCollegeBackgroundImage(selectCollege);
+        const imageObject = collegeBackgroundImage && collegeBackgroundImage.length > 0 ? collegeBackgroundImage[0] : null;
+
         const newTicket = {
           formalEventName: formalEventName,
           formalTicketDate: new Date(selectedDate).toISOString().split('T')[0], // "2024-11-22"
@@ -40,13 +48,19 @@ export default function UploadTicket({user}) {
           formalTicketPrice: Number(ticketPrice),
           formalTicketCollege: selectCollege,
           formalTicketDietary: selectDietary,
-          formalTicketCollegeBackgroundImage: null,
-          formalTicketQRCode: null,
+          formalTicketCollegeBackgroundImage: /*await getCollegeBackgroundImage(selectCollege)*/ imageObject ? { id: imageObject.id } : null,
+          formalTicketQRCode: null, // getQRCode(unique identifier returned by upload API function);
           bought: false,
           formalTicketID: generateRandomId(),
           buyerUser: null, // - is this the correct value to set?
           sellerUser: user.user.id   //need to check whether its document id of user i need here, or what
         }
+      
+      //BREAK QR CODE UPLOADER INTO TWO PARTS
+    //  1. Upload QR .jpeg/png to media library on button click
+    //  2. retrirve QR .jpeg/png as value for formalTicketQRCode in newTicket. presumably need returned unique identified (documentId??) in order to select it, returnd from prior function
+    
+    //can test 1. by console logging the returned API codes, due to seperate button for uploading QR jpeg/png. 
 
 
       //need API Put call to create ticket, to formal-tickets collection
@@ -68,28 +82,56 @@ export default function UploadTicket({user}) {
 
     return (
         <>
-          <div className={styles.eventForm}>
+    <div className={styles.eventForm}>
       <div className={styles.formRow}>
         <div className={styles.formGroup}>
           <label>formal event</label>
-          <input value={formalEventName} onChange={(e) => setFormalEventName(e.target.value)} type="text" placeholder="enter formal event name" />
+          <input
+            value={formalEventName}
+            onChange={(e) => setFormalEventName(e.target.value)}
+            type="text"
+            placeholder="enter formal event name"
+          />
         </div>
         <div className={styles.formGroup}>
           <label>college</label>
           <div className={styles.dropdown}>
-            <input className={styles.dropdownInput} type="dropdown" placeholder="Placeholder" value={selectCollege} onChange={(e) => setSelectCollege(e.target.value)} />
+            <select
+              className={styles.dropdownInput}
+              value={selectCollege}
+              onChange={(e) => setSelectCollege(e.target.value)}
+            >
+              <option value="" disabled>Select college</option>
+              {colleges.map((college, index) => (
+                <option key={index} value={college}>{college}</option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
       <div className={styles.formRow}>
         <div className={styles.formGroup}>
           <label>price to list</label>
-          <input type="number" placeholder="Placeholder" value={ticketPrice} onChange={(e) => setTicketPrice(e.target.value)} />
+          <input
+            type="number"
+            placeholder="Enter price"
+            value={ticketPrice}
+            onChange={(e) => setTicketPrice(e.target.value)}
+          />
         </div>
         <div className={styles.formGroup}>
           <label>dietary</label>
           <div className={styles.dropdown}>
-            <input className={styles.dropdownInput} type="dropdown" placeholder="Placeholder" value={selectDietary} onChange={(e) => setSelectDiet(e.target.value)} />
+            <select
+              className={styles.dropdownInput}
+              value={selectDietary}
+              onChange={(e) => setSelectDiet(e.target.value)}
+            >
+              <option value="" disabled>Select dietary preference</option>
+              {dietaryOptions.map((option, index) => (
+                <option key={index} value={option}>{option}</option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
@@ -97,11 +139,10 @@ export default function UploadTicket({user}) {
         <div className={styles.formGroup}>
           <label>date picker</label>
           <DatePicker
-                //label="Select Date"
-                value={selectedDate}
-                onChange={(newValue) => setSelectedDate(newValue)}
-                renderInput={(params) => <TextField {...params} />}
-            />
+            value={selectedDate}
+            onChange={(newValue) => setSelectedDate(newValue)}
+            renderInput={(params) => <TextField {...params} />}
+          />
         </div>
         <div className={styles.formGroup}>
           <label>time picker</label>
@@ -112,11 +153,17 @@ export default function UploadTicket({user}) {
           />
         </div>
       </div>
+      <div classname={styles.formRow}>
+        <div className={styles.formGroup}>
+          <label>upload your ticket</label>
+          <input />
+        </div>
+      </div>
       <div>
         <button onClick={createTicketHandler}>list my formal ticket</button>
       </div>
     </div>
-        </>
+  </>
     )
 }
 

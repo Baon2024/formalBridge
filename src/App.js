@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { createBrowserRouter, createRoutesFromElements, Route, Router, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, MemoryRouter, Route, Router, RouterProvider } from 'react-router-dom';
 import Header from './components/headerComponent/header';
 import Home from './components/homeComponent/home';
 import UploadTicket from './components/uploadTicketComponent/uploadTicket';
@@ -44,6 +44,7 @@ function App() {
     const userData = JSON.parse(localStorage.getItem('user'));
     if (token && userData) {
       const dataToSet = {token: token, user: userData};
+      console.log("thsi is the value of dataToSet: ", dataToSet);
       setUser(dataToSet);
     }
   }, [])
@@ -60,7 +61,7 @@ function App() {
     <Route index element={ <Home user={user} />} />
     <Route path="uploadTicket" element={ <UploadTicket user={user} />} />
     <Route path="FAQPage" element={ <FAQPage /> } />
-    <Route path="successPage/:id" element={ <SuccessPage ticketsInventory={ticketsInventory} />} />
+    <Route path="/successPage/:ids" element={ <SuccessPage ticketsInventory={ticketsInventory} />} />
     <Route path="userPage/:id" element={ <UserPage user={user} setUser={setUser} /> } />
     <Route path="signUpLogIn" element={ <SignUpLogIn user={user} setUser={setUser} />} />
     <Route path="ticketCollectionPage" element={ <TicketCollectionPage ticketsInventory={ticketsInventory} setTicketsInventory={setTicketsInventory} cart={cart} />} 
@@ -82,7 +83,7 @@ function App() {
      <LocalizationProvider dateAdapter={AdapterDayjs}> 
       <RouterProvider router={router} />
      </LocalizationProvider>
-      {cart.length > 0 && <CartFooter cart={cart} removeTicketFromCart={removeTicketFromCart} resetCart={resetCart} user={user} /*setCart={setCart}*/ />}
+        
     </div>
   );
 }

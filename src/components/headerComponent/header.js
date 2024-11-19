@@ -5,6 +5,7 @@ import NavigationBar from "./navigationBar/navigationBar";
 import CartFooter from "../cartFooterComponent/cartFooterComponent";
 import { selectCartInventory } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
 import { useSelector } from "react-redux";
+import { removeTicketFromCart, resetCart } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
 
 function Header({cart, removeTicketFromCart, user}) {
 
@@ -21,7 +22,8 @@ function Header({cart, removeTicketFromCart, user}) {
         {cartLength > 0 && <CartFooter
            cart={cart}
            removeTicketFromCart={removeTicketFromCart}
-           
+           resetCart={resetCart} 
+           user={user}
           />}
       </div>
     )

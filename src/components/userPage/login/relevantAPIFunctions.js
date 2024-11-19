@@ -53,6 +53,7 @@ const loginUser = async (identifier, password) => {
   
       const data = await response.json();
       localStorage.setItem('jwt', data.jwt); // Store JWT
+      localStorage.setItem('user', JSON.stringify(data.user));
       return data;
     } catch (error) {
       console.error("Login Error:", error);

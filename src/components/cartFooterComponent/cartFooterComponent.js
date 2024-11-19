@@ -3,8 +3,9 @@ import styles from './cartFooterComponent.module.css'
 import CartTicket from './cartTicket';
 import { useEffect } from 'react';
 import { selectCartInventory, addTicketToCart, removeTicketFromCart } from '../../reduxStateComponents/TicketInventorySlice/cartInventorySlice';
-import { useSelector, useDispatch, Navigate } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { updateBuyerUser, setTicketBought } from '../APIFunctions/APIFunctions';
+import { useNavigate } from 'react-router-dom'; 
 
 //will need to import the action creator for removeTicket to be used below
 
@@ -14,6 +15,7 @@ function CartFooter({cart, removeTicketFromCart, resetCart, user}) {
 
     //const cart = useSelector(selectCartInventory);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     //create function to calculate total ticket price
   function calculateTotalPrice(cart) {
@@ -67,8 +69,10 @@ function CartFooter({cart, removeTicketFromCart, resetCart, user}) {
        console.log("current user is: ", user);
        //then should have created the actual purchase workflow - ticket will be removed from display, and accessible to user
        //will then need to do this for checkout method of purchasing
+       console.log("Navigating to success page...");
+       navigate(`/successPage/${urlEndpoint}`);
        dispatch(resetCart()); //-need to clear cart to prevent the tickets remaining there after being removed from displayed tickets
-       } else if (!user) {
+    } else if (!user) {
         //need to alert user that they aren't logged in - through pop-up box??
        }
     }

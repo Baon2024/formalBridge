@@ -37,6 +37,7 @@ function UserPage({user, setUser}) {
 
     function handleLogOut() {
       localStorage.removeItem('jwt');
+      localStorage.removeItem('user');
       setUser(null);
       navigate("/");
     }
