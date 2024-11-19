@@ -8,7 +8,7 @@ import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 import { createNewTicket } from "../APIFunctions/APIFunctions";
 import { useSelector } from "react-redux";
 import { selectTicketsInventory } from "../../reduxStateComponents/TicketInventorySlice/ticketInventorySlice";
-import getCollegeBackgroundImage from "./getCollegeBackgroundImage";
+import { getCollegeBackgroundImage, uploadQRCode } from "./getCollegeBackgroundImage";
 
 
 export default function UploadTicket({user}) {
@@ -29,7 +29,24 @@ export default function UploadTicket({user}) {
     const [ ticketPrice, setTicketPrice ] = useState(null);
     const [ selectCollege, setSelectCollege ] = useState('');
     const [ selectDietary, setSelectDiet ] = useState('');
+    const [ selectedFile, setSelectedFile ] = useState(null);
+    //const [ qrFile, setQRFile ] = useState(null);
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0]; // Get the first selected file
+        setSelectedFile(file);
+    };
+
+    let qrCodeId;
+    
+    async function uploadQRCodeHandler() {
+
+
+        qrCodeId = await uploadQRCode(selectedFile);
+        console.log("qrCodeId is: ", qrCodeId);
+    }
+
+   
     
     async function createTicketHandler(e) {
 
@@ -49,7 +66,7 @@ export default function UploadTicket({user}) {
           formalTicketCollege: selectCollege,
           formalTicketDietary: selectDietary,
           formalTicketCollegeBackgroundImage: /*await getCollegeBackgroundImage(selectCollege)*/ imageObject ? { id: imageObject.id } : null,
-          formalTicketQRCode: null, // getQRCode(unique identifier returned by upload API function);
+          formalTicketQRCode: { id: qrCodeId }, // getQRCode(unique identifier returned by upload API function);
           bought: false,
           formalTicketID: generateRandomId(),
           buyerUser: null, // - is this the correct value to set?
@@ -155,8 +172,9 @@ export default function UploadTicket({user}) {
       </div>
       <div classname={styles.formRow}>
         <div className={styles.formGroup}>
-          <label>upload your ticket</label>
-          <input />
+          <label id="qrCodeInput">upload your ticket</label>
+          <input id="qrCodeInput" type="file" accept=".jpeg, .png" onChange={handleFileChange} required />
+          <button onClick={uploadQRCodeHandler}>Upload your ticket</button>
         </div>
       </div>
       <div>

@@ -59,4 +59,33 @@ async function getCollegeBackgroundImage(formalEventCollege) {
 // then get the whole image field, and return it so it's acttched to newTicket, and newTicket looks in the database like the manually created ones??
 }
 
-export default getCollegeBackgroundImage;
+
+async function uploadQRCode(file) {
+    const formData = new FormData();
+    formData.append('files', file);
+
+    try {
+        const response = await fetch('http://localhost:1337/api/upload', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+            },
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to upload QR code');
+        }
+
+        const uploadedFiles = await response.json();
+        console.log('Uploaded file details:', uploadedFiles);
+
+        // Return the uploaded file's ID
+        return uploadedFiles[0].id; // Assuming the first file is what we need
+    } catch (error) {
+        console.error('Error uploading QR code:', error);
+        return null;
+    }
+}
+
+export { getCollegeBackgroundImage, uploadQRCode };
