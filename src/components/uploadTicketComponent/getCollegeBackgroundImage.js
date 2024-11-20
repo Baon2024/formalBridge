@@ -88,4 +88,91 @@ async function uploadQRCode(file) {
     }
 }
 
-export { getCollegeBackgroundImage, uploadQRCode };
+
+
+async function updateBuyerUser(ticket, user) {
+  
+    const ticketDocumentId = ticket.documentId;
+    const userDocumentId = user.user.documentId; //needs to be user.user.documentId
+    const token = user.token;
+    //console.log("the userDocumentId is: ", userDocumentId);
+
+    try {
+        const response = await fetch(`http://localhost:1337/api/formal-tickets/${ticketDocumentId}?populate=buyerUser`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`, // Include JWT token for authentication
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                data: {
+                    //bought: true, // Set bought to true
+                    buyerUser: userDocumentId, // Assign the user's documentId to buyerUser
+                },
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to update ticket: ${response.statusText}`);
+        }
+
+        const updatedTicketData = await response.json();
+        console.log('Ticket updated successfully:', updatedTicketData);
+        return updatedTicketData; // Return the updated ticket data
+    } catch (error) {
+        console.error("Error updating ticket buyer:", error);
+        throw error; // Rethrow the error for further handling if needed
+    }
+
+  }
+  
+  async function updateUserTicketsListed(user, ticket) {
+
+    const ticketDocumentId = ticket.documentId;
+    const userDocumentId = user.user.documentId;
+    const userId = user.user.id;
+
+    try {
+        // Fetch the user data first to get the current MyTicketsBought
+        const userResponse = await fetch(`http://localhost:1337/api/users/me?populate=*`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('jwt')}`, // Include JWT token for authentication
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!userResponse.ok) {
+            throw new Error(`Failed to fetch user data: ${userResponse.statusText}`);
+        }
+
+        const userData = await userResponse.json();
+
+        // Update the user's MyTicketsBought to include the new ticket
+        const updateResponse = await fetch(`http://localhost:1337/api/users/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('jwt')}`, // Include JWT token for authentication
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                data: {
+                    myTicketsBought: [...(userData.MyTicketsListed || []), ticketDocumentId], // Add the new ticket ID
+                },
+            }),
+        });
+
+        if (!updateResponse.ok) {
+            throw new Error(`Failed to update user: ${updateResponse.statusText}`);
+        }
+
+        const updatedUserData = await updateResponse.json();
+        console.log('User updated successfully:', updatedUserData);
+        return updatedUserData; // Return the updated user data
+    } catch (error) {
+        console.error("Error updating user tickets bought:", error);
+        throw error; // Rethrow the error for further handling if needed
+    }
+};
+
+export { getCollegeBackgroundImage, uploadQRCode, updateUserTicketsListed };

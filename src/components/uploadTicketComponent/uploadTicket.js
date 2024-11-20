@@ -8,7 +8,8 @@ import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 import { createNewTicket } from "../APIFunctions/APIFunctions";
 import { useSelector } from "react-redux";
 import { selectTicketsInventory } from "../../reduxStateComponents/TicketInventorySlice/ticketInventorySlice";
-import { getCollegeBackgroundImage, uploadQRCode } from "./getCollegeBackgroundImage";
+import { getCollegeBackgroundImage, uploadQRCode, updateUserTicketsListed } from "./getCollegeBackgroundImage";
+import { useNavigate } from "react-router-dom";
 
 
 export default function UploadTicket({user}) {
@@ -30,6 +31,8 @@ export default function UploadTicket({user}) {
     const [ selectCollege, setSelectCollege ] = useState('');
     const [ selectDietary, setSelectDiet ] = useState('');
     const [ selectedFile, setSelectedFile ] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const navigate = useNavigate();
     //const [ qrFile, setQRFile ] = useState(null);
 
     const handleFileChange = (e) => {
@@ -52,6 +55,10 @@ export default function UploadTicket({user}) {
 
         e.preventDefault();
 
+        if (isSubmitting) return; // Prevent multiple clicks
+        setIsSubmitting(true);
+       
+        try {
         const dateTime = new Date(selectedTime);
         const formattedTime = dateTime.toTimeString().slice(0, 8);
 
@@ -83,10 +90,22 @@ export default function UploadTicket({user}) {
       //need API Put call to create ticket, to formal-tickets collection
       //and need to make sure that you add all the property fields above, even empty ones.
       //need to make sure names match proper names in collection database 
-      createNewTicket(newTicket, user);
+      const returnedNewTicket = await createNewTicket(newTicket, user);
+      console.log("returnedNewTicket is: ", returnedNewTicket);
       console.log("the formal-tickets collection is now: ", ticketsInventory);
-      //once this function is working, will then need to Navigate('/userPage') so user can see their listed ticket
+      
+      if (returnedNewTicket.ok) {
+        navigate('userPage/:id');
+      }
 
+      } catch(error) {
+        console.error("Error creating ticket:", error);
+      } finally {
+        setIsSubmitting(false);
+      }
+      //once this function is working, will then need to Navigate('/userPage') so user can see their listed ticket
+      //add function to add ticket to myTicketsListed field. 
+      //updateUserTicketsListed(user, returnedNewTicket);
     }
    
 
@@ -178,7 +197,7 @@ export default function UploadTicket({user}) {
         </div>
       </div>
       <div>
-        <button onClick={createTicketHandler}>list my formal ticket</button>
+        <button onClick={createTicketHandler} disabled={isSubmitting}>{isSubmitting ? "Submitting..." : "List My Formal Ticket"}</button>
       </div>
     </div>
   </>

@@ -78,6 +78,20 @@ async function fetchUserDetails(token) {
       }
   
       const userDetails = await response.json();
+      console.log("these are the userDetails from detchUserDetails api call: ", userDetails);
+
+      if (userDetails.myTicketsBought) {
+        userDetails.myTicketsBought = Array.from(
+          new Set(userDetails.myTicketsBought.map(ticket => ticket.documentId))
+        ).map(documentId => userDetails.myTicketsBought.find(ticket => ticket.documentId === documentId));
+      }
+      
+      if (userDetails.myTicketsListed) {
+        userDetails.myTicketsListed = Array.from(
+          new Set(userDetails.myTicketsListed.map(ticket => ticket.documentId))
+        ).map(documentId => userDetails.myTicketsListed.find(ticket => ticket.documentId === documentId));
+      }
+
       return userDetails;
     } catch (error) {
       console.error("Error fetching user details:", error);

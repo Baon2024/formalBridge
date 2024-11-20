@@ -10,3 +10,9 @@
     width: 35%;
     height: 50%;
 }
+.downloadButton {
+    background-color: purple;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+}

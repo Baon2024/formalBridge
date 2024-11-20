@@ -17,7 +17,20 @@ function SuccessPage({ticketsInventory}) {
 
     const ticketsToDisplay = ticketsInventory.filter(ticket => ticketIds.includes(ticket.id));
     console.log("Tickets to display: ", ticketsToDisplay);
-
+    
+    const handleDownload = async (url, fileName) => {
+        // Fetch the image as a Blob
+        const response = await fetch(url);
+        const blob = await response.blob();
+    
+        // Create an Object URL for the Blob
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName; // Set the filename for the download
+    
+        // Trigger the download
+        link.click();
+      };
     //if you look at the ticketsToDisplay fields in the console, their .bought and .buyerUser fields aren't updated
     //because ticketsInventory has been passed down from the version fetched on ticketsCollection page
     //rather than after purchase - and that's fine, only need to access the QR code img, so it saves the lag of a new API call
@@ -58,9 +71,12 @@ function SuccessPage({ticketsInventory}) {
                     src={`http://localhost:1337${ticket.formalTicketQRCode.url}`} 
                     alt="Ticket QR Code" 
                   />
-                  <a href={`http://localhost:1337${ticket.formalTicketQRCode.url}`} download={`${ticket.formalTicketQRCode.url}`} style={{ marginTop: '10px', display: 'inline-block' }}>
-                    Download QR Code
-                  </a>
+                 <button 
+                      className={styles.downloadButton}
+                      onClick={() => handleDownload(`http://localhost:1337${ticket.formalTicketQRCode.url}`, ticket.formalTicketQRCode.url.split('/').pop())}
+                    >
+                      Download QR Code
+                  </button>
                 </>
               ) : (
                 <p>No QR Code available for this ticket.</p>

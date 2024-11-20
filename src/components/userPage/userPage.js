@@ -45,6 +45,7 @@ function UserPage({user, setUser}) {
   //need to put a log-out button here, which redirects to homepage once logged out.
 
   const myTicketsBought = userData?.myTicketsBought;
+  const myTicketsListed = userData?.myTicketsListed;
   console.log("your my TicketsBought are: ", myTicketsBought);
     return (
       <>
@@ -56,15 +57,30 @@ function UserPage({user, setUser}) {
           <>
             <p>data has been returned</p>
             <p>{/*userData.email*/ userData.email}</p>
-            <p>Your bought ticket are: </p>
-            { myTicketsBought && myTicketsBought.map((ticket) => (
-              <>
-                <div key={ticket.id}>
-                  <p>{ticket.formalEventName}</p>
-                  <p>{ticket.formalTicketCollege}</p>
-                </div>
-              </>
-            ))}
+            <div>
+              <p>Your bought ticket are: </p>
+              { myTicketsBought && myTicketsBought.map((ticket) => (
+                <>
+                  <div key={ticket.id}>
+                    <p>{ticket.formalEventName}</p>
+                    <p>{ticket.formalTicketCollege}</p>
+                  </div>
+                </>
+              ))}
+            </div>
+            <div>
+              <p>Your listed tickets are</p>
+              { myTicketsListed && myTicketsListed.map((ticket) => (
+                <>
+                  <div key={ticket.id}>
+                    <p>{ticket.formalEventName}</p>
+                    <p>{ticket.formalTicketCollege}</p>
+                    <button>change price</button>
+                    <button>cancel ticket listing</button>
+                  </div>
+                </>
+              ))}
+            </div>
           </>
         ) : (
           <p>no user data</p>

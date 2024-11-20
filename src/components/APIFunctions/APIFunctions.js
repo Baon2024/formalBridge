@@ -180,6 +180,8 @@ async function fetchTicketIdByFilter(ticketId, jwtToken) {
 };
 
 async function createNewTicket(newTicket, user) {
+    console.log("API call initiated: createNewTicket");
+
     const url = 'http://localhost:1337/api/formal-tickets';
     const token = user.token; //- check this is the correct path?
     console.log("the token you are using is: ", token);
