@@ -198,8 +198,10 @@ async function createNewTicket(newTicket, user) {
         },
         body: JSON.stringify(ticketData),
     })
-        const data = response.json();
-        return data;
+        //const data = response.json();
+        //return data;
+        return response;
+        console.log("this is the response abotu to be returned: ", response);
     } catch (error) {
         console.log(error);
     }

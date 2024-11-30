@@ -3,8 +3,8 @@ import styles from './uploadTicket.module.css';
 //import { DatePicker } from '@mui/x-date-pickers';
 //import { TextField } from "@mui/material";
 //import { TimePicker } from '@mui/x-date-pickers';
-import { TextField } from '@mui/material';
-import { DatePicker, TimePicker } from '@mui/x-date-pickers';
+//import { TextField } from '@mui/material';
+//import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 import { createNewTicket } from "../APIFunctions/APIFunctions";
 import { useSelector } from "react-redux";
 import { selectTicketsInventory } from "../../reduxStateComponents/TicketInventorySlice/ticketInventorySlice";
@@ -91,11 +91,12 @@ export default function UploadTicket({user}) {
       //and need to make sure that you add all the property fields above, even empty ones.
       //need to make sure names match proper names in collection database 
       const returnedNewTicket = await createNewTicket(newTicket, user);
-      console.log("returnedNewTicket is: ", returnedNewTicket);
+      const returnedNewTicketJSONed = returnedNewTicket.json();
+      console.log("returnedNewTicket is: ", returnedNewTicketJSONed);
       console.log("the formal-tickets collection is now: ", ticketsInventory);
       
-      if (returnedNewTicket.ok) {
-        navigate('userPage/:id');
+      if (returnedNewTicket.status >= 200 && returnedNewTicket.status < 300) {
+        navigate(`/userPage/${user.user.id}`);
       }
 
       } catch(error) {
@@ -117,7 +118,7 @@ export default function UploadTicket({user}) {
     //need to amend permisions for users, to allow them to make POST/Put api calls
 
     return (
-        <>
+        <> 
     <div className={styles.eventForm}>
       <div className={styles.formRow}>
         <div className={styles.formGroup}>

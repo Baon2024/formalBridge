@@ -98,6 +98,47 @@ async function fetchUserDetails(token) {
       return null;
     }
   }
+  async function fetchUserDetailsTrial(token) {
+    try {
+      const response = await fetch(
+        `http://localhost:1337/api/users/me?populate[myTicketsBought][populate][formalTicketCollegeBackgroundImage]=*&populate[myTicketsBought][populate][formalTicketQRCode]=*&populate[myTicketsListed][populate][formalTicketCollegeBackgroundImage]=*`,
+        {
+            //?populate[myTicketsBought][populate][formalTicketCollegeBackgroundImage]=*&populate[myTicketsBought][populate][formalTicketQRCode]=*&populate[myTicketsListed][populate][formalTicketCollegeBackgroundImage]=*
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error('Failed to fetch user details');
+      }
+  
+      const userDetails = await response.json();
+      console.log("User details fetched: ", userDetails);
+  
+      // Deduplicate tickets in `myTicketsBought` based on `documentId`
+      if (userDetails.myTicketsBought) {
+        userDetails.myTicketsBought = Array.from(
+          new Set(userDetails.myTicketsBought.map(ticket => ticket.documentId))
+        ).map(documentId => userDetails.myTicketsBought.find(ticket => ticket.documentId === documentId));
+      }
+  
+      // Deduplicate tickets in `myTicketsListed` based on `documentId`
+      if (userDetails.myTicketsListed) {
+        userDetails.myTicketsListed = Array.from(
+          new Set(userDetails.myTicketsListed.map(ticket => ticket.documentId))
+        ).map(documentId => userDetails.myTicketsListed.find(ticket => ticket.documentId === documentId));
+      }
+  
+      return userDetails;
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      return null;
+    }
+  }
 
 
-export { signUpUser, loginUser, fetchUserDetails };
+export { signUpUser, loginUser, fetchUserDetails, fetchUserDetailsTrial };

@@ -19,8 +19,8 @@ import SuccessPage from './components/thankYouPurchasePage/successPage';
 import FAQPage from './components/faqPageFolder/faqPage';
 //import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 //import { LocalizationProvider } from '@mui/x-date-pickers';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+//import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+//import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 //const state = store.getState();
 //const dispatch = store.dispatch;
@@ -80,9 +80,9 @@ function App() {
 
   return (
     <div className="App">
-     <LocalizationProvider dateAdapter={AdapterDayjs}> 
+     {/*<LocalizationProvider dateAdapter={AdapterDayjs}> */}
       <RouterProvider router={router} />
-     </LocalizationProvider>
+     {/*</LocalizationProvider>*/}
         
     </div>
   );
