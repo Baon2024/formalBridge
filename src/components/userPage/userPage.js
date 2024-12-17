@@ -4,7 +4,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { fetchUserDetails, fetchUserDetailsTrial } from "./login/relevantAPIFunctions";
 import { fetchTicketsData } from "../APIFunctions/APIFunctions";
 import styles from './userPage.module.css';
-import { ClassicTicket } from "./classicTicket";
+//import { ClassicTicket } from "./classicTicket";
 
 
 //obviously use useParams() to get current user, and show their stuff
@@ -122,7 +122,7 @@ function UserPage({user, setUser}) {
   async function cancelTicketHandler(ticket) {
     const documentId = ticket.documentId;
     //const ticketId = ticket.id;
-    const url = `http://localhost:1337/api/formal-tickets/${documentId}`;
+    const url = `http://localhost:1338/api/formal-tickets/${documentId}`;
     //check url
     //const token = user.toke;
     console.log("this is the value of token passed to the delete function: ", token);
@@ -182,7 +182,7 @@ function UserPage({user, setUser}) {
       return;
     }
   
-    const url = `http://localhost:1337/api/formal-tickets/${documentId}`;
+    const url = `http://localhost:1338/api/formal-tickets/${documentId}`;
   
     try {
       // Send PUT request to update ticket price
@@ -244,7 +244,7 @@ function UserPage({user, setUser}) {
         </div>
         <div>
           <button>
-            <Link to="uploadTicket"><p>Sell your Ticket</p></Link>
+            <Link to="/uploadTicket"><p>Sell your Ticket</p></Link>
           </button>
         </div>
         <div className={styles.ticketsBought}>
@@ -255,9 +255,52 @@ function UserPage({user, setUser}) {
             <div className={styles.boughtAndListedTickets}>
               <div className={styles.boughtListedBox}>
                 <p>Your bought ticket are: </p>
-                { myTicketsBought && myTicketsBought.map(ticket => (
-                 <ClassicTicket key={ticket.id} ticket={ticket} handleDownload={handleDownload} />
-                 ))}
+                { myTicketsBought && myTicketsBought.map((ticket) => (
+    <>
+      <div className={styles.ticketsBoughtCard} key={ticket.id}>
+        <div className={styles.imageAndTextBox}>
+          <div>
+            {/* need to have <Img /> here, for formalTicketBackgroundImage*/ } 
+            <div
+              style={{
+              backgroundImage: `url(http://localhost:1338${ticket.formalTicketCollegeBackgroundImage?.url})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              height: '200px', // Adjust height based on your design needs
+            }}
+            className={styles.ticketImage}
+            />
+          </div>
+          <p>{ticket.formalEventName}</p>
+          <p>{ticket.formalTicketCollege}</p>
+        </div>
+        <div className={styles.buttonGroup}>
+          <button onClick={() => handleDownload(`http://localhost:1338${ticket.formalTicketQRCode.url}`, ticket.formalTicketQRCode.url.split('/').pop())}>
+            download ticket
+          </button>
+          <button onClick={() => handleOpenModal(ticket.documentId)}>View Ticket</button>
+          {isModalOpen === ticket.documentId && (
+<div className={styles.overlay} onClick={handleCloseModal}>
+<div
+className={styles.modal}
+onClick={(e) => e.stopPropagation()} // Prevent closing modal when clicking inside it
+>
+<button className={styles.closeBtn} onClick={handleCloseModal}>
+  X
+</button>
+<img
+  src={`http://localhost:1338${ticket.formalTicketQRCode?.url}`}
+  alt="Ticket QR Code"
+  className={styles.qrImage}
+/>
+</div>
+</div>
+)}
+          <button>report problem</button>
+        </div>
+      </div>
+    </>
+  ))} 
               </div> 
               <div>
                 <p>Your listed tickets are</p>
@@ -269,7 +312,7 @@ function UserPage({user, setUser}) {
                       <p>£{ticket.formalTicketPrice}</p>
                       <div
                             style={{
-                            backgroundImage: `url(http://localhost:1337${ticket.formalTicketCollegeBackgroundImage?.url})`,
+                            backgroundImage: `url(http://localhost:1338${ticket.formalTicketCollegeBackgroundImage?.url})`,
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
                             height: '200px', // Adjust height based on your design needs

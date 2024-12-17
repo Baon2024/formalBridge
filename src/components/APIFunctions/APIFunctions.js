@@ -4,7 +4,7 @@
 
 async function fetchTicketsData() {
 
-    const url = 'http://localhost:1337/api/formal-tickets?populate=*';
+    const url = 'http://localhost:1338/api/formal-tickets?populate=*';
     //const url = 'http://localhost:1337/api/formal-tickets?populate=buyerUser,sellerUser,*';
     //const url = 'http://localhost:1337/api/formal-tickets?populate=buyerUser,sellerUser,formalTicketCollegeBackgroundImage,formalTicketQRCode';
     //'?populate=*' is required to return media
@@ -38,7 +38,7 @@ async function setTicketBought(ticket, jwtToken) {
     const documentId = ticket.documentId; 
 
     try {
-        const response = await fetch(`http://localhost:1337/api/formal-tickets/${documentId}`, {
+        const response = await fetch(`http://localhost:1338/api/formal-tickets/${documentId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ async function setTicketBought(ticket, jwtToken) {
 }
 
 async function fetchTicketIdByFilter(ticketId, jwtToken) {
-    const url = `http://localhost:1337/api/formal-tickets?filters[id][$eq]=${ticketId}`;
+    const url = `http://localhost:1338/api/formal-tickets?filters[id][$eq]=${ticketId}`;
     
     console.log('Fetching ticket with ID:', ticketId);
 
@@ -102,7 +102,7 @@ async function fetchTicketIdByFilter(ticketId, jwtToken) {
     //console.log("the userDocumentId is: ", userDocumentId);
 
     try {
-        const response = await fetch(`http://localhost:1337/api/formal-tickets/${ticketDocumentId}?populate=buyerUser`, {
+        const response = await fetch(`http://localhost:1338/api/formal-tickets/${ticketDocumentId}?populate=buyerUser`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`, // Include JWT token for authentication
@@ -138,7 +138,7 @@ async function fetchTicketIdByFilter(ticketId, jwtToken) {
 
     try {
         // Fetch the user data first to get the current MyTicketsBought
-        const userResponse = await fetch(`http://localhost:1337/api/users/me?populate=*`, {
+        const userResponse = await fetch(`http://localhost:1338/api/users/me?populate=*`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('jwt')}`, // Include JWT token for authentication
@@ -153,7 +153,7 @@ async function fetchTicketIdByFilter(ticketId, jwtToken) {
         const userData = await userResponse.json();
 
         // Update the user's MyTicketsBought to include the new ticket
-        const updateResponse = await fetch(`http://localhost:1337/api/users/${userId}`, {
+        const updateResponse = await fetch(`http://localhost:1338/api/users/${userId}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('jwt')}`, // Include JWT token for authentication
@@ -182,7 +182,7 @@ async function fetchTicketIdByFilter(ticketId, jwtToken) {
 async function createNewTicket(newTicket, user) {
     console.log("API call initiated: createNewTicket");
 
-    const url = 'http://localhost:1337/api/formal-tickets';
+    const url = 'http://localhost:1338/api/formal-tickets';
     const token = user.token; //- check this is the correct path?
     console.log("the token you are using is: ", token);
     console.log("the ticket you are trying to add is: ", newTicket);

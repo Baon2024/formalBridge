@@ -2,7 +2,7 @@
 
 
 async function getCollegeImageItself(fileName) {
-    let url = `http://localhost:1337/api/upload/files?filters[name][$eq]=${fileName}`;
+    let url = `http://localhost:1338/api/upload/files?filters[name][$eq]=${fileName}`;
 
     
 
@@ -65,7 +65,7 @@ async function uploadQRCode(file) {
     formData.append('files', file);
 
     try {
-        const response = await fetch('http://localhost:1337/api/upload', {
+        const response = await fetch('http://localhost:1338/api/upload', {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('jwt')}`,
@@ -98,7 +98,7 @@ async function updateBuyerUser(ticket, user) {
     //console.log("the userDocumentId is: ", userDocumentId);
 
     try {
-        const response = await fetch(`http://localhost:1337/api/formal-tickets/${ticketDocumentId}?populate=buyerUser`, {
+        const response = await fetch(`http://localhost:1338/api/formal-tickets/${ticketDocumentId}?populate=buyerUser`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`, // Include JWT token for authentication
@@ -134,7 +134,7 @@ async function updateBuyerUser(ticket, user) {
 
     try {
         // Fetch the user data first to get the current MyTicketsBought
-        const userResponse = await fetch(`http://localhost:1337/api/users/me?populate=*`, {
+        const userResponse = await fetch(`http://localhost:1338/api/users/me?populate=*`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('jwt')}`, // Include JWT token for authentication
@@ -149,7 +149,7 @@ async function updateBuyerUser(ticket, user) {
         const userData = await userResponse.json();
 
         // Update the user's MyTicketsBought to include the new ticket
-        const updateResponse = await fetch(`http://localhost:1337/api/users/${userId}`, {
+        const updateResponse = await fetch(`http://localhost:1338/api/users/${userId}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('jwt')}`, // Include JWT token for authentication

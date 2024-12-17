@@ -90,6 +90,8 @@ function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCa
        setTicketBought(ticket, jwtToken) // - works
        updateBuyerUser(ticket, user); // works
        updateUserTicketsBought(user, ticket); //- need to fix this next
+       //here add the function to send email to seller notifying of sale - need user of ticketSeller
+       //   sendEmailToNotifySeller(ticket)
        console.log("current user is: ", user);
        //updateBuyerUser()
        //updateMyTicketsBought();

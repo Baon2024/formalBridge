@@ -7,7 +7,7 @@
 //API fetch request to log-in existing user
 const signUpUser = async (email, password) => {
     try {
-        const response = await fetch('http://localhost:1337/api/auth/local/register', {
+        const response = await fetch('http://localhost:1338/api/auth/local/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ const signUpUser = async (email, password) => {
 //API fetch request to login user
 const loginUser = async (identifier, password) => {
     try {
-      const response = await fetch('http://localhost:1337/api/auth/local?populate=*', {
+      const response = await fetch('http://localhost:1338/api/auth/local?populate=*', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ const loginUser = async (identifier, password) => {
 async function fetchUserDetails(token) {
     //let token = localStorage.getItem('jwt');
     try {
-      const response = await fetch(`http://localhost:1337/api/users/me?populate=*`, {
+      const response = await fetch(`http://localhost:1338/api/users/me?populate=*`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -101,7 +101,7 @@ async function fetchUserDetails(token) {
   async function fetchUserDetailsTrial(token) {
     try {
       const response = await fetch(
-        `http://localhost:1337/api/users/me?populate[myTicketsBought][populate][formalTicketCollegeBackgroundImage]=*&populate[myTicketsBought][populate][formalTicketQRCode]=*&populate[myTicketsListed][populate][formalTicketCollegeBackgroundImage]=*`,
+        `http://localhost:1338/api/users/me?populate[myTicketsBought][populate][formalTicketCollegeBackgroundImage]=*&populate[myTicketsBought][populate][formalTicketQRCode]=*&populate[myTicketsListed][populate][formalTicketCollegeBackgroundImage]=*`,
         {
             //?populate[myTicketsBought][populate][formalTicketCollegeBackgroundImage]=*&populate[myTicketsBought][populate][formalTicketQRCode]=*&populate[myTicketsListed][populate][formalTicketCollegeBackgroundImage]=*
           method: 'GET',
