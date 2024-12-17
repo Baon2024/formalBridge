@@ -4,8 +4,10 @@
   "private": true,
   "dependencies": {
     "@babel/helpers": "^7.26.0",
-    "@emotion/react": "^11.13.5",
-    "@emotion/styled": "^11.13.5",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^6.2.0",
+    "@mui/x-date-pickers": "^7.23.2",
     "@reduxjs/toolkit": "^2.3.0",
     "@strapi/plugin-users-permissions": "^5.2.0",
     "@testing-library/jest-dom": "^5.17.0",
