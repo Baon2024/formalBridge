@@ -1,0 +1,63 @@
+.eventForm {
+    max-width: 518px;
+    padding: 20px;
+    background-color: #7828c8;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: #ffffff;
+    position: absolute;
+    left: 30%;
+    top: 35%;
+  }
+  
+  .formRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .formGroup {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  
+  input {
+    padding: 12px 20px;
+    border: 1px solid #dfe4ea;
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #9ca3af;
+  }
+  
+  .dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px;
+    border: 1px solid #dfe4ea;
+    border-radius: 6px;
+    background-color: #ffffff;
+    color: #637381;
+    cursor: pointer;
+  }
+  
+  .dropdown img {
+    margin-left: 10px;
+  }
+  .dropdownInput {
+    width: 100%;
+    padding: 12px 20px; /* Or adjust padding if needed */
+    border: none; /* Remove the inner border */
+    outline: none; /* Optional: remove focus outline */
+    box-sizing: border-box;
+  }
