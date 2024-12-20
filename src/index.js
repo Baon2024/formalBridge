@@ -17,6 +17,8 @@ root.render(
   </React.StrictMode>
 );
 
+//jut to trugger redploument
+
 /*store.subscribe(render);
 render();*/
 
