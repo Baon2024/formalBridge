@@ -38,7 +38,7 @@ export async function sendEmailToNotifySeller(ticket) {
     //const type = 'notify seller that their ticket has been bought';
 
       try {
-        const response = await fetch('http://localhost:5000/api/confirm-ticket-sold', {
+        const response = await fetch('http://localhost:5001/api/confirm-ticket-sold', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { fetchUserDetails, fetchUserDetailsTrial } from "./login/relevantAPIFunctions";
 import { fetchTicketsData } from "../APIFunctions/APIFunctions";
+import { addInfoForStripe, createStripeAccount } from "./stripeFunctions";
 import styles from './userPage.module.css';
 import emailFunctionTest from "./emailFunctionTest";
 //import { ClassicTicket } from "./classicTicket";
@@ -26,6 +27,10 @@ function UserPage({user, setUser}) {
   const [ ticketsToDisplayForListedTickets, setTicketsToDisplayForListedTickets ] = useState(null);
   const [showQRCode, setShowQRCode] = useState(false);
   const navigate = useNavigate();
+  const [accountLinkCreatePending, setAccountLinkCreatePending] = useState(false);
+  const [error, setError] = useState(false);
+  const [connectedAccountId, setConnectedAccountId] = useState();
+const [accountCreatePending, setAccountCreatePending] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(null);
 
@@ -250,12 +255,20 @@ function UserPage({user, setUser}) {
     emailFunctionTest(email, name)
   }
 
+  async function stripeOnboardingHandler() {
+    const response = await createStripeAccount(setError, setAccountCreatePending, setAccountLinkCreatePending, setConnectedAccountId); 
+    console.log("this is what the response returned from createStripeAccount is:", response);
+    const nextResponse = await addInfoForStripe(connectedAccountId, setError, setAccountLinkCreatePending);
+  }
+  //there's a problem, where the function sometimes doesn't work when called first time
+  //but does work when called secodn time
 
     return (
       <>
         <div className={styles.topContainer}>
           <button onClick={handleLogOut}>Log Out</button>
           <button onClick={testEmail}>send test email - when gmail email </button>
+          <button onClick={stripeOnboardingHandler}>complete stripe sign-up to sell tickets</button>
         </div>
         <div>
           <button>

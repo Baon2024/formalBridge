@@ -20,6 +20,7 @@ import FAQPage from './components/faqPageFolder/faqPage';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 //import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import Refresh from './components/userPage/refresh';
 
 
 //const state = store.getState();
@@ -63,6 +64,7 @@ function App() {
     <Route path="FAQPage" element={ <FAQPage /> } />
     <Route path="/successPage/:ids" element={ <SuccessPage ticketsInventory={ticketsInventory} />} />
     <Route path="userPage/:id" element={ <UserPage user={user} setUser={setUser} /> } />
+    <Route path="/refresh/:id" element={ <Refresh /> } />
     <Route path="signUpLogIn" element={ <SignUpLogIn user={user} setUser={setUser} />} />
     <Route path="ticketCollectionPage" element={ <TicketCollectionPage ticketsInventory={ticketsInventory} setTicketsInventory={setTicketsInventory} cart={cart} />} 
       /*ticketsInventory={state.ticketsInventory}*/

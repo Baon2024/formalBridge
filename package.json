@@ -25,6 +25,7 @@
     "react-scripts": "^5.0.1",
     "redux": "^5.0.1",
     "resend": "^4.0.1",
+    "stripe": "^13.4.0",
     "typescript": "^3.9.10",
     "web-vitals": "^2.1.4",
     "webpack": "^5.96.1",

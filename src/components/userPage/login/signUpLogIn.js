@@ -25,6 +25,10 @@ const [ signUp, setSignUp ] = useState(false);
 const [ email, setEmail ] = useState('');
 const [ password, setPassword ] = useState('');
 const [ message, setMessage ] = useState('');
+const [accountLinkCreatePending, setAccountLinkCreatePending] = useState(false);
+  const [error, setError] = useState(false);
+  const [connectedAccountId, setConnectedAccountId] = useState();
+const [accountCreatePending, setAccountCreatePending] = useState(false);
 const navigate = useNavigate();
 let token;
 
@@ -68,11 +72,72 @@ const handleLogIn = async () => {
       //console.log("token is: ", token);
       //setUser({ token: token, user: user});
       setUser({ token: user.jwt, user: user.user });
+      // - Here i need, i think, to add a function containing the stripe code to re-direct the
+      //not sure whether I'll still need the navigate push below
+      //const response = await createStripeAccount()
+      //const nextResponse = await addInfoForStripe(connectedAccountId);
       navigate(`/userPage/${user.id}`);
     } else {
       setMessage('Sign up failed. Please try again.');
     }
   };
+
+//stripe code to direct user to setup stripe account
+  async function createStripeAccount() {
+  setAccountCreatePending(true);
+  console.log("setAccountCreatePending is:", setAccountCreatePending);
+              setError(false);
+              fetch('http://localhost:5001/account', {
+                method: "POST",
+              })
+                .then((response) => response.json())
+                .then((json) => {
+                  setAccountCreatePending(false);
+
+                  const { account, error } = json;
+
+                  if (account) {
+                    setConnectedAccountId(account);
+                    return account;
+                  }
+
+                  if (error) {
+                    setError(true);
+                    return error;
+                  }
+                });
+}
+async function addInfoForStripe (connectedAccountId) {
+  setAccountLinkCreatePending(true);
+  setError(false);
+  fetch("http://localhost:5001/account_link", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      account: connectedAccountId,
+    }),
+  })
+    .then((response) => response.json())
+    .then((json) => {
+      setAccountLinkCreatePending(false);
+
+      const { url, error } = json;
+      if (url) {
+        window.location.href = url;
+      }
+
+      if (error) {
+        setError(true);
+      }
+    });
+}
+
+
+
+
+
 //don't need to duplicate the input body for each toggle, just change which API is sent
 //do need to check all this code
 //every time signup or loginButton is clicked, should wipe email and password states? or not?
@@ -85,7 +150,7 @@ function handleLogInOrSignUpSubmission() {
         //send fetch API request to log-in
         handleLogIn();
     }
-}
+  }
 
 
     return (
@@ -106,6 +171,6 @@ function handleLogInOrSignUpSubmission() {
           )}
         </div>
     )
-}
+  }
 
 export default SignUpLogIn;
