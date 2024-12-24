@@ -207,6 +207,11 @@ async function createNewTicket(newTicket, user) {
     }
 }
 
+async function sendTicketSoldEmail({ticket}) {
 
+  const user = ticket.sellerUser;
+  const ticketName = ticket.eventName;
+
+}
 
 export { fetchTicketsData, setTicketBought, fetchTicketIdByFilter, updateBuyerUser, updateUserTicketsBought, createNewTicket };

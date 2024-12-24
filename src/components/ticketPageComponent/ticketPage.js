@@ -6,6 +6,7 @@ import { fetchTicketsData, updateBuyerUser, updateUserTicketsBought } from "../A
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { sendEmailToNotifySeller } from "../userPage/emailFunctionTest";
 import { setTicketBought, fetchTicketIdByFilter } from "../APIFunctions/APIFunctions";
 import { selectCartInventory, addTicketToCart } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
 
@@ -82,7 +83,7 @@ function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCa
        //will need to play around and see whcih order works best, if any order causes bugs
        console.log("user currently is: ", user);
        if (user) {
-       Navigate(`/successPage/${ticket.id}`);
+       //Navigate(`/successPage/${ticket.id}`);
        const jwtToken = user.token;
        console.log("the jwtToken being inputted into function is: ", jwtToken);
        console.log("the ticket.id you clicked on is: ", ticket.id);
@@ -91,12 +92,18 @@ function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCa
        updateBuyerUser(ticket, user); // works
        updateUserTicketsBought(user, ticket); //- need to fix this next
        //here add the function to send email to seller notifying of sale - need user of ticketSeller
-       //   sendEmailToNotifySeller(ticket)
+       console.log("Before checking sellerUser email");
+       console.log("email is:", ticket.sellerUser.email);
+       if (ticket.sellerUser.email == 'joejoeboyes2013@gmail.com') { //here as placeholder, til you have a resend sub
+          sendEmailToNotifySeller(ticket)
+         console.log("ready for the email function");
+       }
        console.log("current user is: ", user);
        //updateBuyerUser()
        //updateMyTicketsBought();
        //then should have created the actual purchase workflow - ticket will be removed from display, and accessible to user
        //will then need to do this for checkout method of purchasing
+       Navigate(`/successPage/${ticket.id}`);
        } else if (!user) {
         //need to alert user that they aren't logged in - through pop-up box??
        }

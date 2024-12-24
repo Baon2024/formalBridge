@@ -4,6 +4,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { fetchUserDetails, fetchUserDetailsTrial } from "./login/relevantAPIFunctions";
 import { fetchTicketsData } from "../APIFunctions/APIFunctions";
 import styles from './userPage.module.css';
+import emailFunctionTest from "./emailFunctionTest";
 //import { ClassicTicket } from "./classicTicket";
 
 
@@ -237,10 +238,24 @@ function UserPage({user, setUser}) {
 
   //if current time is after end of formalEventtime and date, then need to disable ability to change price or remove listing
 
+  function testEmail(e) {
+
+    e.preventDefault();
+
+    const email = userData.email;
+    console.log("email is: ", email);
+    const name = userData.username;
+    console.log("name is:", name);
+
+    emailFunctionTest(email, name)
+  }
+
+
     return (
       <>
         <div className={styles.topContainer}>
           <button onClick={handleLogOut}>Log Out</button>
+          <button onClick={testEmail}>send test email - when gmail email </button>
         </div>
         <div>
           <button>
