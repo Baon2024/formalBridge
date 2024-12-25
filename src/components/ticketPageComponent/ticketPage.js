@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { sendEmailToNotifySeller } from "../userPage/emailFunctionTest";
 import { setTicketBought, fetchTicketIdByFilter } from "../APIFunctions/APIFunctions";
+import stripeCreateCheckoutSession from "../APIFunctions/stripeCreateCheckoutSession";
 import { selectCartInventory, addTicketToCart } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
 
 
@@ -70,7 +71,7 @@ function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCa
         console.log("Updated cart:", cart);
       }, [cart]);
 
-    function buyTicket(ticket) {
+    async function buyTicket(ticket) {
         //add the minimum I can before integrating Stripe Connect/Checkout
         /* if (stripe checkout API returns success code) {
           Navigate(`/successPage/${ticket.id}`); - //this should send the ticket details to the page, so png can be retrieved?
@@ -88,9 +89,12 @@ function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCa
        console.log("the jwtToken being inputted into function is: ", jwtToken);
        console.log("the ticket.id you clicked on is: ", ticket.id);
        console.log("the documentId for this ticket is: ", ticket.documentId);
-       setTicketBought(ticket, jwtToken) // - works
-       updateBuyerUser(ticket, user); // works
+       const response = await stripeCreateCheckoutSession(ticket)
+       console.log("response from updateUserTicketsBought is:", response);
+       //setTicketBought(ticket, jwtToken) // - works
+       //updateBuyerUser(ticket, user); // works
        updateUserTicketsBought(user, ticket); //- need to fix this next
+       
        //here add the function to send email to seller notifying of sale - need user of ticketSeller
        console.log("Before checking sellerUser email");
        console.log("email is:", ticket.sellerUser.email);
@@ -103,7 +107,7 @@ function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCa
        //updateMyTicketsBought();
        //then should have created the actual purchase workflow - ticket will be removed from display, and accessible to user
        //will then need to do this for checkout method of purchasing
-       Navigate(`/successPage/${ticket.id}`);
+       //Navigate(`/successPage/${ticket.id}`); - temporarily disbaled to see if strip function pushes success page
        } else if (!user) {
         //need to alert user that they aren't logged in - through pop-up box??
        }

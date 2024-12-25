@@ -1,6 +1,12 @@
 //code for teh thank you page after ticket purchase
 import { useParams } from "react-router-dom";
 import styles from './successPage.module.css';
+import { useSelector, useDispatch } from "react-redux";
+import { selectTicketsInventory } from "../../reduxStateComponents/TicketInventorySlice/ticketInventorySlice";
+import { useEffect } from "react";
+import loadTicketsForInventory from "../../reduxStateComponents/TicketInventorySlice/loadTicketsForInventory";
+import { setTicketBought } from "../APIFunctions/APIFunctions";
+import { updateBuyerUser } from "../APIFunctions/APIFunctions";
 //this page will thank the user, and have a button allowing the user to download their formalTicket PDF
 //it will do this by the previous checkout page sending the user here with a dynamic url '/checkout/thankyou/:name' in react router
 //which the final bit in the checkout page being '/checkout/thankyou/${formalTicketName}
@@ -14,9 +20,48 @@ function SuccessPage({ticketsInventory}) {
     //const numberId = Number(id);
     const ticketIds = ids.split(',').map(id => Number(id));
     console.log("these are your ticket ids: ", ticketIds);
+    const dispatch = useDispatch();
+    const ticketsInventory2 = useSelector(selectTicketsInventory);
 
-    const ticketsToDisplay = ticketsInventory.filter(ticket => ticketIds.includes(ticket.id));
+    useEffect(() => {
+      const fetchTickets = async () => {
+        dispatch(loadTicketsForInventory()); // Dispatch the async thunk
+        console.log("Tickets loaded and stored in Redux: ", ticketsInventory2);
+      };
+  
+      fetchTickets();
+
+    },[])
+
+    //const ticketsInventory2 = useSelector(selectTicketsInventory);
+    console.log("ticketsInventory form useSelector is:", ticketsInventory2);
+
+    const ticketsToDisplay = ticketsInventory2.filter(ticket => ticketIds.includes(ticket.id));
     console.log("Tickets to display: ", ticketsToDisplay);
+
+    console.log("thsi is ticketsInventory passed down to successPage:", ticketsInventory);
+
+    //shoukld be able to use id return from stripe purchase, to still display ticket qr
+    //and also update ticket for buyerUser and bought properties?
+    //just borrow functions to update ticketToDisplay on the database?
+    const jwtToken = localStorage.getItem('jwt');
+    console.log("token in successPage is:", jwtToken);
+    const user1 = localStorage.getItem('user');
+    const user = JSON.parse(user1);
+    console.log("user in successPage is:", user);
+    //const jwtToken = user.token;
+    const userId = user.id;
+    console.log("userId is:", userId);
+
+    if (ticketsToDisplay && jwtToken && user) {
+      //will need to make this vary, depending on whether there is one ticket or multiple
+      ticketsToDisplay.map((ticket) => {
+
+        setTicketBought(ticket, jwtToken) // - works
+        updateBuyerUser(ticket, user, jwtToken)
+        //it looks like this works
+      })
+    }
     
     const handleDownload = async (url, fileName) => {
         // Fetch the image as a Blob

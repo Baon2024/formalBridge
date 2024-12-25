@@ -148,11 +148,12 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
             payer: "application"
           },
           losses: {
-            payments: "application"
+            payments: "application", // Specify who controls losses for payments
           },
           requirement_collection: "application",
         },
         capabilities: {
+            card_payments: {requested: true},
           transfers: {requested: true}
         },
         country: "GB",
@@ -171,3 +172,61 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       res.send({ error: error.message });
     }
   });
+
+
+  app.post('/create-checkout-session', async (req, res) => {
+
+
+    //i think i need to get the ticket details by sending them in the call
+    console.log("this is what has been recieved form the stripeCreateCheckoutSession function:", req.body);
+
+    const ticket = req.body;
+
+    const { formalEventName, formalTicketPrice, id } = ticket;
+    console.log("this is what formalEventName, formalTictePrice and id are in server.js backend:", formalEventName, formalTicketPrice, id);
+
+    //const productName = req.body.formalEventName;
+
+    const connectedAccountId = 'acct_1QZhoTQAEiW5zVa4' //this is one user, to let me make this stripe api function work first
+
+    //if this works, then need to find out how to pass the neccessary details on correctly
+
+    //access connectedAccountId as a property of the sellerUser, accessed through the ticket
+  try {
+  const session = await stripe.checkout.sessions.create(
+    {
+      line_items: [
+        {
+          price_data: {
+            currency: 'gbp',
+            product_data: {
+              name: formalEventName,
+            },
+            unit_amount: 1000, //this is the price
+          },
+          quantity: 1,
+        },
+      ],
+      payment_intent_data: {
+        application_fee_amount: 1, //this is my cut
+      },
+      mode: 'payment',
+      success_url: `http://localhost:3006/successPage/${id}`, //rdirect to /successpage/${documentId}
+      //need to redirect customer to the above url returned in response
+      //and then id should enable correct ticket to be selected, and display qr/download
+      //and could then update buyerUser and bought status in that page instead?
+    },
+    {
+      stripeAccount: connectedAccountId, //this is the seller - presumably i get this info from ticket, so modify uploadTickjt to add stripe accountConnectedId??
+    }
+  );
+  console.log("Stripe session created:", session);
+    console.log("id for sessionId is:", session.id);
+  res.json({ id: session.id });
+
+  } catch (error) {
+    console.error("Error creating Stripe Checkout session:", error.message);
+    res.status(500).send("Error creating Stripe Checkout session");
+  }
+
+})

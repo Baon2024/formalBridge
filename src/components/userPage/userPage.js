@@ -258,6 +258,8 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
   async function stripeOnboardingHandler() {
     const response = await createStripeAccount(setError, setAccountCreatePending, setAccountLinkCreatePending, setConnectedAccountId); 
     console.log("this is what the response returned from createStripeAccount is:", response);
+    //function to add connectedAccountId to user's account/profile in database
+    //then would need to make sure useEffect for fetching user through api call triggers
     const nextResponse = await addInfoForStripe(connectedAccountId, setError, setAccountLinkCreatePending);
   }
   //there's a problem, where the function sometimes doesn't work when called first time
@@ -266,6 +268,9 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
     return (
       <>
         <div className={styles.topContainer}>
+          { connectedAccountId && (
+            <p>{connectedAccountId}</p>
+          )}
           <button onClick={handleLogOut}>Log Out</button>
           <button onClick={testEmail}>send test email - when gmail email </button>
           <button onClick={stripeOnboardingHandler}>complete stripe sign-up to sell tickets</button>

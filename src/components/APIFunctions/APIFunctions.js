@@ -94,12 +94,15 @@ async function fetchTicketIdByFilter(ticketId, jwtToken) {
     }
   }
 
-  async function updateBuyerUser(ticket, user) {
+  async function updateBuyerUser(ticket, user, jwtToken) {
   
     const ticketDocumentId = ticket.documentId;
-    const userDocumentId = user.user.documentId; //needs to be user.user.documentId
-    const token = user.token;
+    //const userDocumentId = user.user.documentId; //needs to be user.user.documentId
+    const userId = user.id;
+    const token = jwtToken;
     //console.log("the userDocumentId is: ", userDocumentId);
+    console.log('User ID being sent:', userId);
+
 
     try {
         const response = await fetch(`http://localhost:1338/api/formal-tickets/${ticketDocumentId}?populate=buyerUser`, {
@@ -111,7 +114,7 @@ async function fetchTicketIdByFilter(ticketId, jwtToken) {
             body: JSON.stringify({
                 data: {
                     //bought: true, // Set bought to true
-                    buyerUser: userDocumentId, // Assign the user's documentId to buyerUser
+                    buyerUser: userId, // Assign the user's documentId to buyerUser
                 },
             }),
         });
