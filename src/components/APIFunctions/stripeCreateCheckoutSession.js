@@ -5,7 +5,11 @@ import { loadStripe } from '@stripe/stripe-js';
 export default async function stripeCreateCheckoutSession(ticket) {
 
 
-    const connectedAccountId = 'acct_1QZhoTQAEiW5zVa4'
+    //const connectedAccountId = 'acct_1QZhoTQAEiW5zVa4'
+    const connectedAccountId = ticket.sellerUser.connectedAccountId;
+    console.log("thsi should be the connectedAccountId needed for the sellerUser inside of the stripeCreateCheckoutSession:", connectedAccountId);
+
+    //should be able to make this dynamic now
 
      // Initialize Stripe.js with the connected account
   const stripe = await loadStripe('pk_test_51QNlAaG7WeMIf1DGKqMw0dAcSmjfnBlJNH3wr8fjyCqmZazDvpOEaNv7yHuHXlEHv3CL9BpTE3kv0JVA7F5lVIhy00EwL9mhQA', {
