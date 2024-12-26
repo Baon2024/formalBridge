@@ -6,6 +6,7 @@ import { fetchTicketsData } from "../APIFunctions/APIFunctions";
 import { addInfoForStripe, createStripeAccount } from "./stripeFunctions";
 import styles from './userPage.module.css';
 import emailFunctionTest from "./emailFunctionTest";
+import addConnectedAccountIdToUser from "./addConnectedAccountIdToUser";
 //import { ClassicTicket } from "./classicTicket";
 
 
@@ -42,6 +43,7 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
     setIsModalOpen(null);
   };
   
+  console.log("token passed down as params is:", token);
  
   useEffect(() => {
     const getUserData = async () => {
@@ -256,11 +258,26 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
   }
 
   async function stripeOnboardingHandler() {
+    if (!userData.connectedAccountId) {
     const response = await createStripeAccount(setError, setAccountCreatePending, setAccountLinkCreatePending, setConnectedAccountId); 
     console.log("this is what the response returned from createStripeAccount is:", response);
     //function to add connectedAccountId to user's account/profile in database
     //then would need to make sure useEffect for fetching user through api call triggers
-    const nextResponse = await addInfoForStripe(connectedAccountId, setError, setAccountLinkCreatePending);
+    console.log("connectedAccountId:", connectedAccountId);
+    console.log("userData.connectedAccountId:", userData.connectedAccountId);
+    if (response && !userData.connectedAccountId) {
+      const updateResponse = await addConnectedAccountIdToUser(userData, response, token);
+      console.log("Updated user profile with connectedAccountId:", updateResponse);
+    }
+    
+    const nextResponse = await addInfoForStripe(response, setError, setAccountLinkCreatePending);
+    //connectedAccountId may not be updated quick enough, so using response instead as param
+    //response being the returned connectedAccountId from the function directly
+    }
+  }
+
+  async function editStripeAccountHandler() {
+    const nextResponse = await addInfoForStripe(userData.connectedAccountId, setError, setAccountLinkCreatePending);
   }
   //there's a problem, where the function sometimes doesn't work when called first time
   //but does work when called secodn time
@@ -273,7 +290,13 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
           )}
           <button onClick={handleLogOut}>Log Out</button>
           <button onClick={testEmail}>send test email - when gmail email </button>
-          <button onClick={stripeOnboardingHandler}>complete stripe sign-up to sell tickets</button>
+          
+          {!userData?.connectedAccountId ? (
+        <button onClick={stripeOnboardingHandler}>Add Stripe Account</button>
+      ) : (
+        // Only show Edit Stripe Account button if connectedAccountId exists
+        <button onClick={editStripeAccountHandler}>Edit Stripe Account</button>
+      )}
         </div>
         <div>
           <button>

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import styles from './successPage.module.css';
 import { useSelector, useDispatch } from "react-redux";
 import { selectTicketsInventory } from "../../reduxStateComponents/TicketInventorySlice/ticketInventorySlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import loadTicketsForInventory from "../../reduxStateComponents/TicketInventorySlice/loadTicketsForInventory";
 import { setTicketBought } from "../APIFunctions/APIFunctions";
 import { updateBuyerUser } from "../APIFunctions/APIFunctions";
@@ -22,6 +22,7 @@ function SuccessPage({ticketsInventory}) {
     console.log("these are your ticket ids: ", ticketIds);
     const dispatch = useDispatch();
     const ticketsInventory2 = useSelector(selectTicketsInventory);
+    const [ ticketUpdatesCompleted, setTicketUpdatesCompleted ] = useState(false);
 
     useEffect(() => {
       const fetchTickets = async () => {
@@ -53,7 +54,7 @@ function SuccessPage({ticketsInventory}) {
     const userId = user.id;
     console.log("userId is:", userId);
 
-    if (ticketsToDisplay && jwtToken && user) {
+    /*if (ticketsToDisplay && jwtToken && user && !ticketUpdatesCompleted) {
       //will need to make this vary, depending on whether there is one ticket or multiple
       ticketsToDisplay.map((ticket) => {
 
@@ -61,7 +62,27 @@ function SuccessPage({ticketsInventory}) {
         updateBuyerUser(ticket, user, jwtToken)
         //it looks like this works
       })
-    }
+      //then set a local state
+      setTicketUpdatesCompleted(true);
+    }*/
+
+    useEffect(() => {
+      if (ticketsToDisplay.length && jwtToken && user && !ticketUpdatesCompleted) {
+        // Update each ticket
+        ticketsToDisplay.forEach(async (ticket) => {
+          try {
+            await setTicketBought(ticket, jwtToken);
+            await updateBuyerUser(ticket, user, jwtToken);
+            console.log(`Successfully updated ticket ${ticket.id}`);
+          } catch (error) {
+            console.error(`Error updating ticket ${ticket.id}:`, error);
+          }
+        });
+  
+        // Mark updates as completed
+        setTicketUpdatesCompleted(true);
+      }
+    }, [ticketsToDisplay, jwtToken, user, ticketUpdatesCompleted]);
     
     const handleDownload = async (url, fileName) => {
         // Fetch the image as a Blob
@@ -113,12 +134,12 @@ function SuccessPage({ticketsInventory}) {
               {ticket.formalTicketQRCode && ticket.formalTicketQRCode.url ? (
                 <>
                   <img 
-                    src={`http://localhost:1337${ticket.formalTicketQRCode.url}`} 
+                    src={`http://localhost:1338${ticket.formalTicketQRCode.url}`} 
                     alt="Ticket QR Code" 
                   />
                  <button 
                       className={styles.downloadButton}
-                      onClick={() => handleDownload(`http://localhost:1337${ticket.formalTicketQRCode.url}`, ticket.formalTicketQRCode.url.split('/').pop())}
+                      onClick={() => handleDownload(`http://localhost:1338${ticket.formalTicketQRCode.url}`, ticket.formalTicketQRCode.url.split('/').pop())}
                     >
                       Download QR Code
                   </button>

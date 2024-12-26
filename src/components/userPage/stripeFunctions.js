@@ -1,28 +1,34 @@
 export async function createStripeAccount(setError, setAccountCreatePending, setAccountLinkCreatePending, setConnectedAccountId) {
     setAccountCreatePending(true);
-    console.log("setAccountCreatePending is:", setAccountCreatePending);
-                setError(false);
-                fetch('http://localhost:5001/account', {
-                  method: "POST",
-                })
-                  .then((response) => response.json())
-                  .then((json) => {
-                    setAccountCreatePending(false);
+    setError(false);
   
-                    const { account, error } = json;
+    try {
+      const response = await fetch('http://localhost:5001/account', {
+        method: "POST",
+      });
   
-                    if (account) {
-                      setConnectedAccountId(account);
-                      return account;
-                    }
+      const json = await response.json();  // Wait for the response to be fully resolved
+      setAccountCreatePending(false);
   
-                    if (error) {
-                      setError(true);
-                      return error;
-                    }
-                  });
+      const { account, error } = json;
+      console.log("account in createStripeAccount function is:", account);
+  
+      if (account) {
+        setConnectedAccountId(account);  // Set state with the account
+        return account;  // Return the account after it is set
+      }
+  
+      if (error) {
+        setError(true);
+        return error;
+      }
+    } catch (error) {
+      setAccountCreatePending(false);
+      console.error("Error during Stripe account creation:", error);
+      setError(true);
+      return error;
+    }
   }
-
 
 
   export async function addInfoForStripe (connectedAccountId, setError, setAccountLinkCreatePending) {
