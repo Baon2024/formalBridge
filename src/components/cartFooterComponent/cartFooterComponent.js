@@ -6,6 +6,7 @@ import { selectCartInventory, addTicketToCart, removeTicketFromCart } from '../.
 import { useSelector, useDispatch } from 'react-redux';
 import { updateBuyerUser, setTicketBought } from '../APIFunctions/APIFunctions';
 import { useNavigate } from 'react-router-dom'; 
+//import { stripeCreateCheckoutSessionMultiple } from '../APIFunctions/stripeCreateCheckoutSession';
 
 //will need to import the action creator for removeTicket to be used below
 
@@ -43,14 +44,14 @@ function CartFooter({cart, removeTicketFromCart, resetCart, user}) {
   }, [cart]); // Only runs when cart changes
 
   
-    function checkoutTickets(cart) {
+    async function checkoutTickets(cart) {
        
        console.log("user currently is: ", user);
        if (user) {
 
 
        const totalCartIds = cart.map(ticket => ticket.id).join(',');
-       console.log(totalCartIds);
+       console.log("this is totalCartIds:", totalCartIds);
 
        const urlEndpoint = totalCartIds;
 
@@ -58,6 +59,11 @@ function CartFooter({cart, removeTicketFromCart, resetCart, user}) {
        const jwtToken = user.token;
        console.log("here's the user it will add the ticket to", user);
        console.log("the jwtToken being inputted into function is: ", jwtToken);
+       //const response = await stripeCreateCheckoutSessionMultiple(cart, totalCartIds) //here, and pass whole cart I think
+
+
+       // - i've commented out the rest of the function, so i can test it in isolation
+      /*
        //console.log("the ticket.id you clicked on is: ", ticket.id);
        //console.log("the documentId for this ticket is: ", ticket.documentId);
        cart.map((ticket) => {
@@ -72,7 +78,8 @@ function CartFooter({cart, removeTicketFromCart, resetCart, user}) {
        console.log("Navigating to success page...");
        navigate(`/successPage/${urlEndpoint}`);
        dispatch(resetCart()); //-need to clear cart to prevent the tickets remaining there after being removed from displayed tickets
-    } else if (!user) {
+    */
+       } else if (!user) {
         //need to alert user that they aren't logged in - through pop-up box??
        }
     }

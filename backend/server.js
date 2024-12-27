@@ -183,11 +183,16 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     const ticket = req.body;
 
     const { formalEventName, formalTicketPrice, id } = ticket;
+    const connectedAccountId = ticket.sellerUser.connectedAccountId;
+    console.log("connectedAccountId taken from req.body is:", connectedAccountId);
+    //const connectedAccountId  = ticket.sellerUser.connectedAccountId;
+    console.log("thsi is what connectedAccountId is:", connectedAccountId);
     console.log("this is what formalEventName, formalTictePrice and id are in server.js backend:", formalEventName, formalTicketPrice, id);
 
     //const productName = req.body.formalEventName;
+    //const connectedAccountId = 'acct_1QaRMQ4fOg1LtcNe';
 
-    const connectedAccountId = 'acct_1QZhoTQAEiW5zVa4' //this is one user, to let me make this stripe api function work first
+    //const connectedAccountId = 'acct_1QZhoTQAEiW5zVa4' //this is one user, to let me make this stripe api function work first
 
     //if this works, then need to find out how to pass the neccessary details on correctly
 
@@ -220,6 +225,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       stripeAccount: connectedAccountId, //this is the seller - presumably i get this info from ticket, so modify uploadTickjt to add stripe accountConnectedId??
     }
   );
+  console.log("stripeAccount is:", connectedAccountId);
   console.log("Stripe session created:", session);
     console.log("id for sessionId is:", session.id);
   res.json({ id: session.id });
@@ -230,3 +236,38 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   }
 
 })
+
+app.post('/create-checkout-session-multiple', async (req, res) => {
+    
+    
+    const { cart } = req.body;
+    console.log("the cart object recieved in the server in create-checkout-session-multiple endpoint is:", cart);
+  
+    try {
+      // Calculate total price for the cart
+      const totalAmount = cart.reduce((total, item) => total + item.formalTicketPrice, 0);
+  
+      // Create a single PaymentIntent
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: totalAmount, // Total amount in cents
+        currency: 'gbp',
+        payment_method_types: ['card'],
+      });
+  
+      // After the payment is successful, distribute the funds
+      const transferResults = await Promise.all(
+        cart.map(async (item) => {
+          return stripe.transfers.create({
+            amount: item.formalTicketPrice, // Amount for each ticket
+            currency: 'gbp',
+            destination: item.sellerUser.connectedAccountId, // Connected account for the seller
+          });
+        })
+      );
+  
+      res.json({ clientSecret: paymentIntent.client_secret, transferResults });
+    } catch (error) {
+      console.error('Error creating checkout session for multiple tickets:', error);
+      res.status(500).send('Internal Server Error');
+    }
+  });
