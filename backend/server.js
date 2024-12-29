@@ -237,7 +237,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 
 })
 
-app.post('/create-checkout-session-multiple', async (req, res) => {
+
+
+
+/*app.post('/create-checkout-session-multiple', async (req, res) => {
     
     
     const { cart } = req.body;
@@ -270,4 +273,4 @@ app.post('/create-checkout-session-multiple', async (req, res) => {
       console.error('Error creating checkout session for multiple tickets:', error);
       res.status(500).send('Internal Server Error');
     }
-  });
+  });*/
