@@ -67,14 +67,13 @@ export default async function stripeCreateCheckoutSession(ticket, user) {
         console.error('Stripe Checkout redirection error:', error.message);
       }
 
-    /*console.log("jsonedResponse in stripeCreateCheckoutSession is:", jsonedResponse);
-    if (jsonedResponse.id) {
-        console.log("id is:", jsonedResponse.id);
-        redirectToStripeCheckout(jsonedResponse.id);
-    }
-    return jsonedResponse;*/
+    
 
 }
+
+
+
+
 
 //export async function stripeCreateCheckoutSessionMultiple(cart, totalCartIds ) {
 
