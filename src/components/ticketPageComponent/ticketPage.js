@@ -89,7 +89,7 @@ function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCa
        console.log("the jwtToken being inputted into function is: ", jwtToken);
        console.log("the ticket.id you clicked on is: ", ticket.id);
        console.log("the documentId for this ticket is: ", ticket.documentId);
-       const response = await stripeCreateCheckoutSession(ticket)
+       const response = await stripeCreateCheckoutSession(ticket, user)
        console.log("response from updateUserTicketsBought is:", response);
        //setTicketBought(ticket, jwtToken) // - works
        //updateBuyerUser(ticket, user); // works

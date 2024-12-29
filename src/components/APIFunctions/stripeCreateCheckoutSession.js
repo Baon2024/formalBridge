@@ -2,7 +2,7 @@
 import { loadStripe } from '@stripe/stripe-js';
 
 
-export default async function stripeCreateCheckoutSession(ticket) {
+export default async function stripeCreateCheckoutSession(ticket, user) {
 
 
     //const connectedAccountId = 'acct_1QZhoTQAEiW5zVa4'
@@ -17,7 +17,8 @@ export default async function stripeCreateCheckoutSession(ticket) {
   const stripe = await loadStripe('pk_test_51QNlAaG7WeMIf1DGKqMw0dAcSmjfnBlJNH3wr8fjyCqmZazDvpOEaNv7yHuHXlEHv3CL9BpTE3kv0JVA7F5lVIhy00EwL9mhQA', {
     stripeAccount: connectedAccountId,  // Pass the connected account to Stripe.js
   });
-
+   
+  const ticketAndUser = [ ticket, user];
 
     console.log("this is what ticket is inside the stripeCreateCheckoutSession function:", ticket);
 
@@ -28,7 +29,7 @@ export default async function stripeCreateCheckoutSession(ticket) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(ticket),
+        body: JSON.stringify(ticketAndUser),
     })
     
     //const jsonedResponse = await response.json();

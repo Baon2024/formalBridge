@@ -180,7 +180,14 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     //i think i need to get the ticket details by sending them in the call
     console.log("this is what has been recieved form the stripeCreateCheckoutSession function:", req.body);
 
-    const ticket = req.body;
+    //const ticket = req.body;
+
+    //rebuild that array, to contain the ticket and user
+    const ticketAndUser = req.body;
+    const ticket = ticketAndUser[0];
+    console.log("ticket is:", ticket);
+    const user = ticketAndUser[1];
+    console.log("user is:", user);
 
     const { formalEventName, formalTicketPrice, id } = ticket;
     const connectedAccountId = ticket.sellerUser.connectedAccountId;
