@@ -43,7 +43,7 @@ app.use(cors());
     bodyParser.json()(req, res, next); // Apply JSON parsing to other routes
   }
 });*/
-
+app.use('/webhook', bodyParser.raw({ type: 'application/json' }));
 app.use(bodyParser.json());
 
 
@@ -283,7 +283,7 @@ app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
 
   const signature = req.headers['stripe-signature'];
 
-  /*try {
+  try {
     event = stripe.webhooks.constructEvent(
       req.body,
       signature,
@@ -292,7 +292,7 @@ app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
   } catch (err) {
     console.log(`⚠️  Webhook signature verification failed.`, err.message);
     return res.sendStatus(400);
-  }*/
+  }
 
   //console.log("webhook event after constructEvent is:", event);
 
