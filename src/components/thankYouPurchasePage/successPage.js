@@ -18,7 +18,7 @@ function SuccessPage({ticketsInventory}) {
     const { ids } = useParams(); //or the get----byParams one.
     console.log("the ids are: ", ids);
     //const numberId = Number(id);
-    const ticketIds = ids.split(',').map(id => Number(id));
+    const ticketIds = ids.split(',').map(id => id);
     console.log("these are your ticket ids: ", ticketIds);
     const dispatch = useDispatch();
     const ticketsInventory2 = useSelector(selectTicketsInventory);
@@ -37,7 +37,7 @@ function SuccessPage({ticketsInventory}) {
     //const ticketsInventory2 = useSelector(selectTicketsInventory);
     console.log("ticketsInventory form useSelector is:", ticketsInventory2);
 
-    const ticketsToDisplay = ticketsInventory2.filter(ticket => ticketIds.includes(ticket.id));
+    const ticketsToDisplay = ticketsInventory2.filter(ticket => ticketIds.includes(ticket.documentId));
     console.log("Tickets to display: ", ticketsToDisplay);
 
     console.log("thsi is ticketsInventory passed down to successPage:", ticketsInventory);
@@ -54,19 +54,9 @@ function SuccessPage({ticketsInventory}) {
     const userId = user.id;
     console.log("userId is:", userId);
 
-    /*if (ticketsToDisplay && jwtToken && user && !ticketUpdatesCompleted) {
-      //will need to make this vary, depending on whether there is one ticket or multiple
-      ticketsToDisplay.map((ticket) => {
+   
 
-        setTicketBought(ticket, jwtToken) // - works
-        updateBuyerUser(ticket, user, jwtToken)
-        //it looks like this works
-      })
-      //then set a local state
-      setTicketUpdatesCompleted(true);
-    }*/
-
-    useEffect(() => {
+    /*useEffect(() => {
       if (ticketsToDisplay.length && jwtToken && user && !ticketUpdatesCompleted) {
         // Update each ticket
         ticketsToDisplay.forEach(async (ticket) => {
@@ -82,7 +72,7 @@ function SuccessPage({ticketsInventory}) {
         // Mark updates as completed
         setTicketUpdatesCompleted(true);
       }
-    }, [ticketsToDisplay, jwtToken, user, ticketUpdatesCompleted]);
+    }, [ticketsToDisplay, jwtToken, user, ticketUpdatesCompleted]);*/ // - commented out whilst i tets webhook version
     
     const handleDownload = async (url, fileName) => {
         // Fetch the image as a Blob

@@ -217,4 +217,6 @@ async function sendTicketSoldEmail({ticket}) {
 
 }
 
+
+
 export { fetchTicketsData, setTicketBought, fetchTicketIdByFilter, updateBuyerUser, updateUserTicketsBought, createNewTicket };

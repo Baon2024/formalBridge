@@ -5,9 +5,22 @@ import { Resend } from "resend";
 import Stripe from "stripe"; // Correct way to import Stripe in ES modules
 import cors from 'cors';
 import { render } from "@react-email/render";
+
+//import APIFunctionsForBackend from '../backend/APIFunctionsForBackend.js';
+//const APIFunctionsForBackend = import('./APIFunctionsForBackend'); 
+//import { setTicketBought } from "../src/components/APIFunctions/APIFunctions.js";
+//import { updateBuyerUser } from "../src/components/APIFunctions/APIFunctions.js";
 //import WelcomeEmail from "../emails/welcomeEmail";
+import { setTicketBought, updateBuyerUser } from "./APIFunctionsForBackend.js";
+
+//const setTicketBought = APIFunctionsForBackend;
+//const updateBuyerUser = APIFunctionsForBackend;
+
+//const { setTicketBought, updateBuyerUser } = APIFunctionsForBackend;
 
 dotenv.config(); // Load environment variables
+
+let globalUser, globalTicket;
 
 const app = express();
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -15,10 +28,24 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 //console.log(process.env.RESEND_API_KEY); // Check if the API key is loaded
 //const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+const endpointSecret = 'whsec_d841e887e13b7130ce9da8227aafc1a2c38c9289b03f48f955943ed25a67adc6';
+  //replace this with the secret from the webhooks section of the Stripe Dashbord when you switch from 'test' to 'live'
 
 // Middleware
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
 app.use(cors());
+//app.use('/webhook', bodyParser.raw({ type: 'application/json' }));
+
+/*app.use((req, res, next) => {
+  if (req.originalUrl === '/webhook') {
+    next(); // Skip JSON body parsing for /webhook
+  } else {
+    bodyParser.json()(req, res, next); // Apply JSON parsing to other routes
+  }
+});*/
+
+app.use(bodyParser.json());
+
 
 // API endpoint to send an email
 app.post("/api/send-email", async (req, res) => {
@@ -186,10 +213,14 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     const ticketAndUser = req.body;
     const ticket = ticketAndUser[0];
     console.log("ticket is:", ticket);
+    globalTicket = ticket;
     const user = ticketAndUser[1];
+    
     console.log("user is:", user);
+    globalUser = user;
 
-    const { formalEventName, formalTicketPrice, id } = ticket;
+
+    const { formalEventName, formalTicketPrice, id, documentId } = ticket;
     const connectedAccountId = ticket.sellerUser.connectedAccountId;
     console.log("connectedAccountId taken from req.body is:", connectedAccountId);
     //const connectedAccountId  = ticket.sellerUser.connectedAccountId;
@@ -223,7 +254,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
         application_fee_amount: 1, //this is my cut
       },
       mode: 'payment',
-      success_url: `http://localhost:3006/successPage/${id}`, //rdirect to /successpage/${documentId}
+      success_url: `http://localhost:3006/successPage/${documentId}`, //rdirect to /successpage/${documentId}
       //need to redirect customer to the above url returned in response
       //and then id should enable correct ticket to be selected, and display qr/download
       //and could then update buyerUser and bought status in that page instead?
@@ -246,16 +277,55 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 
 app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => { 
 
-  const event = req.body;
+  let event = req.body;
+  //let eventTrial = req.body;
   console.log("webhook event is:", event);
 
+  const signature = req.headers['stripe-signature'];
+
+  /*try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      signature,
+      endpointSecret
+    );
+  } catch (err) {
+    console.log(`⚠️  Webhook signature verification failed.`, err.message);
+    return res.sendStatus(400);
+  }*/
+
+  //console.log("webhook event after constructEvent is:", event);
+
+  //console.log("the value of eventTrial is:", eventTrial);
+  //if this works fine, can replace the simple event assignement, with this safe/protected version;
+
   // Handle the event
-  /*switch (event.type) {
+  switch (event.type) {
     case 'payment_intent.succeeded':
       const paymentIntent = event.data.object;
       console.log(`PaymentIntent for ${paymentIntent.amount} was successful!`);
       // Then define and call a method to handle the successful payment intent.
       // handlePaymentIntentSucceeded(paymentIntent);
+      // setTicketBought
+      // updateBuyerUser
+      
+      
+      break;
+    case 'checkout.session.completed':
+      console.log("this is the stage to add updateBuyerUser and setTicketBought");
+
+      console.log("the value of user within the checkout.session.completed condition is:", globalUser);
+      console.log("the value of ticket within the checkout.session.completed condition is:", globalTicket);
+
+      const jwtToken = globalUser.token;
+      console.log("value of token from globalUser,token is:", jwtToken);
+
+      if (globalTicket && globalUser) {
+      
+      setTicketBought(globalTicket, jwtToken);
+      updateBuyerUser(globalTicket, globalUser, jwtToken);
+      }
+
       break;
     case 'payment_method.attached':
       const paymentMethod = event.data.object;
@@ -265,7 +335,7 @@ app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
     default:
       // Unexpected event type
       console.log(`Unhandled event type ${event.type}.`);
-  }*/
+  }
 
   // Return a 200 response to acknowledge receipt of the event
   res.send();
