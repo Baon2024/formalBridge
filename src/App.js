@@ -19,6 +19,7 @@ import SuccessPage from './components/thankYouPurchasePage/successPage';
 import FAQPage from './components/faqPageFolder/faqPage';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
+import DestinationPage from './components/thankYouPurchasePage/destinationPage';
 //import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import Refresh from './components/userPage/refresh';
 
@@ -63,6 +64,7 @@ function App() {
     <Route path="uploadTicket" element={ <UploadTicket user={user} />} />
     <Route path="FAQPage" element={ <FAQPage /> } />
     <Route path="/successPage/:ids" element={ <SuccessPage ticketsInventory={ticketsInventory} />} />
+    <Route path="/destinationPage/:returnUrls" element={ <DestinationPage />} />
     <Route path="userPage/:id" element={ <UserPage user={user} setUser={setUser} /> } />
     <Route path="/refresh/:id" element={ <Refresh /> } />
     <Route path="signUpLogIn" element={ <SignUpLogIn user={user} setUser={setUser} />} />

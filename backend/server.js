@@ -238,8 +238,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 
     let finalComission;
     if (formalbridgeComission > 30 ) {
-      finalComission = commissionInPence;
-    } else if (formalbridgeComission < 30 || commissionInPence === 30 ) {
+      finalComission = formalbridgeComission;
+    } else if (formalbridgeComission < 30 || formalbridgeComission === 30 ) {
       finalComission = 30;
     } 
 
@@ -365,6 +365,110 @@ app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
   // Return a 200 response to acknowledge receipt of the event
   res.send();
 
+
+})
+
+app.post('/create-checkout-session-destination', async (req, res) => {
+
+
+  //i think i need to get the ticket details by sending them in the call
+  console.log("this is what has been recieved form the stripeCreateCheckoutSession function:", req.body);
+
+  //const ticket = req.body;
+
+  //rebuild that array, to contain the ticket and user
+  const ticketAndUser = req.body;
+  const ticket = ticketAndUser[0];
+  console.log("ticket is:", ticket);
+  globalTicket = ticket;
+  const user = ticketAndUser[1];
+  
+  console.log("user is:", user);
+  globalUser = user;
+
+
+  const { formalEventName, formalTicketPrice, id, documentId } = ticket;
+  const connectedAccountId = ticket.sellerUser.connectedAccountId;
+  console.log("connectedAccountId taken from req.body is:", connectedAccountId);
+  //const connectedAccountId  = ticket.sellerUser.connectedAccountId;
+  console.log("thsi is what connectedAccountId is:", connectedAccountId);
+  console.log("this is what formalEventName, formalTictePrice and id are in server.js backend:", formalEventName, formalTicketPrice, id);
+
+  console.log("formalTicketPrice is:", formalTicketPrice);
+  let finalFormalTicketPrice = formalTicketPrice * 100;
+  const comissionPercentage = 0.05; //change this to change comission percent.
+  const formalbridgeComission = finalFormalTicketPrice * comissionPercentage;
+  console.log("formalbridgeComission is:", formalbridgeComission);
+  //const commissionInPence = Math.round(formalbridgeComission * 100);
+
+  //let finalFormalTicketprice = formalTicketPrice * 100;
+
+  let finalComission;
+    if (formalbridgeComission > 30 ) {
+      finalComission = formalbridgeComission;
+    } else if (formalbridgeComission < 30 || formalbridgeComission === 30 ) {
+      finalComission = 30;
+    } 
+
+  console.log("finalComission is:", finalComission);
+  //const productName = req.body.formalEventName;
+  //const connectedAccountId = 'acct_1QaRMQ4fOg1LtcNe';
+
+  //const connectedAccountId = 'acct_1QZhoTQAEiW5zVa4' //this is one user, to let me make this stripe api function work first
+
+  //if this works, then need to find out how to pass the neccessary details on correctly
+
+  //access connectedAccountId as a property of the sellerUser, accessed through the ticket
+
+/*
+
+need to add dynamic functions/percentages here
+to make sure formalbridge cut is a consistent percentage of formalTicketPrice
+
+so, const formalbridgeComission = formalTicketPrice * 0.05; //not sure at what point stripe transaction fees occur
+*/
+try {
+const session = await stripe.checkout.sessions.create(
+  {
+    line_items: [
+      {
+        price_data: {
+          currency: 'gbp',
+          product_data: {
+            name: formalEventName,
+          },
+          unit_amount: finalFormalTicketPrice, //this is the price
+        },
+        quantity: 1,
+      },
+    ],
+    payment_intent_data: {
+      application_fee_amount: finalComission,
+      transfer_data: {
+        destination: connectedAccountId,
+      },
+    },
+    mode: 'payment',
+  success_url:  `http://localhost:3006/successPage/${documentId}`,
+  
+
+    //return_url: `http://localhost:3006/destinationPage/${documentId}?session_id={CHECKOUT_SESSION_ID}`,
+    // this should allow me to passed the checkout_session_Id, and documentId??
+
+    //need to redirect customer to the above url returned in response
+    //and then id should enable correct ticket to be selected, and display qr/download
+    //and could then update buyerUser and bought status in that page instead?
+  },
+);
+console.log("stripeAccount is:", connectedAccountId);
+console.log("Stripe session created, for destination variant:", session);
+  console.log("id for sessionId is:", session.id);
+res.json({ id: session.id });
+
+} catch (error) {
+  console.error("Error creating Stripe Checkout session:", error.message);
+  res.status(500).send("Error creating Stripe Checkout session");
+}
 
 })
 

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 //import { useDispatch } from 'redux'; //is this how??
 
 //need to change styling to {style.----} and change to camelCase in the css file
-function TicketPageItem({ticket, addTicketToCart, cart, isInCart, buyTicket}) {
+function TicketPageItem({ticket, addTicketToCart, cart, isInCart, buyTicket, buyTicketDestination}) {
   //probably ideal to use the useDispatch() hook to save having to filter it down from app.js??
 
   //const dispatch = useDispatch();
@@ -59,6 +59,7 @@ function TicketPageItem({ticket, addTicketToCart, cart, isInCart, buyTicket}) {
               {isInCart ? "Added to Basket" : "Add to Basket"} <img src="./assets/container.svg" className={styles.icon} />
               </button>
               <button className={styles.buyButton} onClick={() => buyTicket(ticket)}>buy</button>
+              <button className={styles.buyButton} onClick={() => buyTicketDestination(ticket)}></button>
             </div>
           </div>
         </div>
