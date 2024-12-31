@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 //import { useDispatch } from 'redux'; //is this how??
 
 //need to change styling to {style.----} and change to camelCase in the css file
-function TicketPageItem({ticket, addTicketToCart, cart, isInCart, buyTicket, buyTicketDestination}) {
+function TicketPageItem({ticket, addTicketToCart, cart, isInCart, buyTicket, buyTicketDestination, buyTicketDestinationEmbedded}) {
   //probably ideal to use the useDispatch() hook to save having to filter it down from app.js??
 
   //const dispatch = useDispatch();
@@ -58,8 +58,9 @@ function TicketPageItem({ticket, addTicketToCart, cart, isInCart, buyTicket, buy
               <button className={ isInCart ? styles.addedToCartButton : styles.addToCartButton} disabled={isInCart} onClick={() => addTicketToCart(ticket)}>
               {isInCart ? "Added to Basket" : "Add to Basket"} <img src="./assets/container.svg" className={styles.icon} />
               </button>
-              <button className={styles.buyButton} onClick={() => buyTicket(ticket)}>buy</button>
-              <button className={styles.buyButton} onClick={() => buyTicketDestination(ticket)}></button>
+              <button className={styles.buyButton} onClick={() => buyTicket(ticket)}>direct charge</button>
+              <button className={styles.buyButton} onClick={() => buyTicketDestination(ticket)}>destination charge</button>
+              <button className={styles.buyButton} onClick={() => buyTicketDestinationEmbedded(ticket)}>destination charge (embedded)</button>
             </div>
           </div>
         </div>
