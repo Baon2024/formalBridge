@@ -227,6 +227,23 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     console.log("thsi is what connectedAccountId is:", connectedAccountId);
     console.log("this is what formalEventName, formalTictePrice and id are in server.js backend:", formalEventName, formalTicketPrice, id);
 
+    console.log("formalTicketPrice is:", formalTicketPrice);
+    let finalFormalTicketPrice = formalTicketPrice * 100;
+    const comissionPercentage = 0.05; //change this to change comission percent.
+    const formalbridgeComission = finalFormalTicketPrice * comissionPercentage;
+    console.log("formalbridgeComission is:", formalbridgeComission);
+    //const commissionInPence = Math.round(formalbridgeComission * 100);
+
+    //let finalFormalTicketprice = formalTicketPrice * 100;
+
+    let finalComission;
+    if (formalbridgeComission > 30 ) {
+      finalComission = commissionInPence;
+    } else if (formalbridgeComission < 30 || commissionInPence === 30 ) {
+      finalComission = 30;
+    } 
+
+    console.log("finalComission is:", finalComission);
     //const productName = req.body.formalEventName;
     //const connectedAccountId = 'acct_1QaRMQ4fOg1LtcNe';
 
@@ -235,6 +252,14 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     //if this works, then need to find out how to pass the neccessary details on correctly
 
     //access connectedAccountId as a property of the sellerUser, accessed through the ticket
+
+/*
+
+  need to add dynamic functions/percentages here
+  to make sure formalbridge cut is a consistent percentage of formalTicketPrice
+  
+  so, const formalbridgeComission = formalTicketPrice * 0.05; //not sure at what point stripe transaction fees occur
+*/
   try {
   const session = await stripe.checkout.sessions.create(
     {
@@ -245,13 +270,13 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
             product_data: {
               name: formalEventName,
             },
-            unit_amount: 1000, //this is the price
+            unit_amount: finalFormalTicketPrice, //this is the price
           },
           quantity: 1,
         },
       ],
       payment_intent_data: {
-        application_fee_amount: 1, //this is my cut
+        application_fee_amount: finalComission, //this is my cut
       },
       mode: 'payment',
       success_url: `http://localhost:3006/successPage/${documentId}`, //rdirect to /successpage/${documentId}
