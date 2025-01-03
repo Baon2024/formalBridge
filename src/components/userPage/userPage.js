@@ -7,6 +7,7 @@ import { addInfoForStripe, createStripeAccount } from "./stripeFunctions";
 import styles from './userPage.module.css';
 import emailFunctionTest from "./emailFunctionTest";
 import addConnectedAccountIdToUser from "./addConnectedAccountIdToUser";
+import { loadConnectAndInitialize } from "@stripe/connect-js";
 //import { ClassicTicket } from "./classicTicket";
 
 
@@ -18,8 +19,10 @@ import addConnectedAccountIdToUser from "./addConnectedAccountIdToUser";
 function UserPage({user, setUser}) {
 
   //user the id from the params to make fetch API to users collection, in order to get update to date user props.
-  const { id } = user.user;
-  const { token } = user;
+  //const { id } = user.user;
+  //const { token } = user; //I changed it, as id wasn't being used, and token can be accessed from localStorage
+  //doesn't seem to cause any problems so far, and allows the user to re-load page without causing error
+  const token = localStorage.getItem('jwt');
   //console.log(token);
   const [ userData, setUserData ] = useState(null);
   const [ newPrice, setNewPrice ] = useState(null);
@@ -57,7 +60,7 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
     };
 
     getUserData();
-  }, [id]);
+  }, []);
 
   useEffect(() => {
     const filterTicketsBought = async () => {
