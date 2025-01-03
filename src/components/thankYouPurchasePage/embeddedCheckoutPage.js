@@ -39,9 +39,9 @@ export default function EmbeddedCheckoutPage(/*{clientSecret}*/){
   
   
   return (
-    <div style={{ maxWidth: '400px', margin: '0 auto' }}>
+    <div style={{ margin: '0 auto' }}>
     <EmbeddedCheckoutProvider stripe={stripePromise} options={options}>
-      <div style={{ height: '500px', overflowY: 'auto' }}>
+      <div style={{ overflowY: 'auto', border: 'red' }}>
         <EmbeddedCheckout />
       </div>
     </EmbeddedCheckoutProvider>

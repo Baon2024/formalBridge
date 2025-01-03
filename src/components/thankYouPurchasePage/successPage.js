@@ -19,10 +19,14 @@ function SuccessPage({ticketsInventory}) {
     console.log("the ids are: ", ids);
     //const numberId = Number(id);
     const ticketIds = ids.split(',').map(id => id);
+    //const ticketIds = ids.split(',').map(id => Number(id));
     console.log("these are your ticket ids: ", ticketIds);
     const dispatch = useDispatch();
     const ticketsInventory2 = useSelector(selectTicketsInventory);
     const [ ticketUpdatesCompleted, setTicketUpdatesCompleted ] = useState(false);
+
+    //I've changed it to use documentId for both single ticjets and multiupel ticjets
+    //as just seems safer
 
     useEffect(() => {
       const fetchTickets = async () => {
@@ -33,7 +37,8 @@ function SuccessPage({ticketsInventory}) {
       fetchTickets();
 
     },[])
-
+    
+    //const ticketIdsDenumbered = Number(ticketIds);
     //const ticketsInventory2 = useSelector(selectTicketsInventory);
     console.log("ticketsInventory form useSelector is:", ticketsInventory2);
 
