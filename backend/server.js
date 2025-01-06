@@ -145,7 +145,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   
       const accountLink = await stripe.accountLinks.create({
         account: account,
-        return_url: `http://localhost:3006/`,
+        return_url: `http://localhost:3006/userPage/undefined`,
         refresh_url: `http://localhost:3006/refresh/${account}`,
         type: "account_onboarding",
       });
