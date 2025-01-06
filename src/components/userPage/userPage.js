@@ -22,8 +22,8 @@ function UserPage({user, setUser}) {
   //const { id } = user.user;
   //const { token } = user; //I changed it, as id wasn't being used, and token can be accessed from localStorage
   //doesn't seem to cause any problems so far, and allows the user to re-load page without causing error
-  const token = localStorage.getItem('jwt');
-  //console.log(token);
+  const token =localStorage.getItem('jwt');
+  console.log("token from localStorage straight away is:", token);
   const [ userData, setUserData ] = useState(null);
   const [ newPrice, setNewPrice ] = useState(null);
   const [ newPriceVisibility, setNewPriceVisibility ] = useState(null);
@@ -54,6 +54,7 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
         const userDataToSet = await /*fetchUserDetails(token)*/ fetchUserDetailsTrial(token);
         console.log("User data retrieved:", userDataToSet);
         setUserData(userDataToSet);
+        localStorage.setItem('user', JSON.stringify(userDataToSet));
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -274,6 +275,7 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
     }
     
     const nextResponse = await addInfoForStripe(response, setError, setAccountLinkCreatePending);
+    localStorage.setItem('user', JSON.stringify(userData));
     //connectedAccountId may not be updated quick enough, so using response instead as param
     //response being the returned connectedAccountId from the function directly
     }

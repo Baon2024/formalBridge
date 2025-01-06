@@ -2,7 +2,7 @@ import { loadStripe } from "@stripe/stripe-js";
 
 
 
-export default async function stripeCreateCheckoutSessionDestinationMultiple(cart, totalCartIds, user) {
+export default async function stripeCreateCheckoutSessionDestinationMultipleEmbedded(cart, totalCartIds, user) {
 
 
     const stripe = await loadStripe('pk_test_51QNlAaG7WeMIf1DGKqMw0dAcSmjfnBlJNH3wr8fjyCqmZazDvpOEaNv7yHuHXlEHv3CL9BpTE3kv0JVA7F5lVIhy00EwL9mhQA');
@@ -13,7 +13,7 @@ export default async function stripeCreateCheckoutSessionDestinationMultiple(car
 
     const cartAndTotalCartIdsAndUser = [ cart, totalCartIds, user ];
 
-    const response = await fetch('http://localhost:5001/create-checkout-session-multiple', {
+    const response = await fetch('http://localhost:5001/create-checkout-session-multiple-embedded', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -21,14 +21,27 @@ export default async function stripeCreateCheckoutSessionDestinationMultiple(car
         body: JSON.stringify( cartAndTotalCartIdsAndUser ),
       });
     
+      const session = await response.json();
 
-      const { url } = await response.json();
+      const secondSession = session.session;
+      const clientSecret = secondSession.client_secret;
+      
+      if (!clientSecret) {
+        console.error('Client Secret not received.');
+        return;
+      }
+  
+    console.log("Redirecting to /embeddedCheckoutPage with clientSecret:", clientSecret);
     
-      if (url) {
+    return clientSecret;
+
+
+
+      /*if (url) {
         window.location.href = url; // Redirect to Stripe-hosted page
       } else {
         console.error('Error creating checkout session');
-      }
+      }*/
 
 
 }

@@ -15,7 +15,7 @@ function Header({cart, removeTicketFromCart, user}) {
 
     return (
       <div className={styles.componentHeight}>
-        <NavigationBar user={user} />
+          <NavigationBar user={user} />
         <div className={styles.mainContent}>
             <Outlet />
         </div>

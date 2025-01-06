@@ -676,6 +676,148 @@ app.post('/create-checkout-session-multiple', async (req, res) => {
   }
 });
 
+app.post('/create-checkout-session-multiple-embedded', async (req, res) => {
+  const cartAndTotalCartIdsAndUser = req.body;
+  console.log("cartAndTotalCartIdsAndUser in backend is:", cartAndTotalCartIdsAndUser);
+  const cart = cartAndTotalCartIdsAndUser[0]
+  console.log("cart in the backend is:", cart);
+  //set globalCart with this cart?
+  const totalCartIds = cartAndTotalCartIdsAndUser[1];
+  console.log("totalCartIds in teh backend is:", totalCartIds);
+  const user = cartAndTotalCartIdsAndUser[2];
+  console.log("user in teh backend is:", user);
+  globalUser = user;
+
+  /*try {
+    // Create line items based on cart items
+    const lineItems = cart.map(ticket => ({
+      price_data: {
+        currency: 'gbp',
+        product_data: {
+          name: ticket.formalEventName,
+          //description: item.description, // Optional
+        },
+        unit_amount: ticket.formalTicketPrice * 100, // Price in pence, needs to be * 100
+      },
+      quantity: 1,
+    }));
+
+    // Group tickets by seller
+    const ticketsBySeller = cart.reduce((acc, ticket) => {
+      const sellerAccountId = ticket.sellerUser?.connectedAccountId;
+      if (!sellerAccountId) {
+          throw new Error(`Ticket ${ticket.formalEventName} is missing a seller connectedAccountId.`);
+      }
+      if (!acc[sellerAccountId]) acc[sellerAccountId] = [];
+      acc[sellerAccountId].push(ticket);
+      return acc;
+  }, {});
+
+    // Calculate application fees and total amounts for each seller
+    const paymentIntents = await Promise.all(
+      Object.entries(ticketsBySeller).map(async ([sellerAccountId, tickets]) => {
+          const totalAmount = tickets.reduce((sum, ticket) => sum + ticket.formalTicketPrice * 100, 0); // Amount in cents
+          return stripe.paymentIntents.create({
+              amount: totalAmount,
+              currency: 'gbp',
+              transfer_data: {
+                  destination: sellerAccountId, // The connected account ID of the seller
+              },
+              application_fee_amount: Math.round(totalAmount * 0.1), // 10% application fee
+          });
+      })
+  );
+
+    // Create the Checkout Session
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: lineItems,
+      mode: 'payment',
+      success_url: `http://localhost:3006/successPage/${totalCartIds}?session_id={CHECKOUT_SESSION_ID}`,
+      /*cancel_url: `${YOUR_DOMAIN}/cancel`,
+      metadata: {
+        ticketIds: `${totalCartIds}`, // Comma-separated ticket IDs
+        buyerUserId: `${user.user.id}`,  // Buyer user ID
+      },
+    });
+    console.log("session created and about to be returned from backend is:", session);
+    res.json({ url: session.url });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred creating the Checkout Session' });
+  }*/
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [], // We'll populate this with seller line items
+      mode: 'payment',
+      success_url: `http://localhost:3006/successPage/${totalCartIds}?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `http://localhost:3006/cancel`,
+      metadata: {
+        ticketIds: `${totalCartIds}`, // Comma-separated ticket IDs
+        buyerUserId: `${user.user.id}`, // Buyer user ID
+      },
+    });
+    
+    // Group tickets by seller
+    const ticketsBySeller = cart.reduce((acc, ticket) => {
+      const sellerAccountId = ticket.sellerUser?.connectedAccountId;
+      if (!sellerAccountId) {
+        throw new Error(`Ticket ${ticket.formalEventName} is missing a seller connectedAccountId.`);
+      }
+      if (!acc[sellerAccountId]) acc[sellerAccountId] = [];
+      acc[sellerAccountId].push(ticket);
+      return acc;
+    }, {});
+    
+    // Create line items and add transfer data to each
+    let totalAmount = 0;
+    
+    Object.entries(ticketsBySeller).forEach(([sellerAccountId, tickets]) => {
+      const sellerTotalAmount = tickets.reduce((sum, ticket) => sum + ticket.formalTicketPrice * 100, 0); // Total price for this seller
+    
+      // Add line item for this seller
+      session.line_items.push({
+        price_data: {
+          currency: 'gbp',
+          product_data: {
+            name: `Tickets from ${tickets[0].sellerUser?.name}`,
+            description: tickets.map(ticket => ticket.formalEventName).join(', '),
+          },
+          unit_amount: sellerTotalAmount, // Total amount for this seller
+        },
+        quantity: 1,
+        adjustable_quantity: { enabled: false, minimum: 1 },
+        metadata: {
+          sellerAccountId, // Track seller info
+        },
+        transfer_data: {
+          destination: sellerAccountId, // Send funds to the seller's connected account
+        },
+      });
+    
+      totalAmount += sellerTotalAmount; // Add seller amount to the total
+    });
+    
+    // Create the Checkout Session with all line items
+    const finalSession = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: session.line_items, // All the line items
+      mode: 'payment',
+      success_url: `http://localhost:3006/successPage/${totalCartIds}?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `http://localhost:3006/cancel`,
+      metadata: {
+        ticketIds: `${totalCartIds}`, // Comma-separated ticket IDs
+        buyerUserId: `${user.user.id}`, // Buyer user ID
+      },
+    });
+    
+    console.log("Checkout session created:", finalSession);
+    
+    res.json({
+      sessionId: finalSession.id, // Return sessionId to the frontend for the redirect
+    });
+  });
+
 /*app.post('/create-checkout-session-multiple', async (req, res) => {
     
     

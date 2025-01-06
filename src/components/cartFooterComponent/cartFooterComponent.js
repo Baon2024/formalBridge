@@ -6,6 +6,7 @@ import { selectCartInventory, addTicketToCart, removeTicketFromCart } from '../.
 import { useSelector, useDispatch } from 'react-redux';
 import { updateBuyerUser, setTicketBought } from '../APIFunctions/APIFunctions';
 import { useNavigate } from 'react-router-dom'; 
+import stripeCreateCheckoutSessionDestinationEmbedded from '../APIFunctions/stripeCreateCheckoutSessionDestinationEmbedded';
 import stripeCreateCheckoutSessionDestinationMultiple from '../APIFunctions/stripeCreateCheckoutSessionDestinationMultiple';
 //import { stripeCreateCheckoutSessionMultiple } from '../APIFunctions/stripeCreateCheckoutSession';
 
@@ -84,6 +85,48 @@ function CartFooter({cart, removeTicketFromCart, resetCart, user}) {
         //need to alert user that they aren't logged in - through pop-up box??
        }
     }
+
+    async function checkoutTicketsMultipleEmbedded(cart) {
+       
+      console.log("user currently is: ", user);
+      if (user) {
+
+
+      const totalCartIds = cart.map(ticket => ticket.documentId).join(',');
+      console.log("this is totalCartIds:", totalCartIds);
+
+      const urlEndpoint = totalCartIds;
+
+      //Navigate(`/successPage/${urlEndpoint}`);
+      const jwtToken = user.token;
+      console.log("here's the user it will add the ticket to", user);
+      console.log("the jwtToken being inputted into function is: ", jwtToken);
+      const clientSecret = await stripeCreateCheckoutSessionDestinationMultiple(cart, totalCartIds, user) //here, and pass whole cart I think
+      navigate('/embeddedCheckoutPage', { state: { clientSecret } });
+      //navigate('/successPage?${CHECKOUT_SESSION_ID}', { state: { clientSecret } });
+
+      // - i've commented out the rest of the function, so i can test it in isolation
+     /*
+      //console.log("the ticket.id you clicked on is: ", ticket.id);
+      //console.log("the documentId for this ticket is: ", ticket.documentId);
+      cart.map((ticket) => {
+       setTicketBought(ticket, jwtToken) // - this needs to be change to pass down cart to the functiom
+       //need a console log to check that each ticket has been set to bought
+       updateBuyerUser(ticket, user);
+       //need a console log to check that each ticket has been added to user: console.log("user now has tickets: , user.myTicketsBought");
+      })
+      console.log("current user is: ", user);
+      //then should have created the actual purchase workflow - ticket will be removed from display, and accessible to user
+      //will then need to do this for checkout method of purchasing
+      console.log("Navigating to success page...");
+      navigate(`/successPage/${urlEndpoint}`);
+      dispatch(resetCart()); //-need to clear cart to prevent the tickets remaining there after being removed from displayed tickets
+   */
+      } else if (!user) {
+       //need to alert user that they aren't logged in - through pop-up box??
+      }
+   }
+ 
   
 
     return (
@@ -106,6 +149,7 @@ function CartFooter({cart, removeTicketFromCart, resetCart, user}) {
           </div>
           <div className={styles.checkoutButtonContainer}>
             <button className={styles.checkoutButton} onClick={() => checkoutTicketsMultipleStripeHosted(cart)}>Checkout</button>
+            <button className={styles.checkoutButton} onClick={() => checkoutTicketsMultipleEmbedded(cart)}>Checkout</button>
           </div>
         </div>
       </>

@@ -24,8 +24,8 @@ const signUpUser = async (email, password) => {
           }
       
           const data = await response.json();
-          //localStorage.setItem('jwt', data.jwt); // Store JWT if needed
-          //localStorage.setItem('user', JSON.stringify(data.user));
+          localStorage.setItem('jwt', data.jwt); // Store JWT if needed
+          localStorage.setItem('user', JSON.stringify(data.user));
           console.log("Here's the data about to be returned: ", data);
           return data;
         } catch (error) {
