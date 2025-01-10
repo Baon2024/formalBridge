@@ -6,6 +6,7 @@ import { fetchTicketsData, updateBuyerUser, updateUserTicketsBought } from "../A
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { selectTicketsInventory } from "../../reduxStateComponents/TicketInventorySlice/ticketInventorySlice";
 import { sendEmailToNotifySeller } from "../userPage/emailFunctionTest";
 import { setTicketBought, fetchTicketIdByFilter } from "../APIFunctions/APIFunctions";
 import stripeCreateCheckoutSession from "../APIFunctions/stripeCreateCheckoutSession";
@@ -14,8 +15,11 @@ import stripeCreateCheckoutSessionDestinationEmbedded from "../APIFunctions/stri
 import { selectCartInventory, addTicketToCart } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
 
 
-function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCart, user }) {
-    
+function TicketPage({ /*ticketsInventory,*/ setTicketsInventory, cart, addTicketToCart, user }) {
+  //i blocked out ticketsInventory, in order to get current tickets from redux state, rather than local
+  //state of tickets passed down from app.js
+  //that way, i don't need to use two api calls in ticketCollectionPage  
+
 
     //const cart = useSelector(selectCartInventory);
     const dispatch = useDispatch();
@@ -46,6 +50,7 @@ function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCa
    
     
     console.log("the ticketsData is: ", ticketsData);
+    const ticketsInventory = useSelector(selectTicketsInventory);
     const ticketToDisplay = ticketsInventory.find((ticket) => ticket.formalTicketID === id) // and check this works - should be okay as its the index/key
     console.log("The ticket you have selected is: ", ticketToDisplay);
 
@@ -153,7 +158,8 @@ function TicketPage({ ticketsInventory, setTicketsInventory, cart, addTicketToCa
      //will then need to do this for checkout method of purchasing
      //Navigate(`/successPage/${ticket.id}`); - temporarily disbaled to see if strip function pushes success page
      } else if (!user) {
-      //need to alert user that they aren't logged in - through pop-up box??
+       alert("you need to be logged-in to purchase a ticket");
+       Navigate('/signUpLogIn');
      }
   }
 

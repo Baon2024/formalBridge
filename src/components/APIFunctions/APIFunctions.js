@@ -33,6 +33,18 @@ async function fetchTicketsData() {
   }
 }
 
+export async function fetchTicketsData2() {
+
+        
+        
+  const data = await fetch('http://localhost:5001/getTickets');
+  const dataToReturn = await data.json();
+  console.log("these are the filtered tickets returned to the front-end, just before being set:", dataToReturn);
+  return dataToReturn;
+}
+
+
+
 async function setTicketBought(ticket, jwtToken) {
 
     const documentId = ticket.documentId; 

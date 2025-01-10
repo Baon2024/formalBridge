@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { fetchTicketsData } from "../APIFunctions/APIFunctions"
+import { fetchTicketsData, fetchTicketsData2 } from "../APIFunctions/APIFunctions"
 import styles from './ticketCollectionPage.module.css';
 import TicketComponent from "../../ticketComponent/ticketComponent";
 import sampleData from "./sampleData";
@@ -25,9 +25,12 @@ function TicketCollectionPage({ticketsInventory, setTicketsInventory, cart}) {
 
   useEffect(() => { 
 
-    fetchTicketsData().then((tickets) => setTicketsInventory(tickets));
+    //fetchTicketsData().then((tickets) => setTicketsInventory(tickets));
+    /*fetchTicketsData2().then((tickets) => setTicketsInventory(tickets));
     //console.log("the ticketsData state is: ", ticketsData);
-    console.log("ticketsInventory is: ", ticketsInventory)
+    console.log("ticketsInventory is: ", ticketsInventory)*/
+
+    //the function code above is just duplicated by the async redux thunk below, so only need one
 
     const fetchTickets = async () => {
       dispatch(loadTicketsForInventory()); // Dispatch the async thunk
@@ -78,7 +81,7 @@ function TicketCollectionPage({ticketsInventory, setTicketsInventory, cart}) {
     */
     
     let filteredTickets = reduxTickets.filter(ticket => 
-      !ticket.bought && !cart.some(cartItem => cartItem.id === ticket.id)
+      /*!ticket.bought &&*/ !cart.some(cartItem => cartItem.id === ticket.id)
       );
     console.log("These are the tickets you've filtered: ", filteredTickets);
 

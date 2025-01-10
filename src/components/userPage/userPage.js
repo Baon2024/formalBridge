@@ -113,7 +113,7 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
       localStorage.removeItem('jwt');
       localStorage.removeItem('user');
       setUser(null);
-      navigate("/");
+      navigate("/signUpLogIn");
     }
 
   //need to put a log-out button here, which redirects to homepage once logged out.

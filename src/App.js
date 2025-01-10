@@ -23,6 +23,7 @@ import DestinationPage from './components/thankYouPurchasePage/destinationPage';
 //import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import EmbeddedCheckoutPage from './components/thankYouPurchasePage/embeddedCheckoutPage';
 import Refresh from './components/userPage/refresh';
+import SampleTestPage from './components/thankYouPurchasePage/sampleTestPage';
 
 
 //const state = store.getState();
@@ -70,6 +71,7 @@ function App() {
     <Route path="embeddedCheckoutPage" element={ <EmbeddedCheckoutPage /> } />
     <Route path="/refresh/:id" element={ <Refresh /> } />
     <Route path="signUpLogIn" element={ <SignUpLogIn user={user} setUser={setUser} />} />
+    <Route path="/sampleTestPage" element={ <SampleTestPage /> } />
     <Route path="ticketCollectionPage" element={ <TicketCollectionPage ticketsInventory={ticketsInventory} setTicketsInventory={setTicketsInventory} cart={cart} />} 
       /*ticketsInventory={state.ticketsInventory}*/
       /*dispatch={dispatch}*/ //can't pass down react hooks in react router: also true of redux stuff???

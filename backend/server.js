@@ -11,7 +11,7 @@ import { render } from "@react-email/render";
 //import { setTicketBought } from "../src/components/APIFunctions/APIFunctions.js";
 //import { updateBuyerUser } from "../src/components/APIFunctions/APIFunctions.js";
 //import WelcomeEmail from "../emails/welcomeEmail";
-import { setTicketBought, updateBuyerUser, setTicketBoughtMultiple, updateBuyerUserMultiple } from "./APIFunctionsForBackend.js";
+import { setTicketBought, updateBuyerUser, setTicketBoughtMultiple, updateBuyerUserMultiple, fetchTicketsData } from "./APIFunctionsForBackend.js";
 
 //const setTicketBought = APIFunctionsForBackend;
 //const updateBuyerUser = APIFunctionsForBackend;
@@ -353,6 +353,7 @@ app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
       
       setTicketBought(globalTicket, jwtToken);
       updateBuyerUser(globalTicket, globalUser, jwtToken);
+      //add email function to inform seller, here
       }
       const metadata = session.metadata;
       if (metadata) {
@@ -367,7 +368,7 @@ app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
          ticketIds.map((ticketId) => {
           setTicketBoughtMultiple(ticketId, jwtToken);
           updateBuyerUserMultiple(ticketId, buyerUserId, jwtToken);
-
+          //need to add email function to inform sellers, here
          })
       }
 
@@ -469,7 +470,7 @@ const session = await stripe.checkout.sessions.create(
       },
     },
     mode: 'payment',
-  success_url:  `http://localhost:3006/successPage/${documentId}`,
+  success_url:  `http://localhost:3006/successPage/${documentId}?session_id={CHECKOUT_SESSION_ID}`,
   
 
     //return_url: `http://localhost:3006/destinationPage/${documentId}?session_id={CHECKOUT_SESSION_ID}`,
@@ -852,3 +853,24 @@ app.post('/create-checkout-session-multiple-embedded', async (req, res) => {
       res.status(500).send('Internal Server Error');
     }
   });*/
+app.use('/getTickets', async (req, res, next) => {
+
+  try {
+    console.log("Request received:", req.body);
+
+    // Fetch tickets from your data source, and the endpoint URL is strapi-filtered for only unbought tickets
+    const fetchedFilteredTickets = await fetchTicketsData();
+    console.log("these are what fetchedTickets from strapi via backend are:", fetchedFilteredTickets);
+
+    // Filter tickets to include only unsold ones
+    //const relevantTicketsToReturn = fetchedTickets.filter(ticket => ticket.bought === false);
+    //console.log("these are what the not-bought fetchedTickets from strapi via backend are:", relevantTicketsToReturn);
+
+    // Send the filtered tickets as response
+    res.status(200).json(fetchedFilteredTickets);
+} catch (error) {
+    console.error("Error fetching tickets:", error);
+    res.status(500).json({ error: "An error occurred while fetching tickets." });
+}
+
+})

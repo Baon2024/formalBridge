@@ -1,11 +1,11 @@
 //import { createAsyncThunk } //need to install redux~toolkit??
-import { fetchTicketsData } from "../../components/APIFunctions/APIFunctions"
+import { fetchTicketsData, fetchTicketsData2 } from "../../components/APIFunctions/APIFunctions"
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const loadTicketsForInventory = createAsyncThunk(
     'ticketsInventory/loadTicketsForInventory',
     async() => {
-        const response = await fetchTicketsData();
+        const response = await fetchTicketsData2();
         return response;
   })
 

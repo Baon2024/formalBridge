@@ -5,15 +5,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectTicketsInventory } from "../../reduxStateComponents/TicketInventorySlice/ticketInventorySlice";
 import { useEffect, useState } from "react";
 import loadTicketsForInventory from "../../reduxStateComponents/TicketInventorySlice/loadTicketsForInventory";
-import { setTicketBought } from "../APIFunctions/APIFunctions";
-import { updateBuyerUser } from "../APIFunctions/APIFunctions";
+import { setTicketBought, updateBuyerUser, fetchTicketsData } from "../APIFunctions/APIFunctions";
+//import { updateBuyerUser } from "../APIFunctions/APIFunctions";
 //this page will thank the user, and have a button allowing the user to download their formalTicket PDF
 //it will do this by the previous checkout page sending the user here with a dynamic url '/checkout/thankyou/:name' in react router
 //which the final bit in the checkout page being '/checkout/thankyou/${formalTicketName}
 //so, when page will get the name using useParams(), and then use the name in ticketsInventory[name] to retrive the correct
 //ticket in order to get the right url. then, when button is clicked, -- not sure whether file is downloaded from strapi media or ticket's property
 
-function SuccessPage({ticketsInventory}) {
+export default function SuccessPage({ticketsInventory}) {
 
     const { ids } = useParams(); //or the get----byParams one.
     console.log("the ids are: ", ids);
@@ -24,14 +24,59 @@ function SuccessPage({ticketsInventory}) {
     const dispatch = useDispatch();
     const ticketsInventory2 = useSelector(selectTicketsInventory);
     const [ ticketUpdatesCompleted, setTicketUpdatesCompleted ] = useState(false);
+    const [ ticketsToCompareWith, setTicketsToCompareWith ] = useState([]);
+    const [ paymentStatus, setPaymentStatus ] = useState('');
+    const params = new URLSearchParams(location.search);
+    const sessionId = params.get('session_id');
+    if (sessionId) {
+      console.log("sessionId is:", sessionId);
+    }
 
     //I've changed it to use documentId for both single ticjets and multiupel ticjets
     //as just seems safer
 
     useEffect(() => {
+      if (sessionId) {
+        // You can now use the sessionId to check the status of the payment
+        // Example: Call your backend API to verify the payment status
+        console.log('Checkout session ID:', sessionId);
+        // verifyTransactionSuccess(sessionId);
+        
+        // Call an API or Stripe API to verify the payment status
+        // You can use the session ID to retrieve the session details from your backend
+        // or from Stripe to determine whether the transaction was successful.
+        fetch('http://localhost:5001/verify-payment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ sessionId }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              setPaymentStatus('Payment successful!');
+              //Navigate(`/successPage/${ids}`);
+            } else {
+              setPaymentStatus('Payment failed or pending.');
+              Alert('transaction failed');
+            }
+          })
+          .catch((error) => setError(error.message));
+      
+      }
+    }, [sessionId]);
+
+
+
+
+
+
+    useEffect(() => {
       const fetchTickets = async () => {
-        dispatch(loadTicketsForInventory()); // Dispatch the async thunk
-        console.log("Tickets loaded and stored in Redux: ", ticketsInventory2);
+        const ticketsToCompareWith = await fetchTicketsData(); // Dispatch the async thunk
+        console.log("Tickets loaded and stored in Redux: ", ticketsToCompareWith);
+        setTicketsToCompareWith(ticketsToCompareWith);
       };
   
       fetchTickets();
@@ -42,7 +87,7 @@ function SuccessPage({ticketsInventory}) {
     //const ticketsInventory2 = useSelector(selectTicketsInventory);
     console.log("ticketsInventory form useSelector is:", ticketsInventory2);
 
-    const ticketsToDisplay = ticketsInventory2.filter(ticket => ticketIds.includes(ticket.documentId));
+    const ticketsToDisplay = ticketsToCompareWith.filter(ticket => ticketIds.includes(ticket.documentId));
     console.log("Tickets to display: ", ticketsToDisplay);
 
     console.log("thsi is ticketsInventory passed down to successPage:", ticketsInventory);
@@ -117,10 +162,12 @@ function SuccessPage({ticketsInventory}) {
     //for checkout of multiple tickets, need to map every ticket, in order to display each QR code
     //http://localhost:1337/uploads/trinity_a89c430ef9.jpeg
     return (
-  <>
+    <>
     <div className={styles.pageStyling}>
-      <p>Your transaction was a success!</p>
-      <p>{ticketsToDisplay.length > 1 ? 'Your tickets are:' : 'Your ticket is:'}</p>
+      {paymentStatus && (
+      <>
+        <p>Your transaction was a success!</p>
+        <p>{ticketsToDisplay.length > 1 ? 'Your tickets are:' : 'Your ticket is:'}</p>
       {ticketsToDisplay.length > 0 ? (
         ticketsToDisplay.map(ticket => (
           <div key={ticket.id} className={styles.ticketContainer}>
@@ -148,12 +195,15 @@ function SuccessPage({ticketsInventory}) {
       ) : (
         <p>No tickets found.</p>
       )}
-    </div>
   </>
-);
-} //need to dynamically display the QR code on the page, is easiest option.
+)}
+</div>
+</>
+    );
+  }
+ //need to dynamically display the QR code on the page, is easiest option.
 
-export default SuccessPage;
+//export default SuccessPage;
 
 /*<div>
 <img src={`localhost/1337/uploads/${ticketToDownload.formalTicketQR}`} /> 

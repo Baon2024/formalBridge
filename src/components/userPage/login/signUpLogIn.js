@@ -1,10 +1,11 @@
 //page for logging/signup
 
 import { isAction } from "redux";
-import styles from './signUpLogIn.module.css'
+//import styles from './signUpLogIn.module.css'
 import { useState, useEffect } from "react";
 import { signUpUser, loginUser } from "./relevantAPIFunctions";
 import { Navigate, useNavigate } from "react-router-dom";
+import styles from './GlassAuth.module.css';
 
 
 
@@ -25,6 +26,7 @@ const [ signUp, setSignUp ] = useState(false);
 const [ email, setEmail ] = useState('');
 const [ password, setPassword ] = useState('');
 const [ message, setMessage ] = useState('');
+const [activeTab, setActiveTab] = useState('login');
 const [accountLinkCreatePending, setAccountLinkCreatePending] = useState(false);
   const [error, setError] = useState(false);
   const [connectedAccountId, setConnectedAccountId] = useState();
@@ -143,17 +145,26 @@ async function addInfoForStripe (connectedAccountId) {
 //every time signup or loginButton is clicked, should wipe email and password states? or not?
 
 function handleLogInOrSignUpSubmission() {
-    if (signUp && email && password) {
+  
+    /*if (signUp && email && password) {
         //send fetch API request to sign-up
         handleSignUp();
     } else if (logIn && email && password) {
         //send fetch API request to log-in
         handleLogIn();
+    }*/
+
+    if (email && password) {
+      if ( activeTab === 'login') {
+        handleLogIn();
+      } else if ( activeTab === 'signup') {
+        handleSignUp();
+      }
     }
   }
 
 
-    return (
+   /* return (
         <div className={styles.authForm}>
           <div className={styles.authButtons}>
             <button className={ signUp ? styles.authButtonActive : styles.authButton } onClick={handleToggleSignUp}>Sign-Up</button>
@@ -170,7 +181,144 @@ function handleLogInOrSignUpSubmission() {
             <p>{message}</p>
           )}
         </div>
-    )
+    )*/
+
+        const isValidEmail = (email) => {
+          return email.endsWith('@cam.ac.uk') || email.endsWith('@cantab.ac.uk');
+        };
+      
+        const isValidPassword = (password) => {
+          return password.length >= 6;
+        };
+      
+        const isFormValid = isValidEmail(email) && isValidPassword(password);
+      
+        return (
+          <div className={styles.container}>
+            <div className={styles.header}>
+              <h2 className={styles.title}>Welcome to Formalbridge</h2>
+              <p className={styles.description}>
+                Buy and sell formal tickets with your university email
+              </p>
+            </div>
+            <div className={styles.content}>
+              <div className={styles.tabs}>
+                <button
+                  className={activeTab === 'signup' ? styles.tabButtonActive : styles.tabButton}
+                  onClick={() => setActiveTab('signup')}
+                >
+                  Sign Up
+                </button>
+                <button
+                  className={activeTab === 'login' ? styles.tabButtonActive : styles.tabButton}
+                  onClick={() => setActiveTab('login')}
+                >
+                  Log In
+                </button>
+              </div>
+      
+              {activeTab === 'signup' && (
+                <div>
+                  <div className={styles.formGroup}>
+                    <label className={styles.label} htmlFor="email-signup">
+                      University Email
+                    </label>
+                    <input
+                      id="email-signup"
+                      type="email"
+                      placeholder="your.name@cam.ac.uk"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className={!email || isValidEmail(email) ? styles.input : styles.inputError}
+                    />
+                    {email && !isValidEmail(email) && (
+                      <p className={styles.errorText}>
+                        Please use your @cam or @cantab email address
+                      </p>
+                    )}
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label className={styles.label} htmlFor="password-signup">
+                      Password
+                    </label>
+                    <input
+                      id="password-signup"
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className={!password || isValidPassword(password) ? styles.input : styles.inputError}
+                    />
+                    {password && !isValidPassword(password) && (
+                      <p className={styles.errorText}>
+                        Password must be at least 6 characters
+                      </p>
+                    )}
+                  </div>
+                  <button 
+                    className={styles.button}
+                    disabled={!isFormValid}
+                    onClick={handleLogInOrSignUpSubmission}
+                  >
+                    Sign up to buy/sell formal tickets
+                  </button>
+                </div>
+              )}
+      
+              {activeTab === 'login' && (
+                <div>
+                  <div className={styles.formGroup}>
+                    <label className={styles.label} htmlFor="email-login">
+                      University Email
+                    </label>
+                    <input
+                      id="email-login"
+                      type="email"
+                      placeholder="your.name@cam.ac.uk"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className={styles.input}
+                    />
+                     {email && !isValidEmail(email) && (
+                      <p className={styles.errorText}>
+                        Please use your @cam or @cantab email address
+                      </p>
+                    )}
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label className={styles.label} htmlFor="password-login">
+                      Password
+                    </label>
+                    <input
+                      id="password-login"
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className={styles.input}
+                    />
+                    {password && !isValidPassword(password) && (
+                      <p className={styles.errorText}>
+                        Password must be at least 6 characters
+                      </p>
+                    )}
+                  </div>
+                  <button 
+                    className={styles.button}
+                    disabled={!isFormValid}
+                    onClick={handleLogInOrSignUpSubmission}
+                  >
+                    Log in
+                  </button>
+                </div>
+              )}
+      
+              {message && (
+                <div className={styles.alert}>
+                  {message}
+                </div>
+              )}
+            </div>
+          </div>
+        );
   }
 
 export default SignUpLogIn;

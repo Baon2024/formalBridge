@@ -83,6 +83,8 @@ function CartFooter({cart, removeTicketFromCart, resetCart, user}) {
     */
        } else if (!user) {
         //need to alert user that they aren't logged in - through pop-up box??
+        alert("you need to be logged-in to purchase tickets");
+        navigate('/signUpLogIn');
        }
     }
 
