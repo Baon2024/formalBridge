@@ -88,7 +88,7 @@ function CartFooter({cart, removeTicketFromCart, resetCart, user}) {
        }
     }
 
-    async function checkoutTicketsMultipleEmbedded(cart) {
+    /*async function checkoutTicketsMultipleEmbedded(cart) {
        
       console.log("user currently is: ", user);
       if (user) {
@@ -123,11 +123,11 @@ function CartFooter({cart, removeTicketFromCart, resetCart, user}) {
       console.log("Navigating to success page...");
       navigate(`/successPage/${urlEndpoint}`);
       dispatch(resetCart()); //-need to clear cart to prevent the tickets remaining there after being removed from displayed tickets
-   */
+   
       } else if (!user) {
        //need to alert user that they aren't logged in - through pop-up box??
       }
-   }
+   }*/
  
   
 
@@ -151,7 +151,6 @@ function CartFooter({cart, removeTicketFromCart, resetCart, user}) {
           </div>
           <div className={styles.checkoutButtonContainer}>
             <button className={styles.checkoutButton} onClick={() => checkoutTicketsMultipleStripeHosted(cart)}>Checkout</button>
-            <button className={styles.checkoutButton} onClick={() => checkoutTicketsMultipleEmbedded(cart)}>Checkout</button>
           </div>
         </div>
       </>

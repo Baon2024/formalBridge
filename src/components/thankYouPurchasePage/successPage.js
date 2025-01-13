@@ -23,10 +23,11 @@ export default function SuccessPage({ticketsInventory}) {
     console.log("these are your ticket ids: ", ticketIds);
     const dispatch = useDispatch();
     const ticketsInventory2 = useSelector(selectTicketsInventory);
+    const [error, setError] = useState(null);
     const [ ticketUpdatesCompleted, setTicketUpdatesCompleted ] = useState(false);
     const [ ticketsToCompareWith, setTicketsToCompareWith ] = useState([]);
     const [ paymentStatus, setPaymentStatus ] = useState('');
-    const params = new URLSearchParams(location.search);
+    const params = new URLSearchParams(window.location.search);
     const sessionId = params.get('session_id');
     if (sessionId) {
       console.log("sessionId is:", sessionId);
@@ -59,7 +60,7 @@ export default function SuccessPage({ticketsInventory}) {
               //Navigate(`/successPage/${ids}`);
             } else {
               setPaymentStatus('Payment failed or pending.');
-              Alert('transaction failed');
+              alert('transaction failed');
             }
           })
           .catch((error) => setError(error.message));
