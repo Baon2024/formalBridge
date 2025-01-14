@@ -1,6 +1,6 @@
 export async function createStripeAccount(/*setError,*/ setAccountCreatePending /*setAccountLinkCreatePending*/, setConnectedAccountId) {
     setAccountCreatePending(true);
-    setError(false);
+    //setError(false);
   
     try {
       const response = await fetch('http://localhost:5001/account', {
@@ -19,21 +19,21 @@ export async function createStripeAccount(/*setError,*/ setAccountCreatePending 
       }
   
       if (error) {
-        setError(true);
+        //setError(true);
         return error;
       }
     } catch (error) {
       setAccountCreatePending(false);
       console.error("Error during Stripe account creation:", error);
-      setError(true);
+      //setError(true);
       return error;
     }
   }
 
 
   export async function addInfoForStripe (connectedAccountId, /*setError setAccountLinkCreatePending*/) {
-    setAccountLinkCreatePending(true);
-    setError(false);
+    //setAccountLinkCreatePending(true);
+    //setError(false);
     fetch("http://localhost:5001/account_link", {
       method: "POST",
       headers: {
@@ -53,7 +53,7 @@ export async function createStripeAccount(/*setError,*/ setAccountCreatePending 
         }
   
         if (error) {
-          setError(true);
+          //setError(true);
         }
       });
   }

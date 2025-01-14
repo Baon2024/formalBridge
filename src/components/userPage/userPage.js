@@ -275,7 +275,7 @@ function UserPage({user, setUser}) {
       console.log("Updated user profile with connectedAccountId:", updateResponse);
     }
     
-    const nextResponse = await addInfoForStripe(response, setError, setAccountLinkCreatePending);
+    const nextResponse = await addInfoForStripe(response /*, setError setAccountLinkCreatePending*/);
     console.log("nextResponse", nextResponse);
     localStorage.setItem('user', JSON.stringify(userData));
     //connectedAccountId may not be updated quick enough, so using response instead as param
