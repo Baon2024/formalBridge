@@ -1,4 +1,4 @@
-export async function createStripeAccount(setError, setAccountCreatePending, setAccountLinkCreatePending, setConnectedAccountId) {
+export async function createStripeAccount(/*setError,*/ setAccountCreatePending /*setAccountLinkCreatePending*/, setConnectedAccountId) {
     setAccountCreatePending(true);
     setError(false);
   
@@ -31,7 +31,7 @@ export async function createStripeAccount(setError, setAccountCreatePending, set
   }
 
 
-  export async function addInfoForStripe (connectedAccountId, setError, setAccountLinkCreatePending) {
+  export async function addInfoForStripe (connectedAccountId, /*setError setAccountLinkCreatePending*/) {
     setAccountLinkCreatePending(true);
     setError(false);
     fetch("http://localhost:5001/account_link", {
@@ -45,7 +45,7 @@ export async function createStripeAccount(setError, setAccountCreatePending, set
     })
       .then((response) => response.json())
       .then((json) => {
-        setAccountLinkCreatePending(false);
+        //setAccountLinkCreatePending(false);
   
         const { url, error } = json;
         if (url) {

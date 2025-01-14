@@ -1,13 +1,13 @@
 //page for all the users' detaisl - lets make this a single page, just with many components
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import { fetchUserDetails, fetchUserDetailsTrial } from "./login/relevantAPIFunctions";
+import { useNavigate, Link } from "react-router-dom";
+import { fetchUserDetailsTrial } from "./login/relevantAPIFunctions";
 import { fetchTicketsData } from "../APIFunctions/APIFunctions";
 import { addInfoForStripe, createStripeAccount } from "./stripeFunctions";
 import styles from './userPage.module.css';
 import emailFunctionTest from "./emailFunctionTest";
 import addConnectedAccountIdToUser from "./addConnectedAccountIdToUser";
-import { loadConnectAndInitialize } from "@stripe/connect-js";
+//import { loadConnectAndInitialize } from "@stripe/connect-js";
 //import { ClassicTicket } from "./classicTicket";
 
 
@@ -28,10 +28,10 @@ function UserPage({user, setUser}) {
   const [ newPrice, setNewPrice ] = useState(null);
   const [ newPriceVisibility, setNewPriceVisibility ] = useState(null);
   const [ ticketsToDisplayForBoughtTicket, setTicketsToDisplayForBoughtTickets ] = useState(null);
-  const [ ticketsToDisplayForListedTickets, setTicketsToDisplayForListedTickets ] = useState(null);
-  const [showQRCode, setShowQRCode] = useState(false);
+  //const [ ticketsToDisplayForListedTickets, setTicketsToDisplayForListedTickets ] = useState(null);
+  //const [showQRCode, setShowQRCode] = useState(false);
   const navigate = useNavigate();
-  const [accountLinkCreatePending, setAccountLinkCreatePending] = useState(false);
+  //const [accountLinkCreatePending, setAccountLinkCreatePending] = useState(false);
   const [error, setError] = useState(false);
   const [connectedAccountId, setConnectedAccountId] = useState();
 const [accountCreatePending, setAccountCreatePending] = useState(false);
@@ -93,7 +93,7 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
         console.log("Filtered tickets for bought tickets:", ticketsToAssignBought);
         console.log("Filtered tickets for listed tickets:", ticketsToAssignListed);
         setTicketsToDisplayForBoughtTickets(ticketsToAssignBought); // Assign filtered tickets to state
-        setTicketsToDisplayForListedTickets(ticketsToAssignListed);
+        //setTicketsToDisplayForListedTickets(ticketsToAssignListed);
       } catch (error) {
         console.error("Error filtering tickets:", error);
       }
@@ -263,7 +263,7 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
 
   async function stripeOnboardingHandler() {
     if (!userData.connectedAccountId) {
-    const response = await createStripeAccount(setError, setAccountCreatePending, setAccountLinkCreatePending, setConnectedAccountId); 
+    const response = await createStripeAccount(/*setError*/ setAccountCreatePending, setAccountLinkCreatePending, setConnectedAccountId); 
     console.log("this is what the response returned from createStripeAccount is:", response);
     //function to add connectedAccountId to user's account/profile in database
     //then would need to make sure useEffect for fetching user through api call triggers
@@ -282,7 +282,7 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
   }
 
   async function editStripeAccountHandler() {
-    const nextResponse = await addInfoForStripe(userData.connectedAccountId, setError, setAccountLinkCreatePending);
+    const nextResponse = await addInfoForStripe(userData.connectedAccountId /*setError*/ //setAccountLinkCreatePending);
   }
   //there's a problem, where the function sometimes doesn't work when called first time
   //but does work when called secodn time
