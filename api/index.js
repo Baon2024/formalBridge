@@ -6,6 +6,7 @@ import Stripe from "stripe"; // Correct way to import Stripe in ES modules
 import cors from 'cors';
 import { render } from "@react-email/render";
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 //import APIFunctionsForBackend from '../backend/APIFunctionsForBackend.js';
 //const APIFunctionsForBackend = import('./APIFunctionsForBackend'); 
@@ -25,6 +26,8 @@ let globalUser, globalTicket;
 
 const app = express();
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 //console.log(process.env.RESEND_API_KEY); // Check if the API key is loaded
 //const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
