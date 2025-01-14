@@ -40,7 +40,9 @@ const endpointSecret = 'whsec_d841e887e13b7130ce9da8227aafc1a2c38c9289b03f48f955
 
 // Middleware
 //app.use(bodyParser.json());
-app.use(cors({ methods: ['GET', 'POST', 'PUT', 'DELETE'],  credentials: true, /* Allow cookies to be sent*/}));
+app.use(cors({methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+  credentials: true }));
 // Enable CORS for specific origin (your frontend URL)
 /*app.use(
   cors({

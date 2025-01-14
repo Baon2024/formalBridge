@@ -41,7 +41,7 @@ const API_URL = process.env.REACT_APP_API_URL
   try {
     //const response = await fetch(`${API_URL}getTickets`);
 
-    const response = await fetch(`${API_URL}getTickets`, {
+    const response = await fetch(`${API_URL}api/getTickets`, {
       method: "GET",
       headers: {
           "Content-type": "application/json",
