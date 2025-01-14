@@ -1,7 +1,7 @@
 //code for teh thank you page after ticket purchase
 import { useParams } from "react-router-dom";
 import styles from './successPage.module.css';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector/*, useDispatch*/ } from "react-redux";
 import { selectTicketsInventory } from "../../reduxStateComponents/TicketInventorySlice/ticketInventorySlice";
 import { useEffect, useState } from "react";
 //import loadTicketsForInventory from "../../reduxStateComponents/TicketInventorySlice/loadTicketsForInventory";
