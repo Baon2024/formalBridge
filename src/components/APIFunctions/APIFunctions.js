@@ -35,9 +35,9 @@ async function fetchTicketsData() {
 
 export async function fetchTicketsData2() {
 
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/';      
         
-        
-  const data = await fetch('http://localhost:5001/getTickets');
+  const data = await fetch(`${API_URL}}getTickets`);
   const dataToReturn = await data.json();
   console.log("these are the filtered tickets returned to the front-end, just before being set:", dataToReturn);
   return dataToReturn;
