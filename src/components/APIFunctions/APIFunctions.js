@@ -36,7 +36,7 @@ async function fetchTicketsData() {
 export async function fetchTicketsData2() {
 
   try {
-    const response = await fetch(`${API_URL}getTickets`);
+    const response = await fetch(`${API_URL}/api/getTickets`);
     if (!response.ok) {
       throw new Error(`Error: ${response.status} ${response.statusText}`);
     }
