@@ -59,7 +59,7 @@ function TicketPage({ /*ticketsInventory,*/ setTicketsInventory, cart, addTicket
         const isInCart = cart.some(cartItem => cartItem.id === ticketToDisplay.id);
         setIsInCart(isInCart);
         console.log("isInCart is currently: ", isInCart);
-    }, [cart])
+    }, [cart, ticketToDisplay.id])
 
     function addTicketToCartHandler(ticket) {
         //const ticket = e.target.value;

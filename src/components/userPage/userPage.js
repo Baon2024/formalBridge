@@ -61,7 +61,7 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
     };
 
     getUserData();
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     const filterTicketsBought = async () => {
@@ -100,7 +100,7 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
     };
 
     filterTicketsBought();
-  }, [userData]);
+  }, [userData, token]);
 
   //now get tickets, and then filter by these ids
 
