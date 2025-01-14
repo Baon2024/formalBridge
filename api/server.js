@@ -34,7 +34,7 @@ const endpointSecret = 'whsec_d841e887e13b7130ce9da8227aafc1a2c38c9289b03f48f955
 // Middleware
 //app.use(bodyParser.json());
 app.use(cors());
-//app.use('/webhook', bodyParser.raw({ type: 'application/json' }));
+app.use('/webhook', bodyParser.raw({ type: 'application/json' }));
 
 /*app.use((req, res, next) => {
   if (req.originalUrl === '/webhook') {
@@ -300,7 +300,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 
 })
 
-/*app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => { 
+app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => { 
 
   let event = req.body;
   //let eventTrial = req.body;
@@ -387,7 +387,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   //res.send();
   res.status(200).json({ received: true });
 
-})*/
+})
 
 app.post('/create-checkout-session-destination', async (req, res) => {
 
