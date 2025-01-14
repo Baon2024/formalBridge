@@ -38,10 +38,11 @@
     "webpack-dev-server": "^5.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently \"react-scripts start\" \"node api/index.js\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "concurrently \"react-scripts start\" \"node api/index.js\""
   },
   "eslintConfig": {
     "extends": [
@@ -66,6 +67,7 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-react": "^7.25.9",
     "@svgr/webpack": "^8.1.0",
+    "concurrently": "^9.1.2",
     "react-svg-loader": "^3.0.0"
   }
 }

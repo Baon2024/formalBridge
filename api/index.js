@@ -5,6 +5,7 @@ import { Resend } from "resend";
 import Stripe from "stripe"; // Correct way to import Stripe in ES modules
 import cors from 'cors';
 import { render } from "@react-email/render";
+import path from 'path';
 
 //import APIFunctionsForBackend from '../backend/APIFunctionsForBackend.js';
 //const APIFunctionsForBackend = import('./APIFunctionsForBackend'); 
@@ -31,6 +32,9 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const endpointSecret = 'whsec_d841e887e13b7130ce9da8227aafc1a2c38c9289b03f48f955943ed25a67adc6';
   //replace this with the secret from the webhooks section of the Stripe Dashbord when you switch from 'test' to 'live'
 
+
+  app.use(express.static(path.join(__dirname, '../build')));
+
 // Middleware
 //app.use(bodyParser.json());
 app.use(cors());
@@ -45,6 +49,12 @@ app.use('/webhook', bodyParser.raw({ type: 'application/json' }));
 });*/
 //app.use('/webhook', bodyParser.raw({ type: 'application/json' }));
 app.use(bodyParser.json());
+
+// Catch-all route to serve the React app for any other requests
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
+});
+//added from chatgpt for vercel deplpoyment - not previous code
 
 
 // API endpoint to send an email
