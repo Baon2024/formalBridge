@@ -32,9 +32,9 @@ function UserPage({user, setUser}) {
   //const [showQRCode, setShowQRCode] = useState(false);
   const navigate = useNavigate();
   //const [accountLinkCreatePending, setAccountLinkCreatePending] = useState(false);
-  const [error, setError] = useState(false);
+  //const [error, setError] = useState(false);
   const [connectedAccountId, setConnectedAccountId] = useState();
-const [accountCreatePending, setAccountCreatePending] = useState(false);
+  //const [accountCreatePending, setAccountCreatePending] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(null);
 
@@ -213,6 +213,7 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
       if (response.ok) {
         // Update was successful
         const updatedTicket = await response.json();
+        console.log("updatedTicket", updatedTicket);
   
         // Update local state or userData to reflect the new price
         // Assuming the 'myTicketsListed' array in userData holds the ticket listings
@@ -263,7 +264,7 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
 
   async function stripeOnboardingHandler() {
     if (!userData.connectedAccountId) {
-    const response = await createStripeAccount(/*setError*/ setAccountCreatePending, setAccountLinkCreatePending, setConnectedAccountId); 
+    const response = await createStripeAccount(/*setError setAccountCreatePending setAccountLinkCreatePending,*/ setConnectedAccountId); 
     console.log("this is what the response returned from createStripeAccount is:", response);
     //function to add connectedAccountId to user's account/profile in database
     //then would need to make sure useEffect for fetching user through api call triggers
@@ -275,6 +276,7 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
     }
     
     const nextResponse = await addInfoForStripe(response, setError, setAccountLinkCreatePending);
+    console.log("nextResponse", nextResponse);
     localStorage.setItem('user', JSON.stringify(userData));
     //connectedAccountId may not be updated quick enough, so using response instead as param
     //response being the returned connectedAccountId from the function directly
@@ -282,7 +284,8 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
   }
 
   async function editStripeAccountHandler() {
-    const nextResponse = await addInfoForStripe(userData.connectedAccountId /*setError*/ //setAccountLinkCreatePending);
+    const nextResponse = await addInfoForStripe(userData.connectedAccountId /*setError*/ /*setAccountLinkCreatePending*/);
+    console.log("nextResponse", nextResponse);
   }
   //there's a problem, where the function sometimes doesn't work when called first time
   //but does work when called secodn time
