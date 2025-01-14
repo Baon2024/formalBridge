@@ -35,10 +35,19 @@ async function fetchTicketsData() {
 
 export async function fetchTicketsData2() {
 
-const API_URL = 'https://experimentalformalbridge-865en9cdm.vercel.app/';
+//const API_URL = 'https://experimentalformalbridge-865en9cdm.vercel.app/';
+const API_URL = process.env.REACT_APP_API_URL 
 
   try {
-    const response = await fetch(`${API_URL}api/getTickets`);
+    //const response = await fetch(`${API_URL}getTickets`);
+
+    const response = await fetch(`${API_URL}getTickets`, {
+      method: "GET",
+      headers: {
+          "Content-type": "application/json",
+      },
+    });
+
     if (!response.ok) {
       throw new Error(`Error: ${response.status} ${response.statusText}`);
     }
