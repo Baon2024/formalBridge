@@ -35,8 +35,10 @@ async function fetchTicketsData() {
 
 export async function fetchTicketsData2() {
 
+const API_URL = 'https://experimentalformalbridge-865en9cdm.vercel.app/';
+
   try {
-    const response = await fetch(`${API_URL}/api/getTickets`);
+    const response = await fetch(`${API_URL}api/getTickets`);
     if (!response.ok) {
       throw new Error(`Error: ${response.status} ${response.statusText}`);
     }
