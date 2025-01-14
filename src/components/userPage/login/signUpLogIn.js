@@ -1,10 +1,10 @@
 //page for logging/signup
 
-import { isAction } from "redux";
+//import { isAction } from "redux";
 //import styles from './signUpLogIn.module.css'
 import { useState, useEffect } from "react";
 import { signUpUser, loginUser } from "./relevantAPIFunctions";
-import { Navigate, useNavigate } from "react-router-dom";
+import { /*Navigate,*/ useNavigate } from "react-router-dom";
 import styles from './GlassAuth.module.css';
 
 
@@ -33,11 +33,12 @@ const [accountLinkCreatePending, setAccountLinkCreatePending] = useState(false);
 const [accountCreatePending, setAccountCreatePending] = useState(false);
 const navigate = useNavigate();
 let token;
+console.log("token", token);
 
 useEffect(() => {
     console.log("current state of login and signup are: ", logIn, signUp);
     console.log("user currently is: ", user);
-}, [logIn, signUp])
+}, [logIn, signUp, user])
 
 function handleToggleSignUp(signUp) {
     if (logIn) {
@@ -54,6 +55,7 @@ function handleToggleLogIn() {
     }
 
 }
+console.log(handleToggleLogIn, handleToggleSignUp);
 
 const handleLogIn = async () => {
     const user = await loginUser(email, password);
@@ -85,10 +87,12 @@ const handleLogIn = async () => {
   };
 
 //stripe code to direct user to setup stripe account
-  async function createStripeAccount() {
+  /*async function createStripeAccount() {
   setAccountCreatePending(true);
+  console.log(accountCreatePending);
   console.log("setAccountCreatePending is:", setAccountCreatePending);
               setError(false);
+              console.log("error", error);
               fetch('http://localhost:5001/account', {
                 method: "POST",
               })
@@ -100,6 +104,7 @@ const handleLogIn = async () => {
 
                   if (account) {
                     setConnectedAccountId(account);
+                    console.log("connectedAccountId", connectedAccountId);
                     return account;
                   }
 
@@ -111,6 +116,7 @@ const handleLogIn = async () => {
 }
 async function addInfoForStripe (connectedAccountId) {
   setAccountLinkCreatePending(true);
+  console.log("accountlinkcretepending:", accountLinkCreatePending)
   setError(false);
   fetch("http://localhost:5001/account_link", {
     method: "POST",
@@ -134,7 +140,7 @@ async function addInfoForStripe (connectedAccountId) {
         setError(true);
       }
     });
-}
+}*/
 
 
 
@@ -145,7 +151,7 @@ async function addInfoForStripe (connectedAccountId) {
 //every time signup or loginButton is clicked, should wipe email and password states? or not?
 
 function handleLogInOrSignUpSubmission() {
-  
+
     /*if (signUp && email && password) {
         //send fetch API request to sign-up
         handleSignUp();

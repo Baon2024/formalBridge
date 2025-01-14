@@ -1,16 +1,16 @@
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
-import { createBrowserRouter, createRoutesFromElements, MemoryRouter, Route, Router, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, /*MemoryRouter,*/ Route, /*Router,*/ RouterProvider } from 'react-router-dom';
 import Header from './components/headerComponent/header';
 import Home from './components/homeComponent/home';
 import UploadTicket from './components/uploadTicketComponent/uploadTicket';
 import TicketCollectionPage from './components/ticketCollectionPage/ticketCollectionPage';
 import TicketPage from './components/ticketPageComponent/ticketPage';
-import { loadTicketsInventoryFromDatabase, addTicket, removeTicket } from './reduxStateComponents/TicketInventorySlice/ticketInventorySlice';
+//import { loadTicketsInventoryFromDatabase, addTicket, removeTicket } from './reduxStateComponents/TicketInventorySlice/ticketInventorySlice';
 import { useEffect, useState } from 'react';
-import CartFooter from './components/cartFooterComponent/cartFooterComponent';
-import store from './reduxStateComponents/store';
-import { Provider, useSelector } from 'react-redux';
+//import CartFooter from './components/cartFooterComponent/cartFooterComponent';
+//import store from './reduxStateComponents/store';
+import { /*Provider,*/ useSelector } from 'react-redux';
 import { addTicketToCart, removeTicketFromCart, resetCart } from './reduxStateComponents/TicketInventorySlice/cartInventorySlice';
 import { selectCartInventory } from './reduxStateComponents/TicketInventorySlice/cartInventorySlice';
 import SignUpLogIn from './components/userPage/login/signUpLogIn';
@@ -36,11 +36,13 @@ function App() {
 
   const [ ticketsInventory, setTicketsInventory ] = useState([]);
   //const [ cart, setCart ] = useState([]);
-  const [ isLoggedIn, setIsLoggedIn ] = useState(false);
+  //const [ isLoggedIn, setIsLoggedIn ] = useState(false);
   //const dispatch = store.getState;
   const cart = useSelector(selectCartInventory);
   //const tickets = state.tickets;
   const [ user, setUser ] = useState(null);
+
+  //console.log("isLoggedIn", isLoggedIn);
 
   useEffect(() => {
 

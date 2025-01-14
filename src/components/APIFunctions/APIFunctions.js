@@ -149,6 +149,7 @@ async function fetchTicketIdByFilter(ticketId, jwtToken) {
 
     const ticketDocumentId = ticket.documentId;
     const userDocumentId = user.user.documentId;
+    console.log("userDocumentId", userDocumentId);
     const userId = user.user.id;
 
     try {
@@ -216,18 +217,18 @@ async function createNewTicket(newTicket, user) {
         //const data = response.json();
         //return data;
         return response;
-        console.log("this is the response abotu to be returned: ", response);
+        //console.log("this is the response abotu to be returned: ", response);
     } catch (error) {
         console.log(error);
     }
 }
 
-async function sendTicketSoldEmail({ticket}) {
+/*async function sendTicketSoldEmail({ticket}) {
 
   const user = ticket.sellerUser;
   const ticketName = ticket.eventName;
 
-}
+}*/
 
 
 
