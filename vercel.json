@@ -4,7 +4,7 @@
     "builds": [
       {
         "src": "package.json",
-        "use": "@vercel/react"
+        "use": "@vercel/static-build"
       },
       {
         "src": "api/index.js",
