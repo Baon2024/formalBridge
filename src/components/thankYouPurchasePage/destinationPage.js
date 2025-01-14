@@ -11,6 +11,8 @@ export default function DestinationPage() {
 
     const [paymentStatus, setPaymentStatus] = useState(null);
     const [error, setError] = useState(null);
+    console.log(paymentStatus);
+    console.log(error);
     const Navigate = useNavigate();
 
     const { ids } = useParams(); //or the get----byParams one.
@@ -61,7 +63,7 @@ export default function DestinationPage() {
         .catch((error) => setError(error.message));
     
     }
-  }, [sessionId]);
+  }, [sessionId, Navigate, ids]);
 
   return (
     <div>

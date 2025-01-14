@@ -3,9 +3,9 @@ import styles from './header.module.css';
 import React from "react";
 import NavigationBar from "./navigationBar/navigationBar";
 import CartFooter from "../cartFooterComponent/cartFooterComponent";
-import { selectCartInventory } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
-import { useSelector } from "react-redux";
-import { removeTicketFromCart, resetCart } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
+//import { selectCartInventory } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
+//import { useSelector } from "react-redux";
+import { /*removeTicketFromCart,*/ resetCart } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
 
 function Header({cart, removeTicketFromCart, user}) {
 

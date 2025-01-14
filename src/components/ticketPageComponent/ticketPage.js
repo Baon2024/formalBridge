@@ -1,18 +1,18 @@
 //the page for individual tickets
 import TicketPageItem from "./ticketPageCentralComponent/ticketPageCentralComponent";
 //import { ticketsData } from "../ticketCollectionPage/ticketCollectionPage";
-import { Navigate, useParams } from "react-router-dom";
-import { fetchTicketsData, updateBuyerUser, updateUserTicketsBought } from "../APIFunctions/APIFunctions";
+import { /*Navigate,*/ useParams } from "react-router-dom";
+import { /*fetchTicketsData, updateBuyerUser,*/ updateUserTicketsBought } from "../APIFunctions/APIFunctions";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectTicketsInventory } from "../../reduxStateComponents/TicketInventorySlice/ticketInventorySlice";
 import { sendEmailToNotifySeller } from "../userPage/emailFunctionTest";
-import { setTicketBought, fetchTicketIdByFilter } from "../APIFunctions/APIFunctions";
+//import { setTicketBought, fetchTicketIdByFilter } from "../APIFunctions/APIFunctions";
 import stripeCreateCheckoutSession from "../APIFunctions/stripeCreateCheckoutSession";
 import stripeCreateCheckoutSessionDestination from "../APIFunctions/stripeCreateCheckoutSessionDestination";
 import stripeCreateCheckoutSessionDestinationEmbedded from "../APIFunctions/stripeCreateCheckoutSessionDestinationEmbedded";
-import { selectCartInventory, addTicketToCart } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
+//import { selectCartInventory, addTicketToCart } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
 
 
 function TicketPage({ /*ticketsInventory,*/ setTicketsInventory, cart, addTicketToCart, user }) {
@@ -24,6 +24,7 @@ function TicketPage({ /*ticketsInventory,*/ setTicketsInventory, cart, addTicket
     //const cart = useSelector(selectCartInventory);
     const dispatch = useDispatch();
     const [ ticketsData, setTicketsData] = useState([]);
+    console.log(setTicketsData);
     const [ isInCart, setIsInCart ] = useState(false);
     //Navigate = useNavigate();
     const Navigate = useNavigate();
@@ -105,7 +106,7 @@ function TicketPage({ /*ticketsInventory,*/ setTicketsInventory, cart, addTicket
        //here add the function to send email to seller notifying of sale - need user of ticketSeller
        console.log("Before checking sellerUser email");
        console.log("email is:", ticket.sellerUser.email);
-       if (ticket.sellerUser.email == 'joejoeboyes2013@gmail.com') { //here as placeholder, til you have a resend sub
+       if (ticket.sellerUser.email === 'joejoeboyes2013@gmail.com') { //here as placeholder, til you have a resend sub
           sendEmailToNotifySeller(ticket)
          console.log("ready for the email function");
        }
@@ -147,7 +148,7 @@ function TicketPage({ /*ticketsInventory,*/ setTicketsInventory, cart, addTicket
      //here add the function to send email to seller notifying of sale - need user of ticketSeller
      console.log("Before checking sellerUser email");
      console.log("email is:", ticket.sellerUser.email);
-     if (ticket.sellerUser.email == 'joejoeboyes2013@gmail.com') { //here as placeholder, til you have a resend sub
+     if (ticket.sellerUser.email === 'joejoeboyes2013@gmail.com') { //here as placeholder, til you have a resend sub
         sendEmailToNotifySeller(ticket)
        console.log("ready for the email function");
      }
@@ -192,7 +193,7 @@ function TicketPage({ /*ticketsInventory,*/ setTicketsInventory, cart, addTicket
    //here add the function to send email to seller notifying of sale - need user of ticketSeller
    console.log("Before checking sellerUser email");
    console.log("email is:", ticket.sellerUser.email);
-   if (ticket.sellerUser.email == 'joejoeboyes2013@gmail.com') { //here as placeholder, til you have a resend sub
+   if (ticket.sellerUser.email === 'joejoeboyes2013@gmail.com') { //here as placeholder, til you have a resend sub
       sendEmailToNotifySeller(ticket)
      console.log("ready for the email function");
    }

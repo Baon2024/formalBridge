@@ -27,10 +27,10 @@ const [ email, setEmail ] = useState('');
 const [ password, setPassword ] = useState('');
 const [ message, setMessage ] = useState('');
 const [activeTab, setActiveTab] = useState('login');
-const [accountLinkCreatePending, setAccountLinkCreatePending] = useState(false);
+/*const [accountLinkCreatePending, setAccountLinkCreatePending] = useState(false);
   const [error, setError] = useState(false);
   const [connectedAccountId, setConnectedAccountId] = useState();
-const [accountCreatePending, setAccountCreatePending] = useState(false);
+const [accountCreatePending, setAccountCreatePending] = useState(false);*/
 const navigate = useNavigate();
 let token;
 console.log("token", token);

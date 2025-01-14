@@ -19,7 +19,7 @@ export default async function stripeCreateCheckoutSessionDestinationEmbedded(tic
     stripeAccount: connectedAccountId,  // Pass the connected account to Stripe.js
   });*/
 
-  const stripe = await loadStripe('pk_test_51QNlAaG7WeMIf1DGKqMw0dAcSmjfnBlJNH3wr8fjyCqmZazDvpOEaNv7yHuHXlEHv3CL9BpTE3kv0JVA7F5lVIhy00EwL9mhQA');
+  //const stripe = await loadStripe('pk_test_51QNlAaG7WeMIf1DGKqMw0dAcSmjfnBlJNH3wr8fjyCqmZazDvpOEaNv7yHuHXlEHv3CL9BpTE3kv0JVA7F5lVIhy00EwL9mhQA');
    
   const ticketAndUser = [ ticket, user];
 

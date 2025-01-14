@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react"
-import { fetchTicketsData, fetchTicketsData2 } from "../APIFunctions/APIFunctions"
+//import { fetchTicketsData, fetchTicketsData2 } from "../APIFunctions/APIFunctions"
 import styles from './ticketCollectionPage.module.css';
 import TicketComponent from "../../ticketComponent/ticketComponent";
-import sampleData from "./sampleData";
+//import sampleData from "./sampleData";
 import SearchBar from "./searchTerm";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { selectTicketsInventory, selectIsLoading, selectRejected } from "../../reduxStateComponents/TicketInventorySlice/ticketInventorySlice";
 import loadTicketsForInventory from "../../reduxStateComponents/TicketInventorySlice/loadTicketsForInventory";
-import { selectCartInventory } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
+//import { selectCartInventory } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
 
 
 function TicketCollectionPage({ticketsInventory, setTicketsInventory, cart}) {
@@ -58,7 +58,7 @@ function TicketCollectionPage({ticketsInventory, setTicketsInventory, cart}) {
 
     //the call is being made and logged - its just not accesisng the databse successfully
     //but it works for their example categories - so use that for now
-    }, [])
+    }, [dispatch, reduxTickets])
 
     useEffect(() => {
       if ( reduxTickets.length > 0) {

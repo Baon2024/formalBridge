@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 //import CartFooter from './components/cartFooterComponent/cartFooterComponent';
 //import store from './reduxStateComponents/store';
 import { /*Provider,*/ useSelector } from 'react-redux';
-import { addTicketToCart, removeTicketFromCart, resetCart } from './reduxStateComponents/TicketInventorySlice/cartInventorySlice';
+import { addTicketToCart, removeTicketFromCart/*, resetCart*/ } from './reduxStateComponents/TicketInventorySlice/cartInventorySlice';
 import { selectCartInventory } from './reduxStateComponents/TicketInventorySlice/cartInventorySlice';
 import SignUpLogIn from './components/userPage/login/signUpLogIn';
 import UserPage from './components/userPage/userPage';

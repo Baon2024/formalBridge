@@ -2,11 +2,11 @@
 import styles from './cartFooterComponent.module.css'
 import CartTicket from './cartTicket';
 import { useEffect } from 'react';
-import { selectCartInventory, addTicketToCart, removeTicketFromCart } from '../../reduxStateComponents/TicketInventorySlice/cartInventorySlice';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateBuyerUser, setTicketBought } from '../APIFunctions/APIFunctions';
+//import { selectCartInventory, addTicketToCart, removeTicketFromCart } from '../../reduxStateComponents/TicketInventorySlice/cartInventorySlice';
+import { /*useSelector,*/ useDispatch } from 'react-redux';
+//import { updateBuyerUser, setTicketBought } from '../APIFunctions/APIFunctions';
 import { useNavigate } from 'react-router-dom'; 
-import stripeCreateCheckoutSessionDestinationEmbedded from '../APIFunctions/stripeCreateCheckoutSessionDestinationEmbedded';
+//import stripeCreateCheckoutSessionDestinationEmbedded from '../APIFunctions/stripeCreateCheckoutSessionDestinationEmbedded';
 import stripeCreateCheckoutSessionDestinationMultiple from '../APIFunctions/stripeCreateCheckoutSessionDestinationMultiple';
 //import { stripeCreateCheckoutSessionMultiple } from '../APIFunctions/stripeCreateCheckoutSession';
 
@@ -56,12 +56,14 @@ function CartFooter({cart, removeTicketFromCart, resetCart, user}) {
        console.log("this is totalCartIds:", totalCartIds);
 
        const urlEndpoint = totalCartIds;
+       console.log(urlEndpoint);
 
        //Navigate(`/successPage/${urlEndpoint}`);
        const jwtToken = user.token;
        console.log("here's the user it will add the ticket to", user);
        console.log("the jwtToken being inputted into function is: ", jwtToken);
        const response = await stripeCreateCheckoutSessionDestinationMultiple(cart, totalCartIds, user) //here, and pass whole cart I think
+       console.log(response);
        //navigate('/successPage?${CHECKOUT_SESSION_ID}', { state: { clientSecret } });
 
        // - i've commented out the rest of the function, so i can test it in isolation

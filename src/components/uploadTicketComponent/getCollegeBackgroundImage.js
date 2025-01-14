@@ -90,7 +90,7 @@ async function uploadQRCode(file) {
 
 
 
-async function updateBuyerUser(ticket, user) {
+/*async function updateBuyerUser(ticket, user) {
   
     const ticketDocumentId = ticket.documentId;
     const userDocumentId = user.user.documentId; //needs to be user.user.documentId
@@ -124,12 +124,13 @@ async function updateBuyerUser(ticket, user) {
         throw error; // Rethrow the error for further handling if needed
     }
 
-  }
+  }*/
   
   async function updateUserTicketsListed(user, ticket) {
 
     const ticketDocumentId = ticket.documentId;
     const userDocumentId = user.user.documentId;
+    console.log(userDocumentId);
     const userId = user.user.id;
 
     try {

@@ -4,8 +4,8 @@ import styles from './successPage.module.css';
 import { useSelector, useDispatch } from "react-redux";
 import { selectTicketsInventory } from "../../reduxStateComponents/TicketInventorySlice/ticketInventorySlice";
 import { useEffect, useState } from "react";
-import loadTicketsForInventory from "../../reduxStateComponents/TicketInventorySlice/loadTicketsForInventory";
-import { setTicketBought, updateBuyerUser, fetchTicketsData } from "../APIFunctions/APIFunctions";
+//import loadTicketsForInventory from "../../reduxStateComponents/TicketInventorySlice/loadTicketsForInventory";
+import { /*setTicketBought, updateBuyerUser,*/ fetchTicketsData } from "../APIFunctions/APIFunctions";
 //import { updateBuyerUser } from "../APIFunctions/APIFunctions";
 //this page will thank the user, and have a button allowing the user to download their formalTicket PDF
 //it will do this by the previous checkout page sending the user here with a dynamic url '/checkout/thankyou/:name' in react router
@@ -21,10 +21,13 @@ export default function SuccessPage({ticketsInventory}) {
     const ticketIds = ids.split(',').map(id => id);
     //const ticketIds = ids.split(',').map(id => Number(id));
     console.log("these are your ticket ids: ", ticketIds);
-    const dispatch = useDispatch();
+    //const dispatch = useDispatch();
     const ticketsInventory2 = useSelector(selectTicketsInventory);
     const [error, setError] = useState(null);
+    console.log(error);
     const [ ticketUpdatesCompleted, setTicketUpdatesCompleted ] = useState(false);
+    console.log(setTicketUpdatesCompleted);
+    console.log(ticketUpdatesCompleted);
     const [ ticketsToCompareWith, setTicketsToCompareWith ] = useState([]);
     const [ paymentStatus, setPaymentStatus ] = useState('');
     const params = new URLSearchParams(window.location.search);

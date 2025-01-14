@@ -5,7 +5,7 @@ import { loadStripe } from "@stripe/stripe-js";
 export default async function stripeCreateCheckoutSessionDestinationMultiple(cart, totalCartIds, user) {
 
 
-    const stripe = await loadStripe('pk_test_51QNlAaG7WeMIf1DGKqMw0dAcSmjfnBlJNH3wr8fjyCqmZazDvpOEaNv7yHuHXlEHv3CL9BpTE3kv0JVA7F5lVIhy00EwL9mhQA');
+    //const stripe = await loadStripe('pk_test_51QNlAaG7WeMIf1DGKqMw0dAcSmjfnBlJNH3wr8fjyCqmZazDvpOEaNv7yHuHXlEHv3CL9BpTE3kv0JVA7F5lVIhy00EwL9mhQA');
 
     console.log("cart inside of stripeCreateCheckoutSessionMultiple is:", cart);
 

@@ -10,7 +10,7 @@ import TextField from '@mui/material/TextField';
 import { createNewTicket } from "../APIFunctions/APIFunctions";
 import { useSelector } from "react-redux";
 import { selectTicketsInventory } from "../../reduxStateComponents/TicketInventorySlice/ticketInventorySlice";
-import { getCollegeBackgroundImage, uploadQRCode, updateUserTicketsListed } from "./getCollegeBackgroundImage";
+import { getCollegeBackgroundImage, uploadQRCode/*, updateUserTicketsListed*/ } from "./getCollegeBackgroundImage";
 import { useNavigate } from "react-router-dom";
 
 

@@ -1,5 +1,5 @@
 import styles from './ticketPageCentralComponent.module.css';
-import { useEffect } from 'react';
+//import { useEffect } from 'react';
 //import { useDispatch } from 'redux'; //is this how??
 
 //need to change styling to {style.----} and change to camelCase in the css file
@@ -37,7 +37,7 @@ function TicketPageItem({ticket, addTicketToCart, cart, isInCart, buyTicket, buy
       {ticket ? ( // Use a conditional (ternary) operator for clearer renderin
       <>
       <div className={styles.container}>
-        <img src={ticket.formalTicketCollegeBackgroundImage?.url 
+        <img alt="none" src={ticket.formalTicketCollegeBackgroundImage?.url 
         ? `http://localhost:1338/${ticket.formalTicketCollegeBackgroundImage.url}` 
         : 'public/queens.jpeg'}  id={styles.backgroundImage} />
         <div className={styles.ticketPageItem} value={ticket}>
@@ -56,7 +56,7 @@ function TicketPageItem({ticket, addTicketToCart, cart, isInCart, buyTicket, buy
             </div>
             <div className={styles.buttonContainer}>
               <button className={ isInCart ? styles.addedToCartButton : styles.addToCartButton} disabled={isInCart} onClick={() => addTicketToCart(ticket)}>
-              {isInCart ? "Added to Basket" : "Add to Basket"} <img src="./assets/container.svg" className={styles.icon} />
+              {isInCart ? "Added to Basket" : "Add to Basket"} <img alt="none" src="./assets/container.svg" className={styles.icon} />
               </button>
               <button className={styles.buyButton} onClick={() => buyTicket(ticket)}>direct charge</button>
               <button className={styles.buyButton} onClick={() => buyTicketDestination(ticket)}>destination charge</button>
