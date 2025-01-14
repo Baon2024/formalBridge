@@ -43,7 +43,7 @@ app.use(cors());
     bodyParser.json()(req, res, next); // Apply JSON parsing to other routes
   }
 });*/
-app.use('/webhook', bodyParser.raw({ type: 'application/json' }));
+//app.use('/webhook', bodyParser.raw({ type: 'application/json' }));
 app.use(bodyParser.json());
 
 
@@ -300,7 +300,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 
 })
 
-app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => { 
+/*app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => { 
 
   let event = req.body;
   //let eventTrial = req.body;
@@ -384,10 +384,10 @@ app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
   }
 
   // Return a 200 response to acknowledge receipt of the event
-  res.send();
+  //res.send();
+  res.status(200).json({ received: true });
 
-
-})
+})*/
 
 app.post('/create-checkout-session-destination', async (req, res) => {
 
