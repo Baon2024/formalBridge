@@ -40,7 +40,13 @@ const endpointSecret = 'whsec_d841e887e13b7130ce9da8227aafc1a2c38c9289b03f48f955
 
 // Middleware
 //app.use(bodyParser.json());
-app.use(cors());
+//app.use(cors());
+// Enable CORS for specific origin (your frontend URL)
+app.use(
+  cors({
+    origin: 'https://experimentalformalbridge-l5q997h6c.vercel.app',
+  })
+);
 app.use('/webhook', bodyParser.raw({ type: 'application/json' }));
 
 /*app.use((req, res, next) => {
