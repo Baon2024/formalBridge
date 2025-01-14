@@ -35,12 +35,18 @@ async function fetchTicketsData() {
 
 export async function fetchTicketsData2() {
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/';      
-        
-  const data = await fetch(`${API_URL}getTickets`);
-  const dataToReturn = await data.json();
-  console.log("these are the filtered tickets returned to the front-end, just before being set:", dataToReturn);
-  return dataToReturn;
+  try {
+    const response = await fetch(`${API_URL}getTickets`);
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
+    const dataToReturn = await response.json();
+    console.log("Fetched tickets:", dataToReturn);
+    return dataToReturn;
+  } catch (error) {
+    console.error("Failed to fetch tickets:", error);
+    return null; // Or handle the error as appropriate for your app
+  }
 }
 
 
