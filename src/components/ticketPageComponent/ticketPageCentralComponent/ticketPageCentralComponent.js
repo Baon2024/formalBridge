@@ -58,9 +58,9 @@ function TicketPageItem({ticket, addTicketToCart, cart, isInCart, buyTicket, buy
               <button className={ isInCart ? styles.addedToCartButton : styles.addToCartButton} disabled={isInCart} onClick={() => addTicketToCart(ticket)}>
               {isInCart ? "Added to Basket" : "Add to Basket"} <img src="./assets/container.svg" className={styles.icon} />
               </button>
-              <button className={styles.buyButton} onClick={() => buyTicket(ticket)}>direct charge</button>
+              {/*<button className={styles.buyButton} onClick={() => buyTicket(ticket)}>direct charge</button>*/}
               <button className={styles.buyButton} onClick={() => buyTicketDestination(ticket)}>destination charge</button>
-              <button className={styles.buyButton} onClick={() => buyTicketDestinationEmbedded(ticket)}>destination charge (embedded)</button>
+              {/*<button className={styles.buyButton} onClick={() => buyTicketDestinationEmbedded(ticket)}>destination charge (embedded)</button>*/}
             </div>
           </div>
         </div>
