@@ -24,6 +24,7 @@ import DestinationPage from './components/thankYouPurchasePage/destinationPage';
 import EmbeddedCheckoutPage from './components/thankYouPurchasePage/embeddedCheckoutPage';
 import Refresh from './components/userPage/refresh';
 import SampleTestPage from './components/thankYouPurchasePage/sampleTestPage';
+import { Analytics } from "@vercel/analytics/react"
 
 
 //const state = store.getState();
@@ -91,7 +92,7 @@ function App() {
      <LocalizationProvider dateAdapter={AdapterDayjs}>
       <RouterProvider router={router} />
      </LocalizationProvider>
-        
+     <Analytics />
     </div>
   );
 }
