@@ -5,6 +5,7 @@ import { Resend } from "resend";
 import Stripe from "stripe"; // Correct way to import Stripe in ES modules
 import cors from 'cors';
 import { render } from "@react-email/render";
+import sendEmailToNotifySeller from "./emails/ticketSoldEmail.js";
 
 //import APIFunctionsForBackend from '../backend/APIFunctionsForBackend.js';
 //const APIFunctionsForBackend = import('./APIFunctionsForBackend'); 
@@ -279,7 +280,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
         application_fee_amount: finalComission, //this is my cut
       },
       mode: 'payment',
-      success_url: `http://localhost:3006/successPage/${documentId}`, //rdirect to /successpage/${documentId}
+      success_url: `http://localhost:3002/successPage/${documentId}`, //rdirect to /successpage/${documentId}
       //need to redirect customer to the above url returned in response
       //and then id should enable correct ticket to be selected, and display qr/download
       //and could then update buyerUser and bought status in that page instead?
@@ -353,6 +354,7 @@ app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
       
       setTicketBought(globalTicket, jwtToken);
       updateBuyerUser(globalTicket, globalUser, jwtToken);
+      sendEmailToNotifySeller(globalTicket);
       //add email function to inform seller, here
       }
       const metadata = session.metadata;
@@ -368,6 +370,7 @@ app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
          ticketIds.map((ticketId) => {
           setTicketBoughtMultiple(ticketId, jwtToken);
           updateBuyerUserMultiple(ticketId, buyerUserId, jwtToken);
+          //need to change function for multiple sellers
           //need to add email function to inform sellers, here
          })
       }
@@ -470,7 +473,7 @@ const session = await stripe.checkout.sessions.create(
       },
     },
     mode: 'payment',
-  success_url:  `http://localhost:3006/successPage/${documentId}?session_id={CHECKOUT_SESSION_ID}`,
+  success_url:  `http://localhost:3002/successPage/${documentId}?session_id={CHECKOUT_SESSION_ID}`,
   
 
     //return_url: `http://localhost:3006/destinationPage/${documentId}?session_id={CHECKOUT_SESSION_ID}`,

@@ -12,11 +12,12 @@ import { useSelector } from "react-redux";
 import { selectTicketsInventory } from "../../reduxStateComponents/TicketInventorySlice/ticketInventorySlice";
 import { getCollegeBackgroundImage, uploadQRCode, updateUserTicketsListed } from "./getCollegeBackgroundImage";
 import { useNavigate } from "react-router-dom";
+import { sendEmailToNotifyTicketListed } from "../userPage/emailFunctionTest";
 
 
 export default function UploadTicket({user}) {
 
-    const colleges = ["King's", "Queen's", "Corpus Christi", "Madgalene", "Peterhouse", "Murray Edwards", "Selwyn", ""]; // Add more as needed
+    const colleges = ["King's", "Queen's", "Corpus Christi", "Madgalene", "Peterhouse", "Murray Edwards", "Selwyn", "Christ's", "Darwin"]; // Add more as needed
     const dietaryOptions = ["Vegan", "Vegetarian", "Gluten-Free", "None"]; // Add more as needed
 
 
@@ -93,12 +94,18 @@ export default function UploadTicket({user}) {
       //and need to make sure that you add all the property fields above, even empty ones.
       //need to make sure names match proper names in collection database 
       const returnedNewTicket = await createNewTicket(newTicket, user);
-      const returnedNewTicketJSONed = returnedNewTicket.json();
-      console.log("returnedNewTicket is: ", returnedNewTicketJSONed);
+      const returnedNewTicketJSONed = await returnedNewTicket.json();
+      console.log("returnedNewTicket is: ", await returnedNewTicketJSONed);
       console.log("the formal-tickets collection is now: ", ticketsInventory);
       
       if (returnedNewTicket.status >= 200 && returnedNewTicket.status < 300) {
+        //if you want, could add a function that sends to backend, to send email to tell seller their ticket was succesfully listed
+        console.log("returnedNewTicketJSONed before email functiion is:", returnedNewTicketJSONed);
+        sendEmailToNotifyTicketListed(user, returnedNewTicketJSONed);
+        alert("ticket successfully listed!");
         navigate(`/userPage/${user.user.id}`);
+        //function to send user and ticket details to backend endpoint
+        
       }
 
       } catch(error) {

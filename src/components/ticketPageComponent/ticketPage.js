@@ -105,7 +105,7 @@ function TicketPage({ /*ticketsInventory,*/ setTicketsInventory, cart, addTicket
        //here add the function to send email to seller notifying of sale - need user of ticketSeller
        console.log("Before checking sellerUser email");
        console.log("email is:", ticket.sellerUser.email);
-       if (ticket.sellerUser.email == 'joejoeboyes2013@gmail.com') { //here as placeholder, til you have a resend sub
+       if (ticket.sellerUser.email == 'joejoeboyes2013@gmail.com' || ticket.sellerUser.email == 'jb2300@cam.ac.uk') { //here as placeholder, til you have a resend sub
           sendEmailToNotifySeller(ticket)
          console.log("ready for the email function");
        }

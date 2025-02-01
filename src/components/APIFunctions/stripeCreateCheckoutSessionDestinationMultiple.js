@@ -21,6 +21,7 @@ export default async function stripeCreateCheckoutSessionDestinationMultiple(car
         body: JSON.stringify( cartAndTotalCartIdsAndUser ),
       });
     
+      console.log("response is", response);
 
       const { url } = await response.json();
     

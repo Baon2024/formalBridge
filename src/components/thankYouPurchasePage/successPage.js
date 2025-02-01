@@ -5,7 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectTicketsInventory } from "../../reduxStateComponents/TicketInventorySlice/ticketInventorySlice";
 import { useEffect, useState } from "react";
 import loadTicketsForInventory from "../../reduxStateComponents/TicketInventorySlice/loadTicketsForInventory";
-import { setTicketBought, updateBuyerUser, fetchTicketsData } from "../APIFunctions/APIFunctions";
+import { setTicketBought, updateBuyerUser, fetchTicketsData } from "../APIFunctions/APIFunctions"
+import { resetCart } from "../../reduxStateComponents/TicketInventorySlice/cartInventorySlice";
 //import { updateBuyerUser } from "../APIFunctions/APIFunctions";
 //this page will thank the user, and have a button allowing the user to download their formalTicket PDF
 //it will do this by the previous checkout page sending the user here with a dynamic url '/checkout/thankyou/:name' in react router
@@ -57,6 +58,7 @@ export default function SuccessPage({ticketsInventory}) {
           .then((data) => {
             if (data.success) {
               setPaymentStatus('Payment successful!');
+              dispatch(resetCart());
               //Navigate(`/successPage/${ids}`);
             } else {
               setPaymentStatus('Payment failed or pending.');

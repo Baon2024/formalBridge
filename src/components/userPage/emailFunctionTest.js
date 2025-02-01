@@ -61,3 +61,38 @@ export async function sendEmailToNotifySeller(ticket) {
         console.error('Error sending email:', error);
       }
   }
+
+  export async function sendEmailToNotifyTicketListed(user, ticket) {
+
+    console.log("user and ticket passed to test email function is:", user, ticket);
+    //console.log("name value passed to test email function os:", name);
+    //const email = ticket.sellerUser.email;
+  
+    //const type = 'notify seller that their ticket has been bought';
+    //const ticket = ticketData.data;
+    //console.log("ticket is:", ticketData);
+
+      try {
+        const response = await fetch('http://localhost:5001/api/confirm-ticket-listed', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user,
+            ticket
+          }),
+        });
+  
+        const data = await response.json();
+  
+        if (data.success) {
+          //setSuccessMessage(data.message);
+        } else {
+          //setErrorMessage(data.error?.message || 'Something went wrong.');
+        }
+      } catch (error) {
+        //setErrorMessage('Something went wrong.');
+        console.error('Error sending email:', error);
+      }
+  }
