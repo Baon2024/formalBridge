@@ -45,6 +45,7 @@ function TicketPageItem({ticket, addTicketToCart, cart, isInCart, buyTicket, buy
             <div className={styles.header}>
               <span className={styles.EventName}>{ticket.formalEventName}</span>
               <span className={styles.collegeName}>{ticket.formalTicketCollege}</span>
+              <span className={styles.collegeName}>{ticket?.formalTicketType}</span>
             </div>
             <div className={styles.info}>
               <span className={styles.ticketTime}>{ticket.formalTicketTime}</span>

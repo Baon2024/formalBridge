@@ -17,8 +17,9 @@ import { sendEmailToNotifyTicketListed } from "../userPage/emailFunctionTest";
 
 export default function UploadTicket({user}) {
 
-    const colleges = ["King's", "Queen's", "Corpus Christi", "Madgalene", "Peterhouse", "Murray Edwards", "Selwyn", "Christ's", "Darwin"]; // Add more as needed
+    const colleges = ["King's", "Queen's", "Corpus Christi", "Madgalene", "Peterhouse", "Murray Edwards", "Selwyn", "Christ's", "Darwin","Wolfson","St Edmunds","Churchill"]; // Add more as needed
     const dietaryOptions = ["Vegan", "Vegetarian", "Gluten-Free", "None"]; // Add more as needed
+    const type = ['member','guest'];
 
 
     function generateRandomId() {
@@ -32,6 +33,7 @@ export default function UploadTicket({user}) {
     const [ selectedTime, setSelectedTime ] = useState(null);
     const [ ticketPrice, setTicketPrice ] = useState(null);
     const [ selectCollege, setSelectCollege ] = useState('');
+    const [ selectType, setSelectType ] = useState('');
     const [ selectDietary, setSelectDiet ] = useState('');
     const [ selectedFile, setSelectedFile ] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -74,6 +76,7 @@ export default function UploadTicket({user}) {
           formalTicketTime: formattedTime,
           formalTicketPrice: Number(ticketPrice),
           formalTicketCollege: selectCollege,
+          formalTicketType: selectType,
           formalTicketDietary: selectDietary,
           formalTicketCollegeBackgroundImage: /*await getCollegeBackgroundImage(selectCollege)*/ imageObject ? { id: imageObject.id } : null,
           formalTicketQRCode: { id: qrCodeId }, // getQRCode(unique identifier returned by upload API function);
@@ -81,6 +84,7 @@ export default function UploadTicket({user}) {
           formalTicketID: generateRandomId(),
           buyerUser: null, // - is this the correct value to set?
           sellerUser: user.user.id   //need to check whether its document id of user i need here, or what
+          //need to add guest or member
         }
       
       //BREAK QR CODE UPLOADER INTO TWO PARTS
@@ -150,6 +154,21 @@ export default function UploadTicket({user}) {
               <option value="" disabled>Select college</option>
               {colleges.map((college, index) => (
                 <option key={index} value={college}>{college}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className={styles.formGroup}>
+          <label>ticket type</label>
+          <div className={styles.dropdown}>
+            <select
+              className={styles.dropdownInput}
+              value={selectType}
+              onChange={(e) => setSelectType(e.target.value)}
+            >
+              <option value="" disabled>Select ticket type</option>
+              {type.map((type, index) => (
+                <option key={index} value={type}>{type}</option>
               ))}
             </select>
           </div>

@@ -8,6 +8,7 @@ import styles from './userPage.module.css';
 import emailFunctionTest from "./emailFunctionTest";
 import addConnectedAccountIdToUser from "./addConnectedAccountIdToUser";
 import { loadConnectAndInitialize } from "@stripe/connect-js";
+import sendProblemToBackend from "../APIFunctions/sendProblemToBackend";
 //import { ClassicTicket } from "./classicTicket";
 
 
@@ -34,6 +35,7 @@ function UserPage({user, setUser}) {
   const [accountLinkCreatePending, setAccountLinkCreatePending] = useState(false);
   const [error, setError] = useState(false);
   const [connectedAccountId, setConnectedAccountId] = useState();
+  const [ problemText, setProblemText ] = useState('');
 const [accountCreatePending, setAccountCreatePending] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(null);
@@ -287,6 +289,16 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
   //there's a problem, where the function sometimes doesn't work when called first time
   //but does work when called secodn time
 
+  async function reportProblemHandler() {
+  
+    if (problemText) {
+      const response = await sendProblemToBackend(problemText);
+      if (response.success === true) {
+        alert("problem successfully submitted");
+      }
+    }
+  }
+
     return (
       <>
         <div className={styles.topContainer}>
@@ -307,6 +319,10 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
           <button>
             <Link to="/uploadTicket"><p>Sell your Ticket</p></Link>
           </button>
+        </div>
+        <div>
+          <input value={problemText} type="text" onChange={(e) => setProblemText(e.target.value)} />
+          <button onClick={reportProblemHandler}>report a problem</button>
         </div>
         <div className={styles.ticketsBought}>
           { /*userData*/ user && userData ? (
