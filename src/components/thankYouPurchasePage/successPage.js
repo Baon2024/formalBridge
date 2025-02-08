@@ -175,6 +175,7 @@ export default function SuccessPage({ticketsInventory}) {
         ticketsToDisplay.map(ticket => (
           <div key={ticket.id} className={styles.ticketContainer}>
             <div className={styles.ticketCard}>
+              <p>{ticket.howToUseTicket}</p>
               <p>{ticket.formalEventName}</p>
               {ticket.formalTicketQRCode && ticket.formalTicketQRCode.url ? (
                 <>

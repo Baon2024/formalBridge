@@ -37,8 +37,8 @@ function UserPage({user, setUser}) {
   const [connectedAccountId, setConnectedAccountId] = useState();
   const [ problemText, setProblemText ] = useState('');
 const [accountCreatePending, setAccountCreatePending] = useState(false);
-
   const [isModalOpen, setIsModalOpen] = useState(null);
+  const [isInstructionModalOpen, setIsInstructionModalOpen] = useState(null);
 
   const handleOpenModal = (documentId) => {
     setIsModalOpen(documentId);
@@ -46,6 +46,14 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
 
   const handleCloseModal = () => {
     setIsModalOpen(null);
+  };
+
+  const handleOpenInstructionModal = (documentId) => {
+    setIsInstructionModalOpen(documentId);
+  };
+
+  const handleCloseInstructionModal = () => {
+    setIsInstructionModalOpen(null);
   };
   
   console.log("token passed down as params is:", token);
@@ -373,7 +381,20 @@ onClick={(e) => e.stopPropagation()} // Prevent closing modal when clicking insi
 </div>
 </div>
 )}
-          <button>report problem</button>
+          <button onClick={() => handleOpenInstructionModal(ticket.documentId)}>how to use</button>
+          {isInstructionModalOpen === ticket.documentId && (
+<div className={styles.overlay} onClick={handleCloseModal}>
+<div
+className={styles.modal}
+onClick={(e) => e.stopPropagation()} // Prevent closing modal when clicking inside it
+>
+<button className={styles.closeBtn} onClick={handleCloseInstructionModal}>
+  X
+</button>
+<p>{ticket?.howToUseTicket}</p>
+</div>
+</div>
+)}
         </div>
       </div>
     </>

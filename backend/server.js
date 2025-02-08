@@ -473,7 +473,7 @@ const session = await stripe.checkout.sessions.create(
       },
     },
     mode: 'payment',
-  success_url:  `http://localhost:3002/successPage/${documentId}?session_id={CHECKOUT_SESSION_ID}`,
+  success_url:  `http://localhost:3006/successPage/${documentId}?session_id={CHECKOUT_SESSION_ID}`,
   
 
     //return_url: `http://localhost:3006/destinationPage/${documentId}?session_id={CHECKOUT_SESSION_ID}`,

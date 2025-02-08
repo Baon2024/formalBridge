@@ -38,9 +38,11 @@ function TicketPageItem({ticket, addTicketToCart, cart, isInCart, buyTicket, buy
       <>
       <div className={styles.container}>
         <img src={ticket.formalTicketCollegeBackgroundImage?.url 
-        ? `http://localhost:1338/${ticket.formalTicketCollegeBackgroundImage.url}` 
+        ? `http://localhost:1338/${ticket.formalTicketCollegeBackgroundImage.url}` //need to change to url when deployed
         : 'public/queens.jpeg'}  id={styles.backgroundImage} />
+        
         <div className={styles.ticketPageItem} value={ticket}>
+        <p style={{ zIndex: "1000"}}>{ticket?.howToUseTicket}</p>
           <div className={styles.content}>
             <div className={styles.header}>
               <span className={styles.EventName}>{ticket.formalEventName}</span>

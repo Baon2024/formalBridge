@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from './uploadTicket.module.css';
 //import { DatePicker } from '@mui/x-date-pickers';
 //import { TextField } from "@mui/material";
@@ -13,6 +13,7 @@ import { selectTicketsInventory } from "../../reduxStateComponents/TicketInvento
 import { getCollegeBackgroundImage, uploadQRCode, updateUserTicketsListed } from "./getCollegeBackgroundImage";
 import { useNavigate } from "react-router-dom";
 import { sendEmailToNotifyTicketListed } from "../userPage/emailFunctionTest";
+import getCollegeInfo from "./getCollegeInfo";
 
 
 export default function UploadTicket({user}) {
@@ -37,6 +38,7 @@ export default function UploadTicket({user}) {
     const [ selectDietary, setSelectDiet ] = useState('');
     const [ selectedFile, setSelectedFile ] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [ collegeInfo, setCollegeInfo ] = useState([]);
     const navigate = useNavigate();
     //const [ qrFile, setQRFile ] = useState(null);
 
@@ -53,6 +55,29 @@ export default function UploadTicket({user}) {
         qrCodeId = await uploadQRCode(selectedFile);
         console.log("qrCodeId is: ", qrCodeId);
     }
+
+    useEffect(() => { //everytime user changes the college, it'll check if college exists, then retrieve collegeInfo from strapi
+                      //so it can display what ticket evidence needs uploading, and add how-to-use-ticket to ticket being created
+    console.log("useEffect for retrieving collegeInfo is called!");
+      if (selectCollege) {
+
+        async function getCollegeInformation() {
+        const collegeInfo = await getCollegeInfo(selectCollege);
+        console.log("collegeInfo returned to uploadTicket is:", collegeInfo.data);
+        setCollegeInfo(collegeInfo.data);
+        }
+
+        getCollegeInformation();
+      }
+                      
+    
+    },[setSelectCollege, selectCollege])
+
+    //then have conditional jsx, to display collegeInfo.ticketEvidenceForListing on the page
+    //and make collegeInfo.howToUseTicket the value of howToUseTicket field.
+    useEffect(() => {
+      console.log("selectCollege is:", selectCollege);
+    },[selectCollege, setSelectCollege])
 
    
     
@@ -81,6 +106,7 @@ export default function UploadTicket({user}) {
           formalTicketCollegeBackgroundImage: /*await getCollegeBackgroundImage(selectCollege)*/ imageObject ? { id: imageObject.id } : null,
           formalTicketQRCode: { id: qrCodeId }, // getQRCode(unique identifier returned by upload API function);
           bought: false,
+          howToUseTicket: collegeInfo.howToUseTicket,
           formalTicketID: generateRandomId(),
           buyerUser: null, // - is this the correct value to set?
           sellerUser: user.user.id   //need to check whether its document id of user i need here, or what
@@ -133,6 +159,9 @@ export default function UploadTicket({user}) {
     return (
         <> 
     <div className={styles.eventForm}>
+    { collegeInfo && (
+      <p>{collegeInfo.ticketRequirement}</p>
+    )}
       <div className={styles.formRow}>
         <div className={styles.formGroup}>
           <label>formal event</label>

@@ -21,7 +21,7 @@ export default function Home({user}) {
     redirectPath = 'signUpLogIn';
   }
   if (user && !connectedAccountId) {
-    redirectPath = 'userPage/undefined';
+    redirectPath = 'uploadTicket';
   }
 
   
