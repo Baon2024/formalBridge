@@ -2,12 +2,13 @@
 
 
 const jwtToken = localStorage.getItem('jwt');
+//const jwtToken = JSON.parse(localStorage.getItem('jwt'))
 
 
 
-export default async function getCollegeInfo(selectCollege) {
+export default async function getCollegeInfo(selectCollege, user) {
     console.log("selectCollege inside of getCollegeInfo is:", selectCollege);
-
+    console.log("user inside of getCollegeInfo is:", user);
     
     
     const collegeIds = {
@@ -29,11 +30,13 @@ export default async function getCollegeInfo(selectCollege) {
     let id = collegeIds[selectCollege] || null; // Default to `null` if not found
 
 
-
+   
     const url = `http://localhost:1338/api/college-informations/${id}`;
 
     console.log("url with college id is:", url);
     console.log("jwtToken before function call:", jwtToken);
+
+    //if (jwt) {
     
         const response = await fetch(url, {
           method: "GET",
@@ -52,6 +55,6 @@ export default async function getCollegeInfo(selectCollege) {
         console.log("collegInfo returned inside of getCollegeInfo function is:", jsonResponse);
         return jsonResponse;
 
-
+    //}
 }
 

@@ -306,6 +306,15 @@ const [accountCreatePending, setAccountCreatePending] = useState(false);
       }
     }
   }
+  let myTicketsListedSold;
+  let myTicketsListedUnsold;
+  if (myTicketsListed) {
+  console.log("myTicketsListed are:", myTicketsListed);
+   myTicketsListedSold = myTicketsListed.filter(ticket => ticket.bought === true);
+   myTicketsListedUnsold = myTicketsListed.filter(ticket => ticket.bought === false);
+  console.log("myTicketsListedUnsold are:", myTicketsListedUnsold);
+  console.log("myTicketsListedSold are:", myTicketsListedSold);
+  }
 
     return (
       <>
@@ -402,7 +411,7 @@ onClick={(e) => e.stopPropagation()} // Prevent closing modal when clicking insi
               </div> 
               <div>
                 <p>Your listed tickets are</p>
-                { myTicketsListed && myTicketsListed.map((ticket) => (
+                { myTicketsListedUnsold && myTicketsListedUnsold.map((ticket) => (
                   <>
                     <div key={ticket.id} className={styles.ticketsListedCard}>
                       <p>{ticket.formalEventName}</p>
@@ -425,6 +434,26 @@ onClick={(e) => e.stopPropagation()} // Prevent closing modal when clicking insi
                         </div>
                         )}
                       <button onClick={() => cancelTicketHandler(ticket)}>cancel ticket listing</button>
+                    </div>
+                  </>
+                ))}
+                <p>Your listed sold tickets are:</p>
+                { myTicketsListedSold && myTicketsListedSold.map((ticket) => (
+                  <>
+                    <div key={ticket.id} className={styles.ticketsListedCard}>
+                      <p>{ticket.formalEventName}</p>
+                      <p>{ticket.formalTicketCollege}</p>
+                      <p>£{ticket.formalTicketPrice}</p>
+                      <div
+                            style={{
+                            backgroundImage: `url(http://localhost:1338${ticket.formalTicketCollegeBackgroundImage?.url})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            height: '200px', // Adjust height based on your design needs
+                      }}
+                      className={styles.ticketImage} 
+                       />
+                      
                     </div>
                   </>
                 ))}

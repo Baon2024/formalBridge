@@ -62,7 +62,7 @@ export default function UploadTicket({user}) {
       if (selectCollege) {
 
         async function getCollegeInformation() {
-        const collegeInfo = await getCollegeInfo(selectCollege);
+        const collegeInfo = await getCollegeInfo(selectCollege, user);
         console.log("collegeInfo returned to uploadTicket is:", collegeInfo.data);
         setCollegeInfo(collegeInfo.data);
         }
