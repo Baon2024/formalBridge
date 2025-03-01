@@ -23,6 +23,44 @@ export default async function stripeCreateCheckoutSessionDestinationMultipleEmbe
     
       const session = await response.json();
 
+      /* <tr>
+              <td className="sticky left-0 bg-background px-6 py-4 font-medium">Scholarships</td>
+              {schoolsToCompare.map((school) => (
+                <td key={school.schoolName} className="px-6 py-4">
+                  {school.scholarships.available ? (
+                    <span>
+                      Available
+                      {school.scholarships.percentageOfFees !== 0 && (
+                        <span className="text-muted-foreground"> (up to {school.scholarships.percentageOfFees}%)</span>
+                      )}
+                    </span>
+                  ) : (
+                    "Not available"
+                  )}
+                </td>
+              ))}
+            </tr>
+            <tr>
+              <td className="sticky left-0 bg-background px-6 py-4 font-medium">Bursaries</td>
+              {schoolsToCompare.map((school) => (
+                <td key={school.schoolName} className="px-6 py-4">
+                  {school.Bursaries.BursariesAvailable ? (
+                    <span>
+                      Available
+                      {Array.isArray(school.Bursaries?.percentageOfFees) && (
+                        <span className="text-muted-foreground">
+                          {" "}
+                          ({school.Bursaries?.percentageOfFees[0]}-{school.Bursaries?.percentageOfFees[1]}%)
+                        </span>
+                      )}
+                    </span>
+                  ) : (
+                    "Not available"
+                  )}
+                </td>
+              ))}
+            </tr>*/ 
+
       const secondSession = session.session;
       const clientSecret = secondSession.client_secret;
       
