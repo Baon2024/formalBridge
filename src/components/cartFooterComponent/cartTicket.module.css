@@ -1,0 +1,17 @@
+.cartTicket {
+    background-color: pink;
+    height: 80%;
+    border: 1px solid red;
+    width: 20%;
+    border-radius: 15px;
+    display: inline-flex;
+    align-content: space-around;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 5px;
+}
+.cartTicket:hover {
+    background-color: purple;
+    transform: scale(1.2);
+    cursor: pointer;
+}

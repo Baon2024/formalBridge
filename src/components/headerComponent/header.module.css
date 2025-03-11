@@ -1,0 +1,13 @@
+.HeaderStyling {
+    background: transparent;
+  }
+.componentHeight {
+  height: 100vh;
+}
+.mainContent {
+    /* Adjusting to account for NavigationBar height */
+  margin-bottom: 10vh;  /* Adjusting to account for CartFooter height */
+   /* To allow scrolling if content overflows */
+  min-height: 82vh;
+  max-height: 82vh;
+}

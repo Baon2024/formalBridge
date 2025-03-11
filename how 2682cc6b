@@ -1,0 +1,23 @@
+[33mcommit 2682cc6b37aa29662fc6622a007f58b830f44524[m
+Author: Baon2024 <Baon2020@protonmail.com>
+Date:   Thu Dec 26 13:16:45 2024 +0000
+
+    added dynamic connectedAccountId
+
+[1mdiff --git a/src/components/APIFunctions/stripeCreateCheckoutSession.js b/src/components/APIFunctions/stripeCreateCheckoutSession.js[m
+[1mindex bb883422..1d8ded96 100644[m
+[1m--- a/src/components/APIFunctions/stripeCreateCheckoutSession.js[m
+[1m+++ b/src/components/APIFunctions/stripeCreateCheckoutSession.js[m
+[36m@@ -5,7 +5,11 @@[m [mimport { loadStripe } from '@stripe/stripe-js';[m
+ export default async function stripeCreateCheckoutSession(ticket) {[m
+ [m
+ [m
+[31m-    const connectedAccountId = 'acct_1QZhoTQAEiW5zVa4'[m
+[32m+[m[32m    //const connectedAccountId = 'acct_1QZhoTQAEiW5zVa4'[m
+[32m+[m[32m    const connectedAccountId = ticket.sellerUser.connectedAccountId;[m
+[32m+[m[32m    console.log("thsi should be the connectedAccountId needed for the sellerUser inside of the stripeCreateCheckoutSession:", connectedAccountId);[m
+[32m+[m
+[32m+[m[32m    //should be able to make this dynamic now[m
+ [m
+      // Initialize Stripe.js with the connected account[m
+   const stripe = await loadStripe('pk_test_51QNlAaG7WeMIf1DGKqMw0dAcSmjfnBlJNH3wr8fjyCqmZazDvpOEaNv7yHuHXlEHv3CL9BpTE3kv0JVA7F5lVIhy00EwL9mhQA', {[m
